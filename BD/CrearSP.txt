@@ -1,0 +1,184 @@
+DELIMITER $$
+
+CREATE PROCEDURE ObtenerPaisPorID(
+    IN PaisID INT
+)
+BEGIN
+    SELECT * 
+    FROM Paises 
+    WHERE deleted = 0 
+      AND PaisID = @PaisID;
+END$$
+
+
+-- Procedimiento para validar usuario
+CREATE PROCEDURE ValidarUsuario(IN usuarioIngresado VARCHAR(50), IN contraseniaIngresada VARCHAR(50)) 
+BEGIN
+    SELECT * FROM clientes
+    WHERE usuario = usuarioIngresado AND password = contraseniaIngresada;
+END$$
+
+-- Procedimiento para modificar cuenta
+CREATE PROCEDURE ModificarCuenta (IN nroCuentaIngresado INT, IN idTipoCuentaIngresado INT, IN borrado BIT)
+BEGIN
+	UPDATE Cuentas SET id_tipo_cuenta = idTipoCuentaIngresado, deleted = borrado WHERE nro_cuenta = nroCuentaIngresado;
+END$$
+
+-- Procedimiento para listar cuenta por número de cuenta
+CREATE PROCEDURE ListarCuentaXNroCuenta (IN nroCuenta INT)
+BEGIN
+	SELECT cuentas.nro_cuenta, cuentas.cbu, cuentas.id_cliente, clientes.nombre, clientes.apellido, cuentas.id_tipo_cuenta, tiposcuenta.descripcion, cuentas.deleted 
+	FROM cuentas 
+	LEFT JOIN clientes ON clientes.id = cuentas.id_cliente 
+	LEFT JOIN tiposcuenta ON tiposcuenta.id = cuentas.id_tipo_cuenta 
+	WHERE nro_cuenta = nroCuenta;
+END$$
+
+-- Procedimiento para listar todas las cuentas
+CREATE PROCEDURE ListarCuentas()
+BEGIN
+	SELECT nro_cuenta, id_cliente, fecha_creacion, id_tipo_cuenta, tiposcuenta.descripcion AS descripcion, cbu, saldo, cuentas.deleted AS borrado 
+	FROM cuentas 
+	LEFT JOIN tiposcuenta ON tiposcuenta.id = id_tipo_cuenta; 
+END$$
+
+-- Procedimiento para eliminar cuenta
+CREATE PROCEDURE EliminarCuenta (IN nroCuentaIngresado INT)
+BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+		SELECT 'Ocurrio un error' AS mensaje;
+	END;
+	START TRANSACTION;
+	UPDATE cuentas SET deleted = 1, deleteDate = CURDATE() WHERE nro_cuenta = nroCuentaIngresado;
+	COMMIT;
+END$$
+
+-- Procedimiento para agregar cuenta
+CREATE PROCEDURE AgregarCuenta(
+	IN idClienteIngresado INT,
+	IN idTipoCuentaIngresada INT
+)
+BEGIN
+	DECLARE cuentasActivas INT DEFAULT 0;
+	DECLARE ultimoNroCuenta INT DEFAULT 0;
+	DECLARE ultimoIdMovimiento INT DEFAULT 0;
+	DECLARE saldo INT DEFAULT 0;
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+		SELECT 'Ocurrio un error' AS mensaje;
+	END;
+
+	START TRANSACTION;
+	SELECT COUNT(*) INTO cuentasActivas 
+	FROM cuentas 
+	WHERE id_cliente = idClienteIngresado AND deleted = 0;
+
+	IF cuentasActivas < 3 THEN
+		INSERT INTO cuentas (id_cliente, fecha_creacion, id_tipo_cuenta, cbu, saldo, createDate, deleteDate, deleted)
+		VALUES (idClienteIngresado, CURDATE(), idTipoCuentaIngresada, REPLACE(REPLACE(REPLACE(DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'), '-', ''), ':', ''), ' ', ''), 0, CURDATE(), NULL, 0);
+
+		SELECT LAST_INSERT_ID() INTO ultimoNroCuenta;
+		INSERT INTO movimientos(fecha, importe, tipo_movimiento, estado, createDate, deleted) 
+		VALUES (CURDATE(), 10000, 1, 1, CURDATE(), 0);
+
+		SELECT LAST_INSERT_ID() INTO ultimoIdMovimiento;
+		INSERT INTO movimientos(id, nro_cuenta, createDate, deleted) 
+		VALUES (ultimoIdMovimiento, ultimoNroCuenta, CURDATE(), 0);
+
+		UPDATE cuentas SET saldo = saldo + 10000 WHERE nro_cuenta = ultimoNroCuenta;
+	ELSE
+		SELECT 'Se excedio el limite de cuentas' AS mensaje;
+	END IF;
+
+	COMMIT;
+END$$
+
+-- Procedimientos adicionales para clientes, países y usuarios
+CREATE PROCEDURE AgregarCliente(
+    IN p_id INT,
+    IN p_dni NVARCHAR(255),
+    IN p_cuil NVARCHAR(255),
+    IN p_nombre NVARCHAR(255),
+    IN p_apellido NVARCHAR(255),
+    IN p_sexo NVARCHAR(50),
+    IN p_usuario NVARCHAR(255),
+    IN p_password NVARCHAR(255),
+    IN p_pais_nacimiento NVARCHAR(255),
+    IN p_fecha_nacimiento DATE,
+    IN p_correo NVARCHAR(255),
+    IN p_telefono NVARCHAR(255),
+    IN P_celular NVARCHAR(255),
+    IN p_admin BOOLEAN
+)
+BEGIN
+    -- Verificar si ya existe un cliente con el mismo DNI o CUIL
+    IF EXISTS (SELECT 1 FROM Clientes WHERE (dni = p_dni OR cuil = p_cuil) AND (id <> p_id OR p_id IS NULL) AND deleted = 0) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Ya existe un cliente con el mismo DNI o CUIL.';
+    ELSE
+        -- Si el ID ya existe, actualizar el cliente
+        IF p_id IS NOT NULL AND EXISTS (SELECT 1 FROM Clientes WHERE id = p_id) THEN
+            UPDATE Clientes 
+            SET 
+                dni = p_dni, 
+                cuil = p_cuil, 
+                nombre = p_nombre, 
+                apellido = p_apellido, 
+                sexo = p_sexo, 
+                usuario = p_usuario, 
+                password = p_password, 
+                pais = p_pais_nacimiento, 
+                fecha_nacimiento = p_fecha_nacimiento,
+				correo = p_correo,
+                telefono = p_telefono,
+                celular = p_celular,
+                admin = p_admin, 
+                deleteDate = NULL, 
+                deleted = 0 
+            WHERE id = p_id;
+        ELSE
+            -- Si el ID no existe, insertar un nuevo cliente
+            INSERT INTO Clientes (dni, cuil, nombre, apellido, sexo, usuario, password, pais, fecha_nacimiento,correo,telefono,celular, admin, deleteDate, deleted, createDate) 
+            VALUES 
+            (p_dni, p_cuil, p_nombre, p_apellido, p_sexo, p_usuario, p_password, p_pais_nacimiento, p_fecha_nacimiento,p_correo,p_telefono,p_celular, p_admin, NULL, 0, CURRENT_TIMESTAMP);
+            
+            -- Retornar el ID del nuevo cliente insertado
+            SELECT LAST_INSERT_ID() AS nuevo_id;
+        END IF;
+    END IF;
+END$$
+
+CREATE PROCEDURE AgregarPais(
+	IN p_id INT,
+	IN p_nombre NVARCHAR(255)
+)
+BEGIN
+	IF p_id IS NOT NULL AND EXISTS (SELECT * FROM Paises WHERE id = p_id) THEN
+		UPDATE Paises SET nombre = p_nombre, deleteDate = NULL, deleted = 0 WHERE id = p_id;
+	ELSE
+		INSERT INTO Paises (nombre, createDate, deleteDate, deleted) 
+		VALUES (p_nombre, CURRENT_TIMESTAMP, NULL, 0);
+		SELECT LAST_INSERT_ID() AS nuevo_id;
+	END IF;
+END$$
+
+
+
+CREATE PROCEDURE ObtenerPaises()
+BEGIN
+	SELECT * FROM Paises WHERE deleted = 0;
+END$$
+
+CREATE PROCEDURE ObtenerClientesPorId(IN cliente_id INT)
+BEGIN
+	SELECT * FROM Clientes WHERE id = cliente_id AND deleted = 0;
+END$$
+
+CREATE PROCEDURE ObtenerClientes()
+BEGIN
+	SELECT * FROM Clientes WHERE deleted = 0;
+END$$
+
+DELIMITER ;

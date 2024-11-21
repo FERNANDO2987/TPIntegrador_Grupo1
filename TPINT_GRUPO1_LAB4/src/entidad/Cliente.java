@@ -17,13 +17,13 @@ public class Cliente {
     private String telefono;
     private String celular;
     private Boolean admin;
-    private Boolean estado;
+    
 
     
   
     // Constructor
     public Cliente(Long id, Long dni, Long cuil, String nombre, String apellido, String sexo, String usuario, 
-                   String password, Pais paisNacimiento, Date fechaNacimiento,String correo,String telefono,String celular, Boolean admin, Boolean estado) {
+                   String password, Pais paisNacimiento, Date fechaNacimiento,String correo,String telefono,String celular, Boolean admin) {
         this.id = id;
         this.dni = dni;
         this.cuil = cuil;
@@ -38,7 +38,7 @@ public class Cliente {
         this.telefono = telefono;
         this.celular = celular;
         this.admin = admin;
-        this.estado = estado;
+       
     }
 
     public Cliente()
@@ -159,13 +159,6 @@ public class Cliente {
     }
     
 
-    public Boolean getEstado() {
-		return estado;
-	}
-
-	public void setEstado(Boolean estado) {
-		this.estado = estado;
-	}
 
 	@Override
     public String toString() {
