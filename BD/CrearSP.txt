@@ -171,9 +171,18 @@ BEGIN
 	SELECT * FROM Paises WHERE deleted = 0;
 END$$
 
-CREATE PROCEDURE ObtenerClientesPorId(IN cliente_id INT)
+
+CREATE PROCEDURE ObtenerClientePorId(
+    IN Id INT
+)
 BEGIN
-	SELECT * FROM Clientes WHERE id = cliente_id AND deleted = 0;
+    SELECT 
+        c.Id, c.Dni, c.Cuil, c.Nombre, c.Apellido, c.Sexo, c.Usuario, c.Password,
+        p.Id AS PaisNacimientoId, p.Nombre AS PaisNacimientoNombre,
+        c.FechaNacimiento, c.Correo, c.Telefono, c.Celular, c.Admin
+    FROM Clientes c
+    LEFT JOIN Paises p ON c.PaisNacimiento = p.Id
+    WHERE c.Id = Id AND c.deleted = 0;
 END$$
 
 CREATE PROCEDURE ObtenerClientes()
