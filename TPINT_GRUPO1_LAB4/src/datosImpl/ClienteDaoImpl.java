@@ -28,16 +28,17 @@ public class ClienteDaoImpl implements ClienteDao{
 	    boolean estado = true;
 	    cn.Open();
 
-	    String query = "{CALL AgregarCliente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}"; 
+	    String query = "{CALL AgregarCliente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
 	    try (CallableStatement stmt = cn.connection.prepareCall(query)) {
-	        // Obtener el id del cliente (puede ser nulo en caso de inserción)
-	        Long id = cliente.getId(); // El id puede ser nulo cuando es nuevo
-
 	        // Establecer los parámetros
-	        stmt.setObject(1, id, Types.BIGINT); // Usamos Types.BIGINT para manejar valores nulos
-	        stmt.setLong(2, cliente.getDni());
-	        stmt.setLong(3, cliente.getCuil());
+	        if (cliente.getId() > 0) {
+	            stmt.setInt(1, cliente.getId()); // ID existente
+	        } else {
+	            stmt.setNull(1, Types.INTEGER); // ID nulo para nuevo cliente
+	        }
+	        stmt.setString(2, cliente.getDni());
+	        stmt.setString(3, cliente.getCuil());
 	        stmt.setString(4, cliente.getNombre());
 	        stmt.setString(5, cliente.getApellido());
 	        stmt.setString(6, cliente.getSexo());
@@ -53,12 +54,13 @@ public class ClienteDaoImpl implements ClienteDao{
 	        // Ejecutar la sentencia
 	        stmt.executeUpdate();
 
-	        // Si se está insertando un nuevo cliente, capturamos el ID generado
-	        if (id == null) {
-	            ResultSet rs = stmt.getGeneratedKeys();
-	            if (rs.next()) {
-	                long nuevoId = rs.getLong(1); // Obtener el ID generado
-	                cliente.setId(nuevoId); // Asignar el nuevo ID al objeto cliente
+	        // Capturar el ID generado si es un nuevo cliente
+	        if (cliente.getId() <= 0) {
+	            try (ResultSet rs = stmt.getGeneratedKeys()) {
+	                if (rs.next()) {
+	                    int nuevoId = rs.getInt(1); // Obtener el ID generado
+	                    cliente.setId(nuevoId); // Asignar el nuevo ID al objeto cliente
+	                }
 	            }
 	        }
 
@@ -71,7 +73,7 @@ public class ClienteDaoImpl implements ClienteDao{
 
 	    return estado;
 	}
-	
+
 
 	
 
