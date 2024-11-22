@@ -33,15 +33,9 @@ public class servletListarPrestamos extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("btnListarPrestamos")!=null)
 		{
+			System.out.println("AGUANTE BOOOOOCAAAAAAAAAAAAAAAAAAAAAAA");
 			PrestamoDaoImpl dao = new PrestamoDaoImpl();
 			ArrayList<Prestamo> lista = (ArrayList<Prestamo>) dao.obtenerPrestamos();
 			
@@ -52,8 +46,14 @@ public class servletListarPrestamos extends HttpServlet {
             rd=request.getRequestDispatcher("ListarPrestamos.jsp");
             rd.forward(request, response);
 		}
-			
-		doGet(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+
 	}
 
 }
