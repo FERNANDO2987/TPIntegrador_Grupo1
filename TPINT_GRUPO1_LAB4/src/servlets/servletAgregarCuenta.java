@@ -45,7 +45,7 @@ public class servletAgregarCuenta extends HttpServlet {
 			int idTipoCuenta = Integer.parseInt(request.getParameter("TipoCuenta"));
 			
 			Cuenta aux = new Cuenta();
-			aux.getCliente().setId(idCliente);
+			//aux.getCliente().setId(idCliente);
 			aux.getTipoCuenta().setId(idTipoCuenta);
 			CuentaDao cuentaDao = new CuentaDaoImpl();
 			cuentaDao.agregarCuenta(aux);

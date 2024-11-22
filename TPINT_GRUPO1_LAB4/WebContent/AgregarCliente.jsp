@@ -16,10 +16,10 @@
 <body>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Registro de Cliente</h2>
-        <form action="servletCliente" method="POST">
+        <form action="servletAgregarCliente" method="POST">
             <div class="form-group">
                 <label for="dni">DNI:</label>
-                <input type="text" class="form-control" id="dni" name="dni" pattern="\d{8}" title="Ingrese 7 u 8 dígitos" required>
+                <input type="text" class="form-control" id="dni" name="dni" pattern="\d{8}" title="Ingrese 8 dígitos" required>
             </div>
             <div class="form-group">
                 <label for="cuil">CUIL:</label>
@@ -46,25 +46,31 @@
                 <input type="text" class="form-control" id="usuario" name="usuario" required>
             </div>
             <div class="form-group">
-                <label for="contraseña">Contraseña:</label>
-                <input type="password" class="form-control" id="contraseña" name="contraseña" required>
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
             </div>
             
             <div class="form-group">
                 <label for="pais">País:</label>
                     <select class="form-control" id="pais" name="pais" required>
                     <option value="">Seleccionar</option>
-                    <%
-                        // Obtener la lista de países desde la base de datos
-                        PaisNegImpl paisNeg = new PaisNegImpl();
-                        List<Pais> paises = paisNeg.listarPaises();
-                        // Iterar sobre los países y generar las opciones
-                        for (Pais pais : paises) {
+                   <%
+                     // Obtener la lista de países desde la base de datos
+                           PaisNegImpl paisNeg = new PaisNegImpl();
+                           List<Pais> paises = paisNeg.listarPaises();
+                           if (paises != null && !paises.isEmpty()) {
+                             for (Pais pais : paises) {
                     %>
-                        <option value="<%= pais.getId() %>"><%= pais.getNombre() %></option>
-                    <%
-                        }
-                    %>
+                              <option value="<%= pais.getId() %>"><%= pais.getNombre() %></option>
+                      <%
+                           }
+                           } else {
+                      %>
+                                 <option value="">No hay países disponibles</option>
+                       <%
+                              }
+                         %>
+
                 </select>
             </div>
             <div class="form-group">

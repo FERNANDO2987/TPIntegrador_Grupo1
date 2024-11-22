@@ -12,10 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import datos.ClienteDao;
-import datos.PaisDao;
-import datosImpl.ClienteDaoImpl;
-import datosImpl.PaisDaoImpl;
 import entidad.Cliente;
 import entidad.Pais;
 import negocio.ClienteNeg;
@@ -29,8 +25,7 @@ import nogocioImpl.PaisNegImpl;
 public class servletAgregarCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private ClienteDao clienteDao = new ClienteDaoImpl();
-	private PaisDao paisDao = new PaisDaoImpl();
+
 	
 	private ClienteNeg clienteNeg = new ClienteNegImpl();
 	private PaisNeg paisNeg = new PaisNegImpl();
@@ -49,84 +44,110 @@ public class servletAgregarCliente extends HttpServlet {
 	 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String dniStr = request.getParameter("dni");
- 	    String cuilStr = request.getParameter("cuil");
-	    String nombre = request.getParameter("nombre");
-	    String apellido = request.getParameter("apellido");
-	    String sexo = request.getParameter("sexo");
-	    String nacionalidad = request.getParameter("pais");
-	    String fechaNacimientoStr = request.getParameter("fechaNacimiento");
-	    String correoElectronico = request.getParameter("correoElectronico");
-	    String telefono = request.getParameter("telefono");
-	    String celular = request.getParameter("celular");
-	    String usuario = request.getParameter("usuario");
-	    String contraseña = request.getParameter("contraseña");
-	  
-	  
-    
-        long dni;
-        long cuil;
-	    try {
-	    	dni = Long.parseLong(dniStr);  
-	    	cuil = Long.parseLong(cuilStr);  
-	    } catch (NumberFormatException e) {
-	        response.getWriter().write("Error: DNI o CUIL inválido.");
-	        return;
+		 try {
+	            // Obtener parámetros del formulario
+	            String dniStr = request.getParameter("dni");
+	            String cuilStr = request.getParameter("cuil");
+	            String nombre = request.getParameter("nombre");
+	            String apellido = request.getParameter("apellido");
+	            String sexo = request.getParameter("sexo");
+	            String usuario = request.getParameter("usuario");
+	            String password = request.getParameter("password");
+	            String nacionalidad = request.getParameter("pais"); // Se asume que es el ID del país
+	            String fechaNacimientoStr = request.getParameter("fechaNacimiento");
+	            String correoElectronico = request.getParameter("correoElectronico");
+	            String telefono = request.getParameter("telefono");
+	            String celular = request.getParameter("celular");
+
+	            // Validar campos obligatorios
+	            if (dniStr == null || dniStr.isEmpty() || 
+	                cuilStr == null || cuilStr.isEmpty() || 
+	                nombre == null || nombre.isEmpty() || 
+	                apellido == null || apellido.isEmpty() || 
+	                sexo == null || sexo.isEmpty() || 
+	                nacionalidad == null || nacionalidad.isEmpty() || 
+	                fechaNacimientoStr == null || fechaNacimientoStr.isEmpty() || 
+	                correoElectronico == null || correoElectronico.isEmpty() || 
+	                usuario == null || usuario.isEmpty() || 
+	                password == null || password.isEmpty()) {
+	                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	                response.getWriter().write("Error: Todos los campos obligatorios deben estar presentes.");
+	                return;
+	            }
+
+	            // Validar y convertir DNI, CUIL y nacionalidad (ID del país)
+	            String dni = dniStr.trim();
+	            String cuil = cuilStr.trim();
+	            int idPais;
+	            try {
+	                idPais = Integer.parseInt(nacionalidad);
+	            } catch (NumberFormatException e) {
+	                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	                response.getWriter().write("Error: ID del país inválido.");
+	                return;
+	            }
+
+	            // Validar fecha de nacimiento
+	            Date fechaNacimiento;
+	            try {
+	                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	                fechaNacimiento = formatter.parse(fechaNacimientoStr);
+	            } catch (ParseException e) {
+	                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	                response.getWriter().write("Error: Formato de fecha inválido. Use 'yyyy-MM-dd'.");
+	                return;
+	            }
+
+	            // Obtener el país de nacimiento por ID
+	            List<Pais> paises = paisNeg.listarPaises();
+	            Pais paisNacimiento = paises.stream()
+	                    .filter(p -> p.getId() == idPais)
+	                    .findFirst()
+	                    .orElse(null);
+
+	            if (paisNacimiento == null) {
+	                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	                response.getWriter().write("Error: País de nacimiento no encontrado.");
+	                return;
+	            }
+
+	            // Crear el objeto Cliente
+	            Cliente cliente = new Cliente(
+	                    0, // ID inicial
+	                    dni,  // DNI como String
+	                    cuil, // CUIL como String
+	                    nombre,
+	                    apellido,
+	                    sexo,
+	                    usuario,
+	                    password,
+	                    paisNacimiento,
+	                    fechaNacimiento,
+	                    correoElectronico,
+	                    telefono,
+	                    celular,
+	                    false // No admin por defecto
+	            );
+
+	            // Insertar cliente
+	            boolean estado = clienteNeg.insertarCliente(cliente);
+
+	            // Respuesta al cliente
+	            if (estado) {
+	                response.setStatus(HttpServletResponse.SC_OK);
+	                response.getWriter().write("Cliente agregado exitosamente.");
+	            } else {
+	                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	                response.getWriter().write("Error al agregar cliente.");
+	            }
+	        } catch (Exception e) {
+	            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	            response.getWriter().write("Error inesperado: " + e.getMessage());
+	            e.printStackTrace();
+	        }
 	    }
-        
-        
-	    Date fechaNacimiento = null;
-	    try {
-	        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	        fechaNacimiento = formatter.parse(fechaNacimientoStr); // Convierte la cadena a un objeto Date
-	    } catch (ParseException e) {
-	        response.getWriter().write("Error: Formato de fecha inválido.");
-	        return;
-	    }
 
-      
-	   
-	    List<Pais> paises = paisNeg.listarPaises();
-	    Pais paisNacimiento = paises.stream()
-	                                .filter(p -> p.getNombre().equalsIgnoreCase(nacionalidad))
-	                                .findFirst()
-	                                .orElse(null);
-	    
-	    
-
-	    if (paisNacimiento == null) {
-	        response.getWriter().write("Error: País de nacimiento no encontrado.");
-	        return;
-	    }
-
-	    Cliente cliente = new Cliente(
-	    	    0L,              // id
-	    	    dni,             // dni
-	    	    cuil,            // cuil
-	    	    nombre,          // nombre
-	    	    apellido,        // apellido
-	    	    sexo,            // sexo
-	    	    usuario,         // usuario
-	    	    contraseña,      // password
-	    	    paisNacimiento,  // paisNacimiento
-	    	    fechaNacimiento, // fechaNacimiento
-	    	    correoElectronico, // correo
-	    	    telefono,        // telefono
-	    	    celular,         // celular
-	    	    false,            // admin (o true si el cliente es admin)
-	    	    false			// falso si no esta borrado
-	    	);
-
-	    boolean estado = clienteNeg.insertarCliente(cliente);
-
-	    if (estado) {
-	        response.getWriter().write("Cliente agregado exitosamente.");
-	    } else {
-	        response.getWriter().write("Error al agregar cliente.");
-	    }
-	    
-		
 		
 	}
 
-}
+

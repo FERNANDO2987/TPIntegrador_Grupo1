@@ -12,6 +12,7 @@ import java.util.List;
 
 import datos.ClienteDao;
 import entidad.Cliente;
+import entidad.Pais;
 
 public class ClienteDaoImpl implements ClienteDao{
 	
@@ -114,50 +115,57 @@ public class ClienteDaoImpl implements ClienteDao{
 	}
 
 
-	@Override
-	public Cliente obtenerClientexId(Long id) {
-		Cliente aux = new Cliente();
-		cn = new Conexion();
-		cn.Open();
-		
-		String query = "SELECT clientes.id, clientes.nombre,clientes.apellido, clientes.sexo," +
-		" clientes.usuario, clientes.password, clientes.id_pais_nacimiento," +
-		" clientes.fecha_nacimiento, clientes.correo, Clientes.dni, clientes.cuil," +
-		" clientes.Telefono, clientes.Celular, clientes.admin, clientes.deleted as borrado,  paises.nombre as nombre_pais" +
-		" from clientes left join paises on id_pais_nacimiento = paises.id" + 
-		" where clientes.id = ?";
-		
-		try
-		{
-			PreparedStatement prst = cn.connection.prepareStatement(query);	
-			prst.setLong(1, id);
-			ResultSet rs = prst.executeQuery();
-			rs.next();
-			aux.setId(rs.getLong("id"));
-			aux.setNombre(rs.getString("nombre"));
-			aux.setApellido(rs.getString("apellido"));
-			aux.setSexo(rs.getString("sexo"));
-			aux.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
-			aux.setCorreo(rs.getString("correo"));
-			aux.setDni(rs.getLong("dni"));
-			aux.setCuil(rs.getLong("cuil"));
-			aux.setTelefono(rs.getString("Telefono"));
-			aux.setCelular(rs.getString("Celular"));
-			aux.setAdmin(rs.getBoolean("admin"));	
-            aux.getPaisNacimiento().setId(rs.getInt("id_pais_nacimiento"));
-            aux.getPaisNacimiento().setNombre(rs.getString("nombre_pais"));
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			cn.close();
-		}
-		return aux;
+	public Cliente obtenerClientePorId(int id) {
+	    Cliente cliente = null; // Inicializamos el cliente como null
+	    cn.Open(); // Abrimos la conexión
+
+	    String query = "{CALL ObtenerClientePorId(?)}"; // Llamada al procedimiento almacenado
+
+	    try (CallableStatement stmt = cn.connection.prepareCall(query)) {
+	        // Establecer el parámetro de entrada
+	        stmt.setInt(1, id);
+
+	        // Ejecutar el procedimiento almacenado y obtener el resultado
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                // Crear un objeto Cliente y llenar sus propiedades
+	                cliente = new Cliente();
+	                cliente.setId(rs.getInt("Id"));
+	                cliente.setDni(rs.getString("Dni"));
+	                cliente.setCuil(rs.getString("Cuil"));
+	                cliente.setNombre(rs.getString("Nombre"));
+	                cliente.setApellido(rs.getString("Apellido"));
+	                cliente.setSexo(rs.getString("Sexo"));
+	                cliente.setUsuario(rs.getString("Usuario"));
+	                cliente.setPassword(rs.getString("Password"));
+
+	                // Llenar el objeto Pais si existe
+	                if (rs.getObject("PaisNacimientoId") != null) {
+	                    Pais paisNacimiento = new Pais();
+	                    paisNacimiento.setId(rs.getInt("PaisNacimientoId"));
+	                    paisNacimiento.setNombre(rs.getString("PaisNacimientoNombre"));
+	                    cliente.setPaisNacimiento(paisNacimiento);
+	                } else {
+	                    cliente.setPaisNacimiento(null);
+	                }
+
+	                cliente.setFechaNacimiento(rs.getDate("FechaNacimiento"));
+	                cliente.setCorreo(rs.getString("Correo"));
+	                cliente.setTelefono(rs.getString("Telefono"));
+	                cliente.setCelular(rs.getString("Celular"));
+	                cliente.setAdmin(rs.getBoolean("Admin"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        cn.close(); // Cerramos la conexión
+	    }
+
+	    return cliente; // Retornamos el cliente encontrado o null si no existe
 	}
+
+
 	
 
 
@@ -182,7 +190,7 @@ public class ClienteDaoImpl implements ClienteDao{
 	           rs = stmt.executeQuery();
 	           if (rs != null && rs.next()) {
 	        	   usuarioBD = new Cliente();
-	        	   usuarioBD.setId(rs.getLong("id"));
+	        	   usuarioBD.setId(rs.getInt("id"));
 	        	   usuarioBD.setUsuario(rs.getString("usuario"));
 	        	   usuarioBD.setPassword(rs.getString("password"));
 	        	   usuarioBD.setNombre(rs.getString("nombre"));
