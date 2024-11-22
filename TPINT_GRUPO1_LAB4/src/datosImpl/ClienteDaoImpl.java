@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -110,9 +111,60 @@ public class ClienteDaoImpl implements ClienteDao{
 
 	@Override
 	public List<Cliente> obtenerClientes() {
-		// TODO Auto-generated method stub
-		return null;
+	    List<Cliente> clientes = new ArrayList<>(); // Lista para almacenar los clientes
+	    cn.Open(); // Abrimos la conexión
+
+	    // Llamada al procedimiento almacenado
+	    String query = "CALL ObtenerClientes()"; // Llamada al procedimiento almacenado
+
+	    try (CallableStatement stmt = cn.connection.prepareCall(query);
+	         ResultSet rs = stmt.executeQuery()) { // Ejecutar el procedimiento almacenado
+
+	        // Verificar si hay resultados
+	        if (!rs.isBeforeFirst()) {
+	            System.out.println("No se encontraron clientes.");
+	            return clientes; // Si no hay resultados, retornamos la lista vacía
+	        }
+
+	        // Iteramos sobre los resultados del ResultSet
+	        while (rs.next()) {
+	            // Crear un objeto Cliente y llenar sus propiedades
+	            Cliente cliente = new Cliente();
+	            cliente.setId(rs.getInt("id"));
+	            cliente.setDni(rs.getString("dni"));
+	            cliente.setCuil(rs.getString("cuil"));
+	            cliente.setNombre(rs.getString("nombre"));
+	            cliente.setApellido(rs.getString("apellido"));
+	            cliente.setSexo(rs.getString("sexo"));
+	            cliente.setUsuario(rs.getString("usuario"));
+	            cliente.setPassword(rs.getString("password"));
+
+	            // Llenar el objeto Pais si existe
+	            // Ahora solo se debe manejar el campo 'pais', ya no 'PaisNacimientoId'
+	            Pais paisNacimiento = new Pais();
+	            paisNacimiento.setNombre(rs.getString("pais"));
+	            cliente.setPaisNacimiento(paisNacimiento);
+
+	            cliente.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+	            cliente.setCorreo(rs.getString("correo"));
+	            cliente.setTelefono(rs.getString("telefono"));
+	            cliente.setCelular(rs.getString("celular"));
+	            cliente.setAdmin(rs.getBoolean("admin"));
+
+	            // Agregar el cliente a la lista
+	            clientes.add(cliente);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        cn.close(); // Cerramos la conexión
+	    }
+
+	    return clientes; // Retornamos la lista de clientes
 	}
+
+
 
 
 	public Cliente obtenerClientePorId(int id) {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import datos.ClienteDao;
 import datosImpl.ClienteDaoImpl;
 import entidad.Cliente;
+import entidad.Pais;
 import negocio.ClienteNeg;
 
 public class ClienteNegImpl implements ClienteNeg {
@@ -35,8 +36,8 @@ private ClienteDao  clienteDao = new ClienteDaoImpl();
 
 	@Override
 	public ArrayList<Cliente> listarClientes() {
-		// TODO Auto-generated method stub
-		return null;
+		 return (ArrayList<Cliente>) clienteDao.obtenerClientes();
+		
 	}
 
 	@Override

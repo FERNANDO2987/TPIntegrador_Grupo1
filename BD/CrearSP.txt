@@ -1,5 +1,21 @@
 DELIMITER $$
 
+
+CREATE PROCEDURE ObtenerClientePorId(
+    IN Id INT
+)
+BEGIN
+    SELECT 
+        c.Id, c.Dni, c.Cuil, c.Nombre, c.Apellido, c.Sexo, c.Usuario, c.Password,
+        p.Id AS PaisNacimientoId, p.Nombre AS PaisNacimientoNombre,
+        c.FechaNacimiento, c.Correo, c.Telefono, c.Celular, c.Admin
+    FROM Clientes c
+    LEFT JOIN Paises p ON c.PaisNacimiento = p.Id
+    WHERE c.Id = Id AND c.deleted = 0;
+END$$
+
+
+
 CREATE PROCEDURE ObtenerPaisPorID(
     IN PaisID INT
 )
@@ -172,22 +188,29 @@ BEGIN
 END$$
 
 
-CREATE PROCEDURE ObtenerClientePorId(
-    IN Id INT
-)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerClientes`()
 BEGIN
     SELECT 
-        c.Id, c.Dni, c.Cuil, c.Nombre, c.Apellido, c.Sexo, c.Usuario, c.Password,
-        p.Id AS PaisNacimientoId, p.Nombre AS PaisNacimientoNombre,
-        c.FechaNacimiento, c.Correo, c.Telefono, c.Celular, c.Admin
-    FROM Clientes c
-    LEFT JOIN Paises p ON c.PaisNacimiento = p.Id
-    WHERE c.Id = Id AND c.deleted = 0;
-END$$
-
-CREATE PROCEDURE ObtenerClientes()
-BEGIN
-	SELECT * FROM Clientes WHERE deleted = 0;
-END$$
-
+        c.Id,
+        c.Dni,
+        c.Cuil,
+        c.Nombre,
+        c.Apellido,
+        c.Sexo,
+        c.Usuario,
+        c.Password,
+        c.PaisNacimientoId,  -- Suponiendo que esta columna esté en la tabla Clientes
+        p.Nombre AS PaisNacimientoNombre, -- Nombre del país
+        c.FechaNacimiento,
+        c.Correo,
+        c.Telefono,
+        c.Celular,
+        c.Admin
+    FROM 
+        clientes c
+    LEFT JOIN 
+        pais p ON c.PaisNacimientoId = p.Id
+    WHERE 
+        c.deleted = 0;
+END
 DELIMITER ;

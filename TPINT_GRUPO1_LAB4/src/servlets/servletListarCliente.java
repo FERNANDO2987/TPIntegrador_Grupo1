@@ -47,6 +47,9 @@ public class servletListarCliente extends HttpServlet {
         request.setAttribute("clientes", clientes);
         request.setAttribute("criterio", criterio);  // para mantener el valor en el campo de búsqueda
         request.getRequestDispatcher("ListarClientes.jsp").forward(request, response);
+        
+        
+     
     }
     
     

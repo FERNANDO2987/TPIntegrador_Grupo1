@@ -97,6 +97,12 @@ public class servletAgregarCliente extends HttpServlet {
 	                response.getWriter().write("Error: Formato de fecha inválido. Use 'yyyy-MM-dd'.");
 	                return;
 	            }
+	            
+	            if (!esCorreoValido(correoElectronico)) {
+	                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	                response.getWriter().write("Error: Correo electrónico inválido.");
+	                return;
+	            }
 
 	            // Obtener el país de nacimiento por ID
 	            List<Pais> paises = paisNeg.listarPaises();
@@ -133,19 +139,25 @@ public class servletAgregarCliente extends HttpServlet {
 	            boolean estado = clienteNeg.insertarCliente(cliente);
 
 	            // Respuesta al cliente
-	            if (estado) {
-	                response.setStatus(HttpServletResponse.SC_OK);
-	                response.getWriter().write("Cliente agregado exitosamente.");
-	            } else {
-	                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	                response.getWriter().write("Error al agregar cliente.");
-	            }
+	            if (estado) {  
+	                request.setAttribute("mensajeExito", "Cliente agregado exitosamente.");  
+	            } else {  
+	                request.setAttribute("mensajeError", "Error al agregar cliente.");  
+	            }  
+	            
+	            
+	            // Redirigir al JSP
+	            request.getRequestDispatcher("AgregarCliente.jsp").forward(request, response);
 	        } catch (Exception e) {
-	            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	            response.getWriter().write("Error inesperado: " + e.getMessage());
-	            e.printStackTrace();
+	        	   request.setAttribute("mensajeError", "Error inesperado: " + e.getMessage());  
+	               e.printStackTrace();  
+	               request.getRequestDispatcher("AgregarCliente.jsp").forward(request, response); 
 	        }
 	    }
+	
+	private boolean esCorreoValido(String correo) {
+	    return correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+	}
 
 		
 	}
