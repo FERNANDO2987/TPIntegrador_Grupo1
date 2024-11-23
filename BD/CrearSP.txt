@@ -213,4 +213,26 @@ BEGIN
     WHERE 
         c.deleted = 0;
 END
+
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EliminarCliente`(
+    IN p_id INT
+)
+BEGIN
+    -- Verificar si el cliente existe
+    IF EXISTS (SELECT 1 FROM Clientes WHERE id = p_id AND deleted = 0) THEN
+        -- Realizar la baja lógica
+        UPDATE clientes
+        SET 
+            deleted = 1,
+            deleteDate = NOW()
+        WHERE id = p_id;
+    ELSE
+        -- Lanzar un error si el cliente ya está eliminado o no existe
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El cliente no existe o ya fue eliminado.';
+    END IF;
+END
+
 DELIMITER ;

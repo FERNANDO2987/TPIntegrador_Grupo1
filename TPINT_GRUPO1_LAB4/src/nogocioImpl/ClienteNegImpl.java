@@ -48,8 +48,9 @@ private ClienteDao  clienteDao = new ClienteDaoImpl();
 
 	@Override
 	public boolean eliminarCliente(int idCliente) {
-		// TODO Auto-generated method stub
-		return false;
+	   
+		return clienteDao.darDeBajaCliente(idCliente);
+		
 	}
 	
 	

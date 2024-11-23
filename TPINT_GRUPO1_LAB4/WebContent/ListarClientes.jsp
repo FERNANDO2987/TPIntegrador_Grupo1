@@ -13,34 +13,44 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
        <script>  
-        // Función para ocultar el mensaje después de un tiempo  
         function ocultarMensaje() {  
-            var mensaje = document.getElementById("successMessage");  
+            var mensaje = document.getElementById("successMessage") || document.getElementById("errorMessage");  
             if (mensaje) {  
                 setTimeout(function() {  
                     mensaje.style.display = "none";  
-                }, 3000); // Cambia 3000 por la cantidad de milisegundos que desees  
+                }, 3000);  
             }  
         }  
-    </script>  
+    </script>   
     
 </head>
 <body>
     <div class="container mt-5 ml-0">
         <h2 class="text-center mb-4">Listado de Clientes</h2>
         
-           <!-- Mostrar mensaje de éxito -->  
+     <!-- Mostrar mensajes de éxito o error -->  
         <%  
-            String mensajeExito = (String) request.getAttribute("mensajeExito");  
+            String mensajeExito = (String) session.getAttribute("mensajeExito");  
+            String mensajeError = (String) session.getAttribute("mensajeError");  
+
             if (mensajeExito != null) {  
         %>  
-            <div id="successMessage" class="alert alert-success">  
+            <div id="successMessage" class="alert alert-primary">  
                 <%= mensajeExito %>  
             </div>  
+            <script>ocultarMensaje();</script>  
         <%  
-            }  
+                session.removeAttribute("mensajeExito");  
+            } else if (mensajeError != null) {  
         %>  
-        
+            <div id="errorMessage" class="alert alert-danger">  
+                <%= mensajeError %>  
+            </div>  
+            <script>ocultarMensaje();</script>  
+        <%  
+                session.removeAttribute("mensajeError");  
+            }  
+        %>   
         <!-- Formulario de b�squeda -->
        <form action="servletListarCliente" method="get" class="form-inline mb-4" id="formBusqueda">
             <input type="text" name="criterio" class="form-control mr-2" placeholder="Buscar cliente..." id="criterio">
@@ -114,29 +124,7 @@
         </div>
     </div>
     
-        <script>  
-        // Función para mostrar el mensaje y luego ocultarlo  
-        function mostrarMensaje(tipo) {  
-            var mensaje = document.getElementById(tipo);  
-            if (mensaje) {  
-                mensaje.style.display = "block"; // Mostrar el mensaje  
-                // Ocultar el mensaje después de 3 segundos (3000 milisegundos)  
-                setTimeout(function() {  
-                    mensaje.style.display = "none";  
-                }, 3000);  
-            }  
-        }  
-
-        <% if(request.getAttribute("mensajeExito") != null) { %>  
-            mostrarMensaje("successMessage");  
-        <% } else if(request.getAttribute("mensajeError") != null) { %>  
-            mostrarMensaje("errorMessage");  
-        <% } %> 
-        
     
-
-        
-    </script>  
   
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
