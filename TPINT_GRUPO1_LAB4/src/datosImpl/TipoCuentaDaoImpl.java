@@ -1,9 +1,6 @@
 package datosImpl;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import datos.TipoCuentaDao;
@@ -18,7 +15,7 @@ public class TipoCuentaDaoImpl implements TipoCuentaDao {
 
 	@Override
 	public List<TipoCuenta> obtenerCuentas() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	

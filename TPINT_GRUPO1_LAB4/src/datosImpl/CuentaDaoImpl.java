@@ -68,7 +68,7 @@ public class CuentaDaoImpl implements CuentaDao {
 					
 					aux.getTipoCuenta().setId(rs.getInt("id_tipo_cuenta"));
 					aux.getTipoCuenta().setDescripcion(rs.getString("descripcion"));
-					//aux.setCliente(clienteDao.obtenerClientexId(rs.getLong("id_cliente")));
+					aux.setCliente(clienteDao.obtenerClientePorId(rs.getInt("id_cliente")));
 					
 					
 					lista.add(aux);
@@ -166,7 +166,7 @@ public class CuentaDaoImpl implements CuentaDao {
 				
 				cuentaSeleccionada.getTipoCuenta().setId(rs.getInt("id_tipo_cuenta"));
 				cuentaSeleccionada.getTipoCuenta().setDescripcion(rs.getString("descripcion"));
-				//cuentaSeleccionada.setCliente(clienteDao.obtenerClientexId(rs.getLong("id_cliente")));
+				cuentaSeleccionada.setCliente(clienteDao.obtenerClientePorId(rs.getInt("id_cliente")));
 			}
 		}
 		catch(Exception e)

@@ -9,7 +9,7 @@ public interface ClienteDao {
 	public boolean modificarCliente(Cliente cliente);
 	public boolean darDeBajaCliente(int idCliente);
 	public Cliente loguear(Cliente usuario);
-	public Cliente obtenerClientePorId(int id);
+	public Cliente obtenerClientePorId(long l);
 	public boolean agregarCliente(Cliente cliente);
 	
 

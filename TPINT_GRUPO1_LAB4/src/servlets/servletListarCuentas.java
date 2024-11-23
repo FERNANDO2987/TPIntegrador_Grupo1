@@ -10,10 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import datos.CuentaDao;
-import datos.TipoCuentaDao;
-import datosImpl.CuentaDaoImpl;
-import datosImpl.TipoCuentaDaoImpl;
 import entidad.Cuenta;
 import entidad.TipoCuenta;
 import negocio.CuentaNeg;
@@ -34,7 +30,7 @@ public class servletListarCuentas extends HttpServlet {
      */
     public servletListarCuentas() {
         super();
-        // TODO Auto-generated constructor stub
+        
     }
 
 	/**
@@ -53,7 +49,7 @@ public class servletListarCuentas extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		if(request.getParameter("btnModificar") != null)
 		{
 			Long nroCuenta = Long.parseLong(request.getParameter("nroCuenta"));

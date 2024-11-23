@@ -32,7 +32,7 @@ public class servletAgregarCuenta extends HttpServlet {
      */
     public servletAgregarCuenta() {
         super();
-        // TODO Auto-generated constructor stub
+        
     }
 
 	/**
@@ -41,11 +41,11 @@ public class servletAgregarCuenta extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("btnAgregar") != null)
 		{
-			Long idCliente = Long.parseLong(request.getParameter("cliente"));
+			int idCliente = Integer.parseInt(request.getParameter("cliente"));
 			int idTipoCuenta = Integer.parseInt(request.getParameter("TipoCuenta"));
 			
 			Cuenta aux = new Cuenta();
-			//aux.getCliente().setId(idCliente);
+			aux.getCliente().setId(idCliente);
 			aux.getTipoCuenta().setId(idTipoCuenta);
 			CuentaDao cuentaDao = new CuentaDaoImpl();
 			cuentaDao.agregarCuenta(aux);
