@@ -32,6 +32,9 @@ public class servletAgregarCliente extends HttpServlet {
 	
     public servletAgregarCliente() {
         // TODO Auto-generated constructor stub
+    	clienteNeg.listarClientes();
+    	paisNeg.listarPaises();
+    	
     }
 
 

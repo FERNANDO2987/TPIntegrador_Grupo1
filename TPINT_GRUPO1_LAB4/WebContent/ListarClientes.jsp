@@ -4,6 +4,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <meta http-equiv="refresh" content="2;url=servletListarCliente" />
+
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Listado de Clientes</title>
@@ -11,6 +13,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Icono -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    
+    
     
        <script>  
         function ocultarMensaje() {  
