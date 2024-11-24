@@ -1,14 +1,23 @@
 package Principal;
 
+import java.util.List;
+
 import entidad.Cliente;
+import entidad.Cuenta;
+import entidad.TipoCuenta;
 import negocio.ClienteNeg;
+import negocio.TipoCuentaNeg;
 import nogocioImpl.ClienteNegImpl;
+import nogocioImpl.TipoCuentaNegImpl;
 
 public class principal {
 
 	public static void main(String[] args) {
-	    ClienteNeg clienteNeg = new ClienteNegImpl(); 
-	    Cliente cliente = clienteNeg.obtenerUnCliente(1);
-	    System.out.println(cliente.toString());
+	    TipoCuentaNeg clienteNeg = new TipoCuentaNegImpl(); 
+	    List<TipoCuenta> cliente = clienteNeg.obtenerCuentas();
+	    for(TipoCuenta cuenta : cliente)
+	    {
+	    	System.out.println(cuenta.toString());
+	    }
 	}
 }

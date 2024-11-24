@@ -64,7 +64,7 @@ public class servletModificarCuenta extends HttpServlet {
 			request.setAttribute("exito", exito );
 			
 		}	
-		request.getRequestDispatcher("ModificarCuenta.jsp").forward(request, response);
+		response.sendRedirect("servletListarCuentas");
 		
 	}
 

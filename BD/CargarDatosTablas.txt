@@ -127,3 +127,8 @@ INSERT INTO Cuotas (nro_cuota, monto, fecha_pago, id_prestamo) VALUES
 (8, 1200.00, '2024-09-01', 8),
 (9, 900.00, '2024-10-01', 9),
 (10, 1100.00, '2024-11-01', 10);
+
+INSERT INTO `bdbanco`.`tiposmovimiento` (`descripcion`) VALUES ('Alta de cuenta');
+INSERT INTO `bdbanco`.`tiposmovimiento` (`descripcion`) VALUES ('Alta de un prestamo');
+INSERT INTO `bdbanco`.`tiposmovimiento` (`descripcion`) VALUES ('Pago de prestamo');
+INSERT INTO `bdbanco`.`tiposmovimiento` (`descripcion`) VALUES ('Transferencia');

@@ -16,23 +16,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-	<%
-		List<TipoCuenta> listaTipoCuenta = new ArrayList<TipoCuenta>();
-		if(request.getAttribute("listaTiposCuentas") != null)
-		{
-			listaTipoCuenta = (ArrayList<TipoCuenta>)request.getAttribute("listaTiposCuentas");
-		}
-		
-		Cuenta cuenta = new Cuenta();
-		if(request.getAttribute("cuenta") != null)
-		{
-			cuenta = (Cuenta)request.getAttribute("cuenta");
-		}
-	%>
-	<div class="container mt-5">
-        <h2 class="text-center mb-4">Modificar Cuenta</h2>
+	<!-- Modal -->
+	<form action="servletModificarCuenta" method="post">
+		<div class="modal fade" id="ModalConfirmacion" tabindex="-1" aria-labelledby="ConfirmacionModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title fs-5" id="ConfirmacionModalLabel">Confirmacion Requerida</h4>
+		      </div>
+		      <div class="modal-body">
+		        Desea confirmar la modificacion del registro?
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+		        <input type="submit" class="btn btn-primary" value="Modificar Cuenta" name="btnModificarCuenta">
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	
+		<!-- Datos del servlet -->
+		<%
+			List<TipoCuenta> listaTipoCuenta = new ArrayList<TipoCuenta>();
+			if(request.getAttribute("listaTiposCuentas") != null)
+			{
+				listaTipoCuenta = (ArrayList<TipoCuenta>)request.getAttribute("listaTiposCuentas");
+			}
+			
+			Cuenta cuenta = new Cuenta();
+			if(request.getAttribute("cuenta") != null)
+			{
+				cuenta = (Cuenta)request.getAttribute("cuenta");
+			}
+		%>
+		<div class="container mt-5">
+	        <h2 class="text-center mb-4">Modificar Cuenta</h2>
         
-            <form action="servletModificarCuenta" method="post">
+            
             
 				<div class="form-group">
 					<label for="txtCliente">Cliente:</label>
@@ -57,9 +77,9 @@
                     
                     
                 </div>
-                <input type="submit" class="btn btn-primary btn-block mt-3" value="Modificar Cuenta" name="btnModificarCuenta">
+                <button type="button" class="btn btn-primary btn-block mt-3" data-toggle="modal" data-target="#ModalConfirmacion">Modificar Cuenta</button>
                 <a class= "btn btn-secondary btn-block" href="servletListarCuentas">Volver</a>
-            </form>
+    </form>
             <%= request.getAttribute("exito") != null? (boolean)request.getAttribute("exito") == true? "La Modificacion se realizo con exito":"":"" %>
              </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
