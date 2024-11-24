@@ -83,24 +83,27 @@ public class ClienteDaoImpl implements ClienteDao{
 	@Override
 	public boolean darDeBajaCliente(int idCliente) {
 	    boolean estado = true;
-	    cn = new Conexion();
-	    cn.Open();
+	    cn.Open(); 
 
-	    // Consulta para actualizar el estado del cliente a inactivo
-	    String query = "UPDATE clientes SET Deleted = TRUE, DeleteDate = NOW() WHERE id = " + idCliente;
+	   
+	    String query = "{CALL EliminarCliente(?)}"; 
 
-	    System.out.println(query);
+	    try (CallableStatement stmt = cn.connection.prepareCall(query)) {
+	    
+	        stmt.setInt(1, idCliente);
 
-	    try {
-	        estado = cn.execute(query);
-	    } catch (Exception e) {
+	     
+	        stmt.executeUpdate();
+	    } catch (SQLException e) {
+	        
+	        estado = false; 
 	        e.printStackTrace();
-	        estado = false;
 	    } finally {
+	        // Cerramos la conexión
 	        cn.close();
 	    }
 
-	    return estado;
+	    return estado; 
 	}
 
 

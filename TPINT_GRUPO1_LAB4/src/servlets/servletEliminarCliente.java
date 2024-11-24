@@ -28,25 +28,29 @@ public class servletEliminarCliente extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String idParam = request.getParameter("id");
-        
-        if (idParam != null) {
-            int idCliente = Integer.parseInt(idParam);
-            ClienteDaoImpl clienteDao = new ClienteDaoImpl();
-            
-            boolean resultado = clienteDao.darDeBajaCliente(idCliente);
-            
-            if (resultado) {
-                request.setAttribute("mensaje", "Cliente eliminado correctamente.");
-            } else {
-                request.setAttribute("mensaje", "Error al eliminar el cliente.");
-            }
-        } else {
-            request.setAttribute("mensaje", "ID de cliente no proporcionado.");
-        }
+    	 String idParam = request.getParameter("id");  
+         if (idParam != null && !idParam.isEmpty()) {  
+             try {  
+                 int id = Integer.parseInt(idParam);  
+                 ClienteDaoImpl clienteDao = new ClienteDaoImpl();  
+                 boolean eliminado = clienteDao.darDeBajaCliente(id);  
 
-        // Redirigir de nuevo a la lista de clientes
-        request.getRequestDispatcher("ListarClientes.jsp").forward(request, response);
+                 if (eliminado) {  
+                	    request.getSession().setAttribute("mensajeExito", "Cliente eliminado correctamente.");  
+                	} else {  
+                	    request.getSession().setAttribute("mensajeError", "No se pudo eliminar el cliente.");  
+                	}  
+
+             } catch (Exception e) {  
+                 request.getSession().setAttribute("mensajeError", "Error inesperado: " + e.getMessage());  
+                 e.printStackTrace();  
+             }  
+         } else {  
+             request.getSession().setAttribute("mensajeError", "No se proporcionó un ID de cliente para eliminar.");  
+         }  
+
+         // Redirigir al listado de clientes  
+         response.sendRedirect("ListarClientes.jsp");  
     }
 
 	/**

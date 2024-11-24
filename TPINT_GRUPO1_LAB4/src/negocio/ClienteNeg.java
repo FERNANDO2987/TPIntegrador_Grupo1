@@ -10,6 +10,7 @@ public interface ClienteNeg {
 	 public ArrayList<Cliente> listarClientes();
 	 public boolean editarCliente(Cliente cliente);
 	 public boolean eliminarCliente(int idCliente);
+
 	
 
 }
