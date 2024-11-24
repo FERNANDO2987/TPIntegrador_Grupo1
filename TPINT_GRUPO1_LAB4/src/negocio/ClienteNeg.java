@@ -6,7 +6,7 @@ import entidad.Cliente;
 
 public interface ClienteNeg {
 	public boolean insertarCliente(Cliente cliente );
-	 public Cliente obtenerUnCliente(long id);
+	 public Cliente obtenerUnCliente(int id);
 	 public ArrayList<Cliente> listarClientes();
 	 public boolean editarCliente(Cliente cliente);
 	 public boolean eliminarCliente(int idCliente);

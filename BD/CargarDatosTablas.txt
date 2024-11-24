@@ -87,28 +87,20 @@ INSERT INTO Direcciones (calle, numero_casa, id_localidad, id_cliente) VALUES
 -- Insertar ejemplos en la tabla TiposCuenta
 INSERT INTO TiposCuenta (descripcion) VALUES
 ('Cuenta corriente'),
-('Cuenta de ahorro'),
-('Cuenta sueldo'),
-('Cuenta corriente especial'),
-('Cuenta conjunta'),
-('Cuenta en dólares'),
-('Cuenta en pesos'),
-('Cuenta de inversión'),
-('Cuenta premium'),
-('Cuenta básica');
+('Cuenta de ahorro');
 
 -- Insertar ejemplos en la tabla Cuentas
 INSERT INTO Cuentas (nro_cuenta, id_cliente, fecha_creacion, id_tipo_cuenta, cbu, saldo) VALUES
 (111111111, 1, '2024-01-01', 1, '20-00001-0000', 1000.50),
 (222222222, 2, '2024-02-02', 2, '20-00002-0000', 2000.75),
-(333333333, 3, '2024-03-03', 3, '20-00003-0000', 1500.30),
-(444444444, 4, '2024-04-04', 4, '20-00004-0000', 2500.60),
-(555555555, 5, '2024-05-05', 5, '20-00005-0000', 3000.10),
-(666666666, 6, '2024-06-06', 6, '20-00006-0000', 4000.20),
-(777777777, 7, '2024-07-07', 7, '20-00007-0000', 5000.25),
-(888888888, 8, '2024-08-08', 8, '20-00008-0000', 6000.80),
-(999999999, 9, '2024-09-09', 9, '20-00009-0000', 7000.90),
-(101010101, 10, '2024-10-10', 10, '20-00010-0000', 8000.00);
+(333333333, 3, '2024-03-03', 1, '20-00003-0000', 1500.30),
+(444444444, 4, '2024-04-04', 2, '20-00004-0000', 2500.60),
+(555555555, 5, '2024-05-05', 1, '20-00005-0000', 3000.10),
+(666666666, 6, '2024-06-06', 2, '20-00006-0000', 4000.20),
+(777777777, 7, '2024-07-07', 1, '20-00007-0000', 5000.25),
+(888888888, 8, '2024-08-08', 2, '20-00008-0000', 6000.80),
+(999999999, 9, '2024-09-09', 1, '20-00009-0000', 7000.90),
+(101010101, 10, '2024-10-10', 2, '20-00010-0000', 8000.00);
 
 -- Insertar ejemplos en la tabla Prestamos
 INSERT INTO Prestamos (nro_cuenta, id_cliente, fecha_solicitud, importe, cuotas) VALUES

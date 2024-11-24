@@ -29,9 +29,9 @@ private ClienteDao  clienteDao = new ClienteDaoImpl();
 	}
 
 	@Override
-	public Cliente obtenerUnCliente(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Cliente obtenerUnCliente(int id) {
+		
+		return (Cliente) clienteDao.obtenerClientePorId(id);
 	}
 
 	@Override

@@ -188,7 +188,7 @@ BEGIN
 END$$
 
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerClientes`()
+CREATE PROCEDURE `ObtenerClientes`()
 BEGIN
     SELECT 
         c.Id,
@@ -199,9 +199,9 @@ BEGIN
         c.Sexo,
         c.Usuario,
         c.Password,
-        c.PaisNacimientoId,  -- Suponiendo que esta columna esté en la tabla Clientes
+        c.pais,  -- Suponiendo que esta columna esté en la tabla Clientes
         p.Nombre AS PaisNacimientoNombre, -- Nombre del país
-        c.FechaNacimiento,
+        c.fecha_nacimiento,
         c.Correo,
         c.Telefono,
         c.Celular,
@@ -209,8 +209,6 @@ BEGIN
     FROM 
         clientes c
     LEFT JOIN 
-        pais p ON c.PaisNacimientoId = p.Id
-    WHERE 
-        c.deleted = 0;
+        paises p ON c.pais = p.Id;
 END
 DELIMITER ;

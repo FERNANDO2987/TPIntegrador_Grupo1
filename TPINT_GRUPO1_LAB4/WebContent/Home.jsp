@@ -21,18 +21,17 @@
     <%
       Cliente usuario = (Cliente)session.getAttribute("usuario");
       if (usuario == null) {
-        response.sendRedirect("Login.jsp");
-        return;
+        //response.sendRedirect("Login.jsp");
+        //return;
       }
     %>
     <div class="container mt-5">
       <h1>Menu de Gestion de Banco</h1>
-      <h4>Bienvenido, <%= usuario.getUsuario() %>.</h4>
+     <!-- <h4>Bienvenido,.</h4> -->
 
       <div class="accordion" id="menuAccordion">
 
         <!-- Menu Administrador -->
-        <% if (usuario.getAdmin()) { %>
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingAdmin">
             <button
@@ -119,7 +118,6 @@
             </div>
           </div>
         </div>
-        <% } %>
 
         <!-- Menu Cliente -->
         <div class="accordion-item">

@@ -201,7 +201,7 @@ public class ClienteDaoImpl implements ClienteDao{
 	                    cliente.setPaisNacimiento(null);
 	                }
 
-	                cliente.setFechaNacimiento(rs.getDate("FechaNacimiento"));
+	                cliente.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
 	                cliente.setCorreo(rs.getString("Correo"));
 	                cliente.setTelefono(rs.getString("Telefono"));
 	                cliente.setCelular(rs.getString("Celular"));
