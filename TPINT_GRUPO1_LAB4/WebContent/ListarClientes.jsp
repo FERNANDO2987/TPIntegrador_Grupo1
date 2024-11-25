@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta http-equiv="refresh" content="2;url=servletListarCliente" />
+  <meta http-equiv="refresh" content="60;url=servletListarCliente" />
 
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1">

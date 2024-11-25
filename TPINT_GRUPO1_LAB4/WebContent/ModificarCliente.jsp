@@ -4,6 +4,9 @@
 <%@ page import="datos.ClienteDao" %>
 <%@ page import="datosImpl.ClienteDaoImpl" %>
 <%@ page import="java.util.List" %>
+<%@ page import="entidad.Pais" %>
+<%@ page import="negocio.PaisNeg" %>
+<%@ page import="nogocioImpl.PaisNegImpl" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,10 +15,50 @@
     <title>Modificar Cliente</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+         
+        <script>
+        function ocultarMensaje() {
+            setTimeout(function() {
+                var mensaje = document.getElementById("successMessage") || document.getElementById("errorMessage");
+                if (mensaje) {
+                    mensaje.style.display = "none";
+                }
+                setTimeout(function() {
+                    window.location.href = "ListarClientes.jsp";
+                }, 10000); // Redirige después de 7 segundos
+            }, 3000); // Oculta después de 3 segundos
+        }
+    </script>
+    
 </head>
-<body>
+<body onload="ocultarMensaje()">
     <div class="container mt-5">
         <h2 class="text-center mb-4">Modificar Cliente</h2>
+        
+     
+		    <div class="container mt-5">
+		   
+		         <%
+            // Mensajes de éxito o error
+            String mensajeExito = (String) session.getAttribute("mensajeExito");
+            String mensajeError = (String) session.getAttribute("mensajeError");
+
+            if (mensajeExito != null) { %>
+                <div id="successMessage" class="alert alert-primary alert-dismissible fade show" role="alert">
+                    <%= mensajeExito %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <% session.removeAttribute("mensajeExito"); 
+            } else if (mensajeError != null) { %>
+                <div id="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= mensajeError %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <% session.removeAttribute("mensajeError");
+            }
+        %>
+		   
+		   
 
            <%
             // Obtener el ID del cliente desde la solicitud
@@ -29,19 +72,17 @@
 
             if (cliente != null) {
         %>
-		    <div class="container mt-5">
-		        <h2 class="text-center mb-4">Modificar Cliente</h2>
 		
-		            <form action="servletModificarCliente" method="post">
+		            <form action="servletModificarCliente" method="POST">
 		                <input type="hidden" name="id" value="<%= cliente.getId() %>"> <!-- Campo oculto para el ID -->
 		
 		                <div class="form-group">
 		                    <label for="txtDni">DNI:</label>
-		                    <input type="text" class="form-control" id="dni" name="dni" value="<%= cliente.getDni() %>" required>
+		                    <input type="text" class="form-control" id="dni" name="dni" value="<%= cliente.getDni() %>" required readonly style="pointer-events: none; background-color: #f8f9fa; border: none;">
 		                </div>
 		                <div class="form-group">
 		                    <label for="txtCuil">CUIL:</label>
-		                    <input type="text" class="form-control" id="cuil" name="cuil" value="<%= cliente.getCuil() %>" required>
+		                    <input type="text" class="form-control" id="cuil" name="cuil" value="<%= cliente.getCuil() %>" required readonly style="pointer-events: none; background-color: #f8f9fa; border: none;">
 		                </div>
 		                <div class="form-group">
 		                    <label for="txtNombre">Nombre:</label>
@@ -56,9 +97,77 @@
 		                    <select class="form-control" id="sexo" name="sexo" required>
 		                        <option value="Masculino" <%= cliente.getSexo().equals("Masculino") ? "selected" : "" %>>Masculino</option>
 		                        <option value="Femenino" <%= cliente.getSexo().equals("Femenino") ? "selected" : "" %>>Femenino</option>
-		                        <option value="Otro" <%= cliente.getSexo().equals("Otro") ? "selected" : "" %>>Otro</option>
+		                       
 		                    </select>
 		                </div>
+		                
+		                  <div class="form-group">
+		                    <label for="txtUsuario">Usuario:</label>
+		                    <input type="text" class="form-control" id="usuario" name="usuario" value="<%= cliente.getUsuario() %>" required>
+		                </div>
+		                
+		                   <div class="form-group">
+		                    <label for="txtPassword">Password:</label>
+		                    <input type="text" class="form-control" id="password" name="password" value="<%= cliente.getPassword() %>" required>
+		                </div>
+		                
+		                 <div class="form-group">
+                            <label for="txtPais">País:</label>
+                             <select class="form-control" id="pais" name="pais" required>
+                            <option value="">Seleccionar</option>
+                             <%
+                                 // Obtener la lista de países desde la base de datos
+                           PaisNegImpl paisNeg = new PaisNegImpl();
+                           List<Pais> paises = paisNeg.listarPaises();
+                           if (paises != null && !paises.isEmpty()) {
+                             for (Pais pais : paises) {
+                             %>
+                              <option value="<%= pais.getId() %>"><%= pais.getNombre() %></option>
+                           <%
+                           }
+                           } else {
+                           %>
+                                 <option value="">No hay países disponibles</option>
+                            <%
+                              }
+                           %>
+
+                         </select>
+                       </div>
+                         <div class="form-group">
+                          <label for="txtFechaNacimiento">Fecha de Nacimiento:</label>
+                           <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" value="<%= cliente.getFechaNacimiento()%>"  required readonly 
+                            onfocus="this.removeAttribute('readonly');">
+                        </div>
+                           
+                           <div class="form-group">
+                                <label for="correo">Correo Electrónico:</label>
+                                <input type="email" class="form-control" id="correo" name="correo" value="<%= cliente.getCorreo() %>"
+                                 pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
+                                 title="Ingrese un correo válido (ejemplo: usuario@dominio.com)" required>
+                                </div>
+                           
+               	                
+		                <div class="form-group">
+		                    <label for="txtTelefono">Teléfono:</label>
+		                    <input type="text" class="form-control" id="telefono" name="telefono" value="<%= cliente.getTelefono() %>" required>
+		                </div>
+		                
+		                <div class="form-group">
+		                    <label for="txtCelular">Celular:</label>
+		                    <input type="text" class="form-control" id="celular" name="celular" value="<%= cliente.getCelular() %>" required>
+		                </div>
+                       
+		               <div class="form-group">
+                         <label for="admin">
+                        <input type="checkbox" id="admin" name="admin"  value="true" 
+                         <%= cliente.getAdmin() ? "checked" : "" %> >
+                          Administrador
+                           </label>
+                           </div>
+
+
+		                
 		      			<input type="submit" class="btn btn-primary btn-block" value="Modificar Cliente" name="btnModificarCliente">
 		            </form>
 
@@ -98,6 +207,20 @@
             } 
             %>
     </div>
+
+<script>
+    document.addEventListener('keydown', function (event) {
+        // Detecta si se presionó la tecla "Backspace"
+        if (event.key === 'Backspace') {
+            // Verifica si no hay un campo de texto editable activo
+            const activeElement = document.activeElement;
+            if (!activeElement || activeElement.tagName !== 'INPUT' && activeElement.tagName !== 'TEXTAREA') {
+                event.preventDefault(); // Cancela la acción predeterminada
+            }
+        }
+    });
+</script>
+
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

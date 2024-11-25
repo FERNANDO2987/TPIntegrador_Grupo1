@@ -42,8 +42,7 @@ private ClienteDao  clienteDao = new ClienteDaoImpl();
 
 	@Override
 	public boolean editarCliente(Cliente cliente) {
-		// TODO Auto-generated method stub
-		return false;
+		return clienteDao.modificarCliente(cliente);
 	}
 
 	@Override

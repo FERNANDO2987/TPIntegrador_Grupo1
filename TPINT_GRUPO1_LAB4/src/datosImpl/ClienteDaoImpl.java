@@ -224,10 +224,42 @@ public class ClienteDaoImpl implements ClienteDao{
 	
 
 
-	@Override
-	public boolean modificarCliente(Cliente cliente) {
-		// TODO Auto-generated method stub
-		return false;
+	@Override  
+	public boolean modificarCliente(Cliente cliente) {  
+	    boolean estado = true;  
+	    cn.Open();  
+
+	    String query = "{CALL AgregarCliente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";  
+
+	    try (CallableStatement stmt = cn.connection.prepareCall(query)) {  
+	        // Establecer los parámetros  
+	        stmt.setInt(1, cliente.getId());  
+	        stmt.setString(2, cliente.getDni());  
+	        stmt.setString(3, cliente.getCuil());  
+	        stmt.setString(4, cliente.getNombre());  
+	        stmt.setString(5, cliente.getApellido());  
+	        stmt.setString(6, cliente.getSexo());  
+	        stmt.setString(7, cliente.getUsuario());  
+	        stmt.setString(8, cliente.getPassword());  
+	        // Cambiado de setObject a setString  
+	        stmt.setString(9, cliente.getPaisNacimiento() != null ? cliente.getPaisNacimiento().getNombre() : null);  
+	        stmt.setDate(10, cliente.getFechaNacimiento() != null ? new java.sql.Date(cliente.getFechaNacimiento().getTime()) : null);  
+	        stmt.setString(11, cliente.getCorreo());  
+	        stmt.setString(12, cliente.getTelefono());  
+	        stmt.setString(13, cliente.getCelular());  
+	        stmt.setBoolean(14, cliente.getAdmin());  
+
+	        // Ejecutar la sentencia  
+	        stmt.executeUpdate();  
+
+	    } catch (SQLException e) {  
+	        estado = false;  
+	        e.printStackTrace();  
+	    } finally {  
+	        cn.close();  
+	    }  
+
+	    return estado;  
 	}
 
 

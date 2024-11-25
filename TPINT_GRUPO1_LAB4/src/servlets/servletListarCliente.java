@@ -10,17 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import datosImpl.ClienteDaoImpl;
+
 import entidad.Cliente;
+import negocio.ClienteNeg;
+import nogocioImpl.ClienteNegImpl;
+
 
 
 @WebServlet("/servletListarCliente")
 public class servletListarCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	private ClienteNeg clienteNeg = new ClienteNegImpl();
+
     public servletListarCliente() {
         super();
         // TODO Auto-generated constructor stub
@@ -29,8 +31,8 @@ public class servletListarCliente extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ClienteDaoImpl clienteDao = new ClienteDaoImpl();
-        List<Cliente> clientes = clienteDao.obtenerClientes();
+       
+        List<Cliente> clientes = clienteNeg.listarClientes();
 
         // Obtener el criterio de búsqueda del parámetro de solicitud
         String criterio = request.getParameter("criterio");

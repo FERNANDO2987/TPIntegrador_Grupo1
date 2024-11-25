@@ -1,10 +1,10 @@
 package servlets;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,9 +12,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import datos.ClienteDao;
 import datosImpl.ClienteDaoImpl;
 import entidad.Cliente;
+import entidad.Pais;
+import negocio.ClienteNeg;
+import negocio.PaisNeg;
+import nogocioImpl.ClienteNegImpl;
+import nogocioImpl.PaisNegImpl;
+
+
 
 /**
  * Servlet implementation class servletModificarCliente
@@ -23,9 +29,8 @@ import entidad.Cliente;
 public class servletModificarCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	private ClienteNeg clienteNeg = new ClienteNegImpl();
+	private PaisNeg paisNeg = new PaisNegImpl();
     public servletModificarCliente() {
         super();
         // TODO Auto-generated constructor stub
@@ -36,71 +41,98 @@ public class servletModificarCliente extends HttpServlet {
 	 */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-        ClienteDaoImpl clienteDao = new ClienteDaoImpl();
-        List<Cliente> clientes = clienteDao.obtenerClientes();
 
-        // Obtener el criterio de bï¿½squeda del parï¿½metro de solicitud
-        String criterio = request.getParameter("criterio");
-        
-        // Filtrar los clientes por nombre o apellido si el criterio no es nulo ni vacï¿½o
-        if (criterio != null && !criterio.trim().isEmpty()) {
-            clientes = clientes.stream()
-                    .filter(cliente -> cliente.getNombre().toLowerCase().contains(criterio.toLowerCase()) ||
-                                       cliente.getApellido().toLowerCase().contains(criterio.toLowerCase()))
-                    .collect(Collectors.toList());
-        }
-
-        // Configurar la lista filtrada como atributo de la solicitud y reenviar a la vista
-        request.setAttribute("clientes", clientes);
-        request.setAttribute("criterio", criterio);  // para mantener el valor en el campo de bï¿½squeda
-        request.getRequestDispatcher("ListarClientes.jsp").forward(request, response);
     }
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		// TODO Auto-generated method stub
-//		int idCliente;
-//
-//        // Obtener y validar el ID del cliente
-//        try {
-//            idCliente = Integer.parseInt(request.getParameter("id")); // AsegÃºrate de que este nombre coincida con el del formulario
-//        } catch (NumberFormatException e) {
-//            request.setAttribute("error", "ID de cliente no vÃ¡lido.");
-//            request.getRequestDispatcher("modificarCliente.jsp").forward(request, response);
-//            return;
-//        }
-//
-//		if(request.getParameter("btnModificarCliente") != null)
-//		{
-//			Cliente cliente = new Cliente();
-//			cliente.setId(idCliente);
-//			cliente.setDni(Integer.parseInt(request.getParameter("txtDni")));
-//			cliente.setCuil(Integer.parseInt(request.getParameter("txtCuil")));
-//			
-//			cliente.setNombre(request.getParameter("txtNombre"));
-//			cliente.setApellido(request.getParameter("txtApellido"));
-//			cliente.setSexo(request.getParameter("txtSexo"));
-//	        
-//			ClienteDao clienteDao = new ClienteDaoImpl();
-//			boolean exito;
-//			if(clienteDao.modificarCliente(cliente))
-//			{
-//				exito = true;
-//				System.out.println("Operacion exitosa");
-//			}
-//			else
-//			{
-//				exito = false;
-//				System.out.println("Sin cambios en DB");
-//			}
-//			request.setAttribute("exito", exito );
-//			
-//		}
-//		request.getRequestDispatcher("ModificarCliente.jsp").forward(request, response);
+
+		try {
+		
+		 String idString = request.getParameter("id");  
+	        String dni = request.getParameter("dni");  
+	        String cuil = request.getParameter("cuil");  
+	        String nombre = request.getParameter("nombre");  
+	        String apellido = request.getParameter("apellido");  
+	        String sexo = request.getParameter("sexo");  
+	        String usuario = request.getParameter("usuario");  
+	        String password = request.getParameter("password");  
+	        String paisIdString = request.getParameter("pais"); // Obtener el ID del país  
+	        String fechaNacimientoString = request.getParameter("fechaNacimiento");  
+	        String correo = request.getParameter("correo");  
+	        String telefono = request.getParameter("telefono");  
+	        String celular = request.getParameter("celular");  
+	        boolean esAdmin = request.getParameter("admin") != null;  
+
+	        // Convertir entradas a sus tipos apropiados  
+	        int id = Integer.parseInt(idString);  
+	        int paisId = Integer.parseInt(paisIdString);  
+
+	        // Obtener el objeto Pais usando el ID  
+	        PaisNegImpl paisNeg = new PaisNegImpl();  
+	     
+	        // Obtener el país de nacimiento por ID
+            List<Pais> paises = paisNeg.listarPaises();
+            Pais paisNacimiento = paises.stream()
+                    .filter(p -> p.getId() == paisId)
+                    .findFirst()
+                    .orElse(null);
+
+            if (paisNacimiento == null) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Error: País de nacimiento no encontrado.");
+                return;
+            }
+	        
+	        Date fechaNacimiento;
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                fechaNacimiento = formatter.parse(fechaNacimientoString);
+            } catch (ParseException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Error: Formato de fecha inválido. Use 'yyyy-MM-dd'.");
+                return;
+            }
+
+	        // Crear objeto Cliente y establecer propiedades  
+	        Cliente cliente = new Cliente();  
+	        cliente.setId(id);  
+	        cliente.setDni(dni);  
+	        cliente.setCuil(cuil);  
+	        cliente.setNombre(nombre);  
+	        cliente.setApellido(apellido);  
+	        cliente.setSexo(sexo);  
+	        cliente.setUsuario(usuario);  
+	        cliente.setPassword(password);  
+	        cliente.setPaisNacimiento(paisNacimiento); // Ahora pasa el objeto Pais  
+	        cliente.setFechaNacimiento(fechaNacimiento);  
+	        cliente.setCorreo(correo);  
+	        cliente.setTelefono(telefono);  
+	        cliente.setCelular(celular);  
+	        cliente.setAdmin(esAdmin);  
+
+	        
+	        boolean modificar = clienteNeg.editarCliente(cliente);
+	        
+	        if (modificar) {
+	            request.getSession().setAttribute("mensajeExito", "Cliente Modificado exitosamente.");
+	        } else {
+	            request.getSession().setAttribute("mensajeError", "Error al Modificar cliente.");
+	        }
+	        response.sendRedirect("ListarClientes.jsp");
+
+            
+		} catch (Exception e) {
+     	   request.setAttribute("mensajeError", "Error inesperado: " + e.getMessage());  
+            e.printStackTrace();  
+            request.getRequestDispatcher("ListarClientes.jsp").forward(request, response); 
+     }
+	     
+		
 	}
+	
+	
 
 	
 

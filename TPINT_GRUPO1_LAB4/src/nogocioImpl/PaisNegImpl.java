@@ -29,6 +29,14 @@ public class PaisNegImpl implements PaisNeg {
 		 return (ArrayList<Pais>) paisDao.obtenerPaises();
 	 }
 	
-	
+    @Override  
+    public Pais obtenerPaisPorId(int id) {  
+        for (Pais pais : paisDao.obtenerPaises()) {  
+            if (pais.getId() == id) {  
+                return pais;  
+            }  
+        }  
+        return null; // o lanzar una excepción si no se encuentra  
+    }
 
 }
