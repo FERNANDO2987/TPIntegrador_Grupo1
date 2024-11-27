@@ -21,16 +21,17 @@
     <%
       Cliente usuario = (Cliente)session.getAttribute("usuario");
       if (usuario == null) {
-        //response.sendRedirect("Login.jsp");
-        //return;
+        response.sendRedirect("Login.jsp");
+        return;
       }
     %>
     <div class="container mt-5">
       <h1>Menu de Gestion de Banco</h1>
-     <!-- <h4>Bienvenido,.</h4> -->
+      <h4>Bienvenido, <%= usuario.getUsuario() %>.</h4>
 
       <div class="accordion" id="menuAccordion">
-
+	
+		<% if (usuario.getAdmin()) { %>
         <!-- Menu Administrador -->
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingAdmin">
@@ -118,7 +119,8 @@
             </div>
           </div>
         </div>
-
+		<% } %>
+		
         <!-- Menu Cliente -->
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingCliente">
@@ -166,7 +168,7 @@
                   </ul>
                 </li>
                 <li class="list-group-item">
-				  <form action="<%= request.getContextPath() %>/LogoutServlet" method="post">
+				  <form action="<%= request.getContextPath() %>/servletLogout" method="post">
 				    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
 				  </form>
 				</li>

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import datos.ClienteDao;
 import datosImpl.ClienteDaoImpl;
 import entidad.Cliente;
-import entidad.Pais;
 import negocio.ClienteNeg;
 
 public class ClienteNegImpl implements ClienteNeg {
@@ -21,6 +20,21 @@ private ClienteDao  clienteDao = new ClienteDaoImpl();
 	public ClienteNegImpl()
 	{
 		
+	}
+	
+	@Override
+	public Cliente iniciarSesion(String nombreUsuario, String contrasena) {
+	    Cliente usuario = new Cliente();
+	    usuario.setUsuario(nombreUsuario);
+	    usuario.setPassword(contrasena);
+	    
+	   Cliente usuarioValido = clienteDao.loguear(usuario);
+	    
+	    if (usuarioValido != null) {
+	        return usuarioValido;
+	    } else {
+	        return null;
+	    }
 	}
 	
 	@Override
@@ -52,7 +66,4 @@ private ClienteDao  clienteDao = new ClienteDaoImpl();
 		
 	}
 	
-	
-	
-
 }
