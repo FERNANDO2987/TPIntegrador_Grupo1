@@ -25,7 +25,7 @@
                 }
                 setTimeout(function() {
                     window.location.href = "ListarClientes.jsp";
-                }, 10000); // Redirige después de 7 segundos
+                }, 7000); // Redirige después de 7 segundos
             }, 3000); // Oculta después de 3 segundos
         }
     </script>
@@ -37,28 +37,26 @@
         
      
 		    <div class="container mt-5">
-		   
-		         <%
-            // Mensajes de éxito o error
+		                         <!-- Mostrar mensajes de éxito o error -->
+        <%
             String mensajeExito = (String) session.getAttribute("mensajeExito");
             String mensajeError = (String) session.getAttribute("mensajeError");
-
-            if (mensajeExito != null) { %>
-                <div id="successMessage" class="alert alert-primary alert-dismissible fade show" role="alert">
-                    <%= mensajeExito %>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                <% session.removeAttribute("mensajeExito"); 
-            } else if (mensajeError != null) { %>
-                <div id="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <%= mensajeError %>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                <% session.removeAttribute("mensajeError");
-            }
         %>
-		   
-		   
+
+        <% if (mensajeExito != null) { %>
+            <div id="successMessage" class="alert alert-primary alert-dismissible fade show" role="alert">
+                <%= mensajeExito %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% session.removeAttribute("mensajeExito"); %>
+        <% } else if (mensajeError != null) { %>
+            <div id="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%= mensajeError %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% session.removeAttribute("mensajeError"); %>
+        <% } %>
+
 
            <%
             // Obtener el ID del cliente desde la solicitud
@@ -221,6 +219,41 @@
     });
 </script>
 
+   <script>  
+   // Función para mostrar el mensaje y luego ocultarlo  
+   function mostrarMensaje(tipo) {  
+       var mensaje = document.getElementById(tipo);  
+       if (mensaje) {  
+           mensaje.style.display = "block"; // Mostrar el mensaje  
+           // Ocultar el mensaje después de 3 segundos (3000 milisegundos)  
+           setTimeout(function() {  
+               mensaje.style.display = "none";  
+           }, 3000);  
+       }  
+   }  
+
+   <% if(request.getAttribute("mensajeExito") != null) { %>  
+       mostrarMensaje("successMessage");  
+   <% } else if(request.getAttribute("mensajeError") != null) { %>  
+       mostrarMensaje("errorMessage");  
+   <% } %> 
+   
+   document.getElementById('fechaNacimiento').addEventListener('input', function (event) {
+       const fecha = event.target.value;
+       const regex = /^\d{4}-\d{2}-\d{2}$/;
+
+       if (!regex.test(fecha)) {
+           alert('Selecciona una fecha válida desde el calendario.');
+           event.target.value = '';
+       }
+   });
+
+   
+   const fechaNacimientoInput = document.getElementById('fechaNacimiento');
+   const hoy = new Date().toISOString().split('T')[0]; // Obtiene la fecha actual en formato 'yyyy-MM-dd'
+   fechaNacimientoInput.setAttribute('max', hoy);
+        
+    </script> 
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
