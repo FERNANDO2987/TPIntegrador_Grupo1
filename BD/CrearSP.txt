@@ -28,11 +28,25 @@ END$$
 
 
 -- Procedimiento para validar usuario
-CREATE PROCEDURE ValidarUsuario(IN usuarioIngresado VARCHAR(50), IN contraseniaIngresada VARCHAR(50)) 
+CREATE PROCEDURE ValidarUsuario(
+    IN usuarioIngresado VARCHAR(50), 
+    IN contraseniaIngresada VARCHAR(50)
+) 
 BEGIN
-    SELECT * FROM clientes
-    WHERE usuario = usuarioIngresado AND password = contraseniaIngresada;
+    SELECT 
+        C.*, 
+        P.id AS id_pais 
+    FROM 
+        clientes AS C
+    JOIN 
+        paises AS P 
+    ON 
+        P.nombre = C.pais
+    WHERE 
+        C.usuario = usuarioIngresado 
+        AND C.password = contraseniaIngresada;
 END$$
+
 
 -- Procedimiento para modificar cuenta
 CREATE PROCEDURE ModificarCuenta (IN nroCuentaIngresado INT, IN idTipoCuentaIngresado INT, IN borrado BIT)

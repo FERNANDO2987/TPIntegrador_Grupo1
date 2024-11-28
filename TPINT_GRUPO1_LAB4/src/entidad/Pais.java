@@ -2,7 +2,7 @@ package entidad;
 
 public class Pais {
 	
-	  private int id;
+	  	private int id;
 	    private String nombre;
 
 	    
@@ -11,8 +11,8 @@ public class Pais {
 	    public Pais(int id, String nombre) {
 	        this.id = id;
 	        this.nombre = nombre;
-	    
 	    }
+	    
 	    
 	    // Getters y Setters
 	    public int getId() {

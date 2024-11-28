@@ -281,7 +281,16 @@ public class ClienteDaoImpl implements ClienteDao{
 	        	   usuarioBD.setUsuario(rs.getString("usuario"));
 	        	   usuarioBD.setPassword(rs.getString("password"));
 	        	   usuarioBD.setNombre(rs.getString("nombre"));
+	        	   usuarioBD.setApellido(rs.getString("apellido"));
 	        	   usuarioBD.setAdmin(rs.getBoolean("admin"));
+	        	   usuarioBD.setCelular(rs.getString("Celular"));
+	        	   usuarioBD.setTelefono(rs.getString("Telefono"));
+	        	   usuarioBD.setCuil(rs.getString("cuil"));
+	        	   usuarioBD.setPaisNacimiento(new Pais(rs.getInt("id_pais"),rs.getString("pais")));
+	        	   usuarioBD.setDni(rs.getString("dni"));
+	        	   usuarioBD.setCorreo(rs.getString("correo"));
+	        	   usuarioBD.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+	        	   usuarioBD.setSexo(rs.getString("sexo"));
 	           }
 	       } catch (SQLException e) {
 	           e.printStackTrace();
@@ -296,11 +305,6 @@ public class ClienteDaoImpl implements ClienteDao{
 	           }
 	       }
 	       return usuarioBD;
-	   }
-
-
-
-
-	
+	   }	
 }
 

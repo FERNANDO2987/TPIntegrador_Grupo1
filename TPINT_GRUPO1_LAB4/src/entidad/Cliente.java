@@ -159,12 +159,14 @@ public class Cliente {
     }
     
 
-
 	@Override
-    public String toString() {
-        return 
-               "[ DNI: " + dni + " Nombre:" + nombre + " " + apellido + " ]";
-    }
+	public String toString() {
+		return "Cliente [id=" + id + ", dni=" + dni + ", cuil=" + cuil + ", nombre=" + nombre + ", apellido=" + apellido
+				+ ", sexo=" + sexo + ", usuario=" + usuario + ", password=" + password + ", paisNacimiento="
+				+ paisNacimiento + ", fechaNacimiento=" + fechaNacimiento + ", correo=" + correo + ", telefono="
+				+ telefono + ", celular=" + celular + ", admin=" + admin + "]";
+	}
+	
 	    
 	    
 }

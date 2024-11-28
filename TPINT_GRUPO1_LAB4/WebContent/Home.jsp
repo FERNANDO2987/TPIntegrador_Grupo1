@@ -24,6 +24,7 @@
         response.sendRedirect("Login.jsp");
         return;
       }
+      System.out.println(usuario.toString());
     %>
     <div class="container mt-5">
       <h1>Menu de Gestion de Banco</h1>
