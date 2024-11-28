@@ -234,3 +234,129 @@ BEGIN
 END
 
 DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarPrestamo`(
+    IN p_nro_cuenta BIGINT,
+    IN p_id_cliente BIGINT,
+    IN p_importe DECIMAL(10,2),
+    IN p_cuotas INT
+)
+BEGIN
+    INSERT INTO prestamos (
+        nro_cuenta, 
+        id_cliente, 
+        fecha_solicitud, 
+        importe, 
+        cuotas
+    )
+    VALUES (
+        p_nro_cuenta, 
+        p_id_cliente, 
+        CURRENT_DATE, 
+        p_importe, 
+        p_cuotas
+    );
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RechazarPrestamo`(
+    IN p_id BIGINT
+)
+BEGIN
+    UPDATE prestamos
+    SET estado = b'0'
+    WHERE id = p_id and estado is null;
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AprobarPrestamo`(
+    IN p_id BIGINT
+)
+BEGIN
+    DECLARE v_importe DECIMAL(10,2);  -- almacenar importe préstamo
+    DECLARE v_nro_cuenta BIGINT;
+    DECLARE v_estado BIGINT;
+    
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        ROLLBACK; 
+    -- Iniciar la transacción
+    START TRANSACTION;
+    
+	-- Obtener nro de cuenta
+	SELECT nro_cuenta 
+    INTO v_nro_cuenta
+    FROM prestamos
+    WHERE id = p_id;
+    
+			-- Verificar la cuenta existe y obtener el numero
+    IF v_nro_cuenta IS NULL THEN
+        -- Si la cuenta no existe, salir
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ERROR';
+    END IF;
+    
+    
+    -- Obtener estado del prestamo
+	SELECT estado 
+    INTO v_estado
+    FROM prestamos
+    WHERE id = p_id;
+    
+			-- Verificar si el prestamo ya fue aprobado/rechazado
+    IF v_estado IN (0, 1) THEN
+        -- Si el prestamo ya fue gestionado, salir
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ERROR';
+    END IF;
+    
+    
+    -- Obtener el importe desde la tabla prestamos
+    SELECT importe 
+    INTO v_importe
+    FROM prestamos
+    WHERE id = p_id;
+    
+			-- Verificar si el préstamo existe y obtener el importe
+    IF v_importe IS NULL THEN
+        -- Si el préstamo no existe, salir
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ERROR';
+    END IF;
+        
+    
+
+    -- Llamar a AgregarMovimiento 
+    INSERT INTO movimientos (
+        fecha, 
+        detalle, 
+        importe, 
+        nro_cuenta,
+        tipo_movimiento, 
+        estado
+    )
+    VALUES (
+        current_date(), 
+        'Prestamo Aprobado', 
+        v_importe, 
+        v_nro_cuenta,
+        2, 
+        b'1'
+    );
+
+
+-- Actualizar el estado del préstamo a "aprobado" y asociar el movimiento
+    UPDATE prestamos
+    SET estado = 1  -- Cambiar el estado a aprobado
+    WHERE id = p_id;
+
+	-- Sumar dinero a la cuenta
+    UPDATE cuentas
+    SET saldo = saldo + v_importe
+    WHERE nro_cuenta = v_nro_cuenta;
+    
+    
+    COMMIT;
+
+END$$
+DELIMITER ;
