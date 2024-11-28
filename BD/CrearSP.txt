@@ -237,8 +237,8 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarPrestamo`(
-    IN p_nro_cuenta BIGINT,
-    IN p_id_cliente BIGINT,
+    IN p_nro_cuenta INT,
+    IN p_id_cliente INT,
     IN p_importe DECIMAL(10,2),
     IN p_cuotas INT
 )
@@ -262,7 +262,7 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `RechazarPrestamo`(
-    IN p_id BIGINT
+    IN p_id INT
 )
 BEGIN
     UPDATE prestamos
@@ -274,12 +274,12 @@ DELIMITER ;
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AprobarPrestamo`(
-    IN p_id BIGINT
+    IN p_id INT
 )
 BEGIN
     DECLARE v_importe DECIMAL(10,2);  -- almacenar importe préstamo
-    DECLARE v_nro_cuenta BIGINT;
-    DECLARE v_estado BIGINT;
+    DECLARE v_nro_cuenta INT;
+    DECLARE v_estado INT;
     
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
         ROLLBACK; 
