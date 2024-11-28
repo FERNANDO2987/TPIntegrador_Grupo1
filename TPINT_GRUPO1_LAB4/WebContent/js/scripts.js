@@ -35,3 +35,6 @@ document.getElementById('fechaNacimiento').addEventListener('input', function (e
 const fechaNacimientoInput = document.getElementById('fechaNacimiento');  
 const hoy = new Date().toISOString().split('T')[0]; // Obtiene la fecha actual en formato 'yyyy-MM-dd'  
 fechaNacimientoInput.setAttribute('max', hoy);
+
+
+
