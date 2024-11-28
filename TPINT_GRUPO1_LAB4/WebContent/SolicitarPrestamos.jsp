@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="entidad.Cliente" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,6 +10,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+	<%
+      Cliente usuario = (Cliente)session.getAttribute("usuario");
+      if (usuario == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+      }
+    %>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Solicitar Préstamo</h2>
         <form action="servletPrestamo" method="POST">

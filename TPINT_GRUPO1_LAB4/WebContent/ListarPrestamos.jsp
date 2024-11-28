@@ -3,6 +3,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List" %>
 <%@page import="entidad.Prestamo" %>
+<%@ page import="entidad.Cliente" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -29,7 +30,13 @@
 	href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css">
 </head>
 <body>
-	
+	<%
+      Cliente usuario = (Cliente)session.getAttribute("usuario");
+      if (usuario == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+      }
+    %>
 	<div class="container mt-5">
         <h2 class="text-center mb-4">Listado de Prestamos</h2>
         

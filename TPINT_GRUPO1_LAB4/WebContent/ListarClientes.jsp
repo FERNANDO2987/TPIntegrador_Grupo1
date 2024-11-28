@@ -30,6 +30,13 @@
     
 </head>
 <body>
+	<%
+      Cliente usuario = (Cliente)session.getAttribute("usuario");
+      if (usuario == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+      }
+    %>
     <div class="container mt-5 ml-0">
         <h2 class="text-center mb-4">Listado de Clientes</h2>
         

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="entidad.Pais" %>
+<%@ page import="entidad.Cliente" %>
 <%@ page import="negocio.PaisNeg" %>
 <%@ page import="nogocioImpl.PaisNegImpl" %>
 
@@ -18,6 +19,13 @@
       <script src="js/scripts.js"></script> 
 </head>
 <body>
+	<%
+      Cliente usuario = (Cliente)session.getAttribute("usuario");
+      if (usuario == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+      }
+    %>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Registro de Cliente</h2>
         

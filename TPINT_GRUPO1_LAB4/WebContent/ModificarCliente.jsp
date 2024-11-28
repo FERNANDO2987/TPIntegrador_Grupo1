@@ -31,6 +31,13 @@
     </script>
     
 </head>
+<%
+      Cliente usuario = (Cliente)session.getAttribute("usuario");
+      if (usuario == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+      }
+    %>
 <body onload="ocultarMensaje()">
     <div class="container mt-5">
         <h2 class="text-center mb-4">Modificar Cliente</h2>

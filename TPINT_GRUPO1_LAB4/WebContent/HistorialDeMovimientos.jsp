@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="entidad.Cliente" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,7 +10,13 @@
 <title>Historial de movimientos</title>
 </head>
 <body>
-
+	<%
+      Cliente usuario = (Cliente)session.getAttribute("usuario");
+      if (usuario == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+      }
+    %>
 	<!-- SE TIENE QUE DESARROLLAR LA LÓGICA DE ESTA PÁGINA EN LA QUE
 		 SE RECIBA POR PARAMETRO LA CUENTA DESDE LA CUÁL FUE ABIERTA
 		 ESTA PÁGINA. SUMAR EN LA PÁGINA VerCuentasAsociadas.jsp 
