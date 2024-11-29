@@ -18,37 +18,23 @@
       }
     %>
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Solicitar Préstamo</h2>
-        <form action="servletPrestamo" method="POST">
-            <div class="form-group">
-                <label for="tipoPrestamo">Tipo de Préstamo:</label>
-                <select class="form-control" id="tipoPrestamo" name="tipoPrestamo" required>
-                    <option value="">Seleccionar</option>
-                    <option value="Personal">Préstamo Personal</option>
-                    <option value="Hipotecario">Préstamo Hipotecario</option>
-                    <option value="Automotriz">Préstamo Automotriz</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="monto">Monto Solicitado:</label>
-                <input type="number" class="form-control" id="monto" name="monto" placeholder="Ingrese el monto a solicitar" required>
-            </div>
-            <div class="form-group">
-                <label for="plazo">Plazo (en meses):</label>
-                <input type="number" class="form-control" id="plazo" name="plazo" placeholder="Ingrese el plazo en meses" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="metodoPago">Cuenta destino:</label>
-                <select class="form-control" id="cuentaDestino" name="cuentaDestino" required>
-                    <option value="">Seleccionar</option>
-                    <option value="15648945648651">15648945648651</option>
-                    <option value="18797894565641">18797894565641</option>
-                    <option value="18797894533333">1879789453333</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Solicitar Préstamo</button>
-        </form>
+    	<div class="row">
+    		<div class="col-6 mx-auto">
+		        <h2 class="text-center mb-4">Solicitar Préstamo</h2>
+		        <form action="servletAgregarPrestamo" method="POST">
+		            
+		            <div class="form-group">
+		                <label for="monto">Monto Solicitado:</label>
+		                <input type="number" class="form-control" id="monto" name="monto" placeholder="Ingrese el monto a solicitar" required>
+		            </div>
+		            <div class="form-group">
+						<label for="cuotas">Cuotas:</label>
+		                <input type="number" class="form-control" id="plazo" name="plazo" placeholder="Ingrese la cantidad de cuotas" required>
+		            </div>
+					<input type="submit" class="btn btn-primary btn-block" name=btnSubmit value="Solicitar Préstamo">
+		        </form>
+    		</div>
+    	</div>
     </div>
 
     <!-- Bootstrap JS and dependencies -->
