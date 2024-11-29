@@ -47,10 +47,12 @@ public class servletAgregarPrestamo extends HttpServlet {
 		try
 		{
 			HttpSession session = request.getSession(true); // Si la sesión no existe, la crea 
-			String imp = request.getParameter("importe");
+			String imp = request.getParameter("monto");
 			String cuo = request.getParameter("cuotas");
+			System.out.println("GET PARAMETER CORRECTAMENTE STRING");
 			imp = imp.trim();
 			cuo = cuo.trim();
+			System.out.println("TRIM CORRECTAMENTE");
 			
 			
 			// Validar campos obligatorios
@@ -61,13 +63,19 @@ public class servletAgregarPrestamo extends HttpServlet {
                 response.getWriter().write("Error: Todos los campos obligatorios deben estar presentes.");
                 return;
 			}
-			
+			System.out.println("VALIDAR STRINGS");
 			// convertir y llamar datos de session
 			int cuotas = Integer.parseInt(cuo);
 			BigDecimal importe = new BigDecimal(imp);
+			System.out.println("PASÓ LOS STRING A NUMERO");
 			Cuenta cuenta = (Cuenta)session.getAttribute("cuenta");
 			Cliente cliente = (Cliente)session.getAttribute("usuario");
-			
+			/*
+			Cuenta cuenta = new Cuenta();
+			cuenta.setNroCuenta(222222222);
+			Cliente cliente = new Cliente();
+			cliente.setId(2);
+			 */
 			Prestamo p = new Prestamo();
 			p.setCliente(cliente);
 			p.setCuenta(cuenta);
@@ -85,13 +93,13 @@ public class servletAgregarPrestamo extends HttpServlet {
             }
             
          // Redirigir al JSP
-            request.getRequestDispatcher("AgregarPrestamo.jsp").forward(request, response);
+            request.getRequestDispatcher("SolicitarPrestamos.jsp").forward(request, response);
 		}
 		catch(Exception e)
 		{
 			request.setAttribute("mensajeError", "Error inesperado: " + e.getMessage());  
             e.printStackTrace();  
-            request.getRequestDispatcher("AgregarPrestamo.jsp").forward(request, response); 
+            request.getRequestDispatcher("SolicitarPrestamos.jsp").forward(request, response); 
 		}
 		doGet(request, response);
 	}

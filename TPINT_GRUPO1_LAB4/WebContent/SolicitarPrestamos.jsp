@@ -29,7 +29,7 @@
 		            </div>
 		            <div class="form-group">
 						<label for="cuotas">Cuotas:</label>
-		                <input type="number" class="form-control" id="plazo" name="plazo" placeholder="Ingrese la cantidad de cuotas" required>
+		                <input type="number" min="1" max="24"  class="form-control" id="cuotas" name="cuotas" placeholder="Ingrese la cantidad de cuotas" required>
 		            </div>
 					<input type="submit" class="btn btn-primary btn-block" name=btnSubmit value="Solicitar Préstamo">
 		        </form>
