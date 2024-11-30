@@ -2,6 +2,9 @@
 CREATE DATABASE IF NOT EXISTS bdbanco;
 USE bdbanco;
 
+ALTER TABLE Prestamos 
+ADD COLUMN observaciones NVARCHAR(255) NULL AFTER estado;
+
 -- Tabla Paises
 CREATE TABLE Paises (  
     id INT PRIMARY KEY AUTO_INCREMENT,  

@@ -1,6 +1,41 @@
 DELIMITER $$
 
 
+CREATE PROCEDURE ObtenerDatosPrestamos()
+BEGIN  
+     SELECT   
+        p.id AS id,  -- Se agrega el ID del préstamo  
+        cl.nombre AS Nombre,  
+        cl.apellido AS Apellido,  
+        ct.correo AS Correo,  
+        ct.telefono AS Telefono,  
+        cu.cbu AS CBU,  
+        c.monto AS Monto,   -- Aquí estamos seleccionando 'monto' de la tabla 'Cuotas'  
+        p.cuotas AS Cuotas,  
+        c.nro_cuota AS NumeroCuota,  
+        p.fecha_solicitud AS FechaSolicitud,  
+        p.importe AS Importe,  
+        p.cuotas AS TotalCuotas,  
+        p.observaciones AS Observaciones,  
+        CASE   
+            WHEN p.estado = 1 THEN 'Pendiente'  
+            ELSE 'Autorizado'  
+        END AS Estado  
+    FROM   
+       bdbanco.prestamos p  
+    JOIN   
+        bdbanco.clientes cl ON p.id_cliente = cl.id  
+    JOIN   
+        bdbanco.contactos ct ON cl.id = ct.id_cliente AND ct.deleted = 0  
+    JOIN   
+        bdbanco.cuentas cu ON p.nro_cuenta = cu.nro_cuenta AND cu.deleted = 0  
+    LEFT JOIN   
+        bdbanco.cuotas c ON p.id = c.id_prestamo AND c.deleted = 0  
+    WHERE   
+        p.deleted = 0;
+END$$
+
+
 CREATE PROCEDURE ObtenerClientePorId(
     IN Id INT
 )
@@ -28,25 +63,11 @@ END$$
 
 
 -- Procedimiento para validar usuario
-CREATE PROCEDURE ValidarUsuario(
-    IN usuarioIngresado VARCHAR(50), 
-    IN contraseniaIngresada VARCHAR(50)
-) 
+CREATE PROCEDURE ValidarUsuario(IN usuarioIngresado VARCHAR(50), IN contraseniaIngresada VARCHAR(50)) 
 BEGIN
-    SELECT 
-        C.*, 
-        P.id AS id_pais 
-    FROM 
-        clientes AS C
-    JOIN 
-        paises AS P 
-    ON 
-        P.nombre = C.pais
-    WHERE 
-        C.usuario = usuarioIngresado 
-        AND C.password = contraseniaIngresada;
+    SELECT * FROM clientes
+    WHERE usuario = usuarioIngresado AND password = contraseniaIngresada;
 END$$
-
 
 -- Procedimiento para modificar cuenta
 CREATE PROCEDURE ModificarCuenta (IN nroCuentaIngresado INT, IN idTipoCuentaIngresado INT, IN borrado BIT)
@@ -247,130 +268,4 @@ BEGIN
     END IF;
 END
 
-DELIMITER ;
-
-DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarPrestamo`(
-    IN p_nro_cuenta INT,
-    IN p_id_cliente INT,
-    IN p_importe DECIMAL(10,2),
-    IN p_cuotas INT
-)
-BEGIN
-    INSERT INTO prestamos (
-        nro_cuenta, 
-        id_cliente, 
-        fecha_solicitud, 
-        importe, 
-        cuotas
-    )
-    VALUES (
-        p_nro_cuenta, 
-        p_id_cliente, 
-        CURRENT_DATE, 
-        p_importe, 
-        p_cuotas
-    );
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `RechazarPrestamo`(
-    IN p_id INT
-)
-BEGIN
-    UPDATE prestamos
-    SET estado = b'0'
-    WHERE id = p_id and estado is null;
-END$$
-DELIMITER ;
-
-
-DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AprobarPrestamo`(
-    IN p_id INT
-)
-BEGIN
-    DECLARE v_importe DECIMAL(10,2);  -- almacenar importe préstamo
-    DECLARE v_nro_cuenta INT;
-    DECLARE v_estado INT;
-    
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-        ROLLBACK; 
-    -- Iniciar la transacción
-    START TRANSACTION;
-    
-	-- Obtener nro de cuenta
-	SELECT nro_cuenta 
-    INTO v_nro_cuenta
-    FROM prestamos
-    WHERE id = p_id;
-    
-			-- Verificar la cuenta existe y obtener el numero
-    IF v_nro_cuenta IS NULL THEN
-        -- Si la cuenta no existe, salir
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ERROR';
-    END IF;
-    
-    
-    -- Obtener estado del prestamo
-	SELECT estado 
-    INTO v_estado
-    FROM prestamos
-    WHERE id = p_id;
-    
-			-- Verificar si el prestamo ya fue aprobado/rechazado
-    IF v_estado IN (0, 1) THEN
-        -- Si el prestamo ya fue gestionado, salir
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ERROR';
-    END IF;
-    
-    
-    -- Obtener el importe desde la tabla prestamos
-    SELECT importe 
-    INTO v_importe
-    FROM prestamos
-    WHERE id = p_id;
-    
-			-- Verificar si el préstamo existe y obtener el importe
-    IF v_importe IS NULL THEN
-        -- Si el préstamo no existe, salir
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ERROR';
-    END IF;
-        
-    
-
-    -- Llamar a AgregarMovimiento 
-    INSERT INTO movimientos (
-        fecha, 
-        detalle, 
-        importe, 
-        nro_cuenta,
-        tipo_movimiento, 
-        estado
-    )
-    VALUES (
-        current_date(), 
-        'Prestamo Aprobado', 
-        v_importe, 
-        v_nro_cuenta,
-        2, 
-        b'1'
-    );
-
-
--- Actualizar el estado del préstamo a "aprobado" y asociar el movimiento
-    UPDATE prestamos
-    SET estado = 1  -- Cambiar el estado a aprobado
-    WHERE id = p_id;
-
-	-- Sumar dinero a la cuenta
-    UPDATE cuentas
-    SET saldo = saldo + v_importe
-    WHERE nro_cuenta = v_nro_cuenta;
-    
-    
-    COMMIT;
-
-END$$
 DELIMITER ;
