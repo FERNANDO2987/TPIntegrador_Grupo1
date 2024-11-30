@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import datosImpl.PrestamoDaoImpl;
+import nogocioImpl.PrestamoNegImpl;
 
 /**
  * Servlet implementation class servletRechazarPrestamo
@@ -15,6 +16,7 @@ import datosImpl.PrestamoDaoImpl;
 @WebServlet("/servletRechazarPrestamo")
 public class servletRechazarPrestamo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private PrestamoNegImpl dao = new PrestamoNegImpl();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -41,7 +43,6 @@ public class servletRechazarPrestamo extends HttpServlet {
 		{
 	        System.out.println("Botón Rechazar fue presionadoooooooooooooooo");
 	        Long id = Long.parseLong(request.getParameter("id"));
-            PrestamoDaoImpl dao = new PrestamoDaoImpl();
             dao.rechazarPrestamo(id);
             response.sendRedirect(request.getContextPath() + "/servletListarPrestamos?btnListarPrestamos=Traer+prestamos");
 		}
@@ -49,7 +50,6 @@ public class servletRechazarPrestamo extends HttpServlet {
 		{
 	        System.out.println("Botón Aceptar fue presionadooooooooooooooo");
 	        Long id = Long.parseLong(request.getParameter("id"));
-            PrestamoDaoImpl dao = new PrestamoDaoImpl();
             dao.aprobarPrestamo(id);
             response.sendRedirect(request.getContextPath() + "/servletListarPrestamos?btnListarPrestamos=Traer+prestamos");
 		}
