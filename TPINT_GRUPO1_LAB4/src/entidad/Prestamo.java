@@ -2,6 +2,7 @@ package entidad;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class Prestamo {
 	
@@ -12,12 +13,15 @@ public class Prestamo {
 	    private BigDecimal importe;
 	    private int cuotas;
 	    private boolean estado;
+	    private String observaciones;
+	   
+	   
 
 	    // Constructor vacío
 	    public Prestamo() {}
 
 	    // Constructor con parámetros
-	    public Prestamo(long id, Cuenta cuenta, Cliente cliente, LocalDate fechaSolicitud, BigDecimal importe, int cuotas, boolean estado) {
+	    public Prestamo(long id, Cuenta cuenta, Cliente cliente, LocalDate fechaSolicitud, BigDecimal importe, int cuotas, boolean estado, String observaciones) {
 	        this.id = id;
 	        this.cuenta = cuenta;
 	        this.cliente = cliente;
@@ -25,9 +29,22 @@ public class Prestamo {
 	        this.importe = importe;
 	        this.cuotas = cuotas;
 	        this.estado = estado;
+	        this.observaciones = observaciones;
+
 	    }
 	    
-	    // Getters y Setters
+	    
+
+	    
+	    public String getObservaciones() {
+			return observaciones;
+		}
+
+		public void setObservaciones(String observaciones) {
+			this.observaciones = observaciones;
+		}
+
+		// Getters y Setters
 	    public long getId() {
 	        return id;
 	    }
@@ -84,11 +101,13 @@ public class Prestamo {
 	        this.estado = estado;
 	    }
 
-		@Override
-		public String toString() {
-			return "Prestamo [id=" + id + ", cuenta=" + cuenta + ", cliente=" + cliente + ", fechaSolicitud="
-					+ fechaSolicitud + ", importe=" + importe + ", cuotas=" + cuotas + ", estado=" + estado + "]";
-		}
+	    @Override
+	    public String toString() {
+	        return "Prestamo [id=" + id + ", cuenta=" + cuenta + ", cliente=" + cliente + ", fechaSolicitud=" 
+	                + fechaSolicitud + ", importe=" + importe + ", cuotas=" + cuotas + ", estado=" + estado 
+	                + ", observaciones=" + observaciones + "]";
+	    }
+
 	    
 	    
 

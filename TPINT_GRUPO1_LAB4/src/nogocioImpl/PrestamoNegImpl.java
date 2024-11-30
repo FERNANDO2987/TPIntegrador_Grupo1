@@ -1,10 +1,17 @@
 package nogocioImpl;
 
+
 import java.util.List;
+
+
+import java.util.ArrayList;
+
+import datos.PrestamoDao;
 
 import datosImpl.PrestamoDaoImpl;
 import entidad.Prestamo;
 import negocio.PrestamoNeg;
+
 
 public class PrestamoNegImpl implements PrestamoNeg{
 
@@ -34,5 +41,31 @@ public class PrestamoNegImpl implements PrestamoNeg{
 	public boolean rechazarPrestamo(Long id) {
 		return dao.rechazarPrestamo(id);
 	}
+
+public class PrestamoNegImpl implements PrestamoNeg {
+	
+	
+private PrestamoDao  prestamoDao = new PrestamoDaoImpl();
+	
+	public  PrestamoNegImpl(PrestamoDao prestamoDao)
+	{
+		this.prestamoDao = prestamoDao;
+	}
+	
+	
+	public PrestamoNegImpl()
+	{
+		
+	}
+	
+
+	
+	@Override
+	public ArrayList<Prestamo> listarPrestamos() {
+		 return (ArrayList<Prestamo>) prestamoDao.obtenerDatosPrestamos();
+		
+	}
+
+
 
 }

@@ -12,6 +12,8 @@ import java.util.List;
 import datos.PrestamoDao;
 import entidad.Cliente;
 import entidad.Cuenta;
+import entidad.Cuota;
+import entidad.Pais;
 import entidad.Prestamo;
 
 public class PrestamoDaoImpl  implements PrestamoDao{
@@ -192,5 +194,57 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 		    }
 		return prestamos;
 	}
+	
+	@Override  
+	public List<Prestamo> obtenerDatosPrestamos() {  
+	    List<Prestamo> prestamos = new ArrayList<>();  
+	    cn = new Conexion();  
+	    cn.Open();  
+
+	    String query = "{CALL ObtenerDatosPrestamos()}"; // Llamada al procedimiento almacenado  
+
+	    try (CallableStatement stmt = cn.connection.prepareCall(query);  
+	         ResultSet rs = stmt.executeQuery()) {  
+
+	        while (rs.next()) {  
+	            Prestamo prestamo = new Prestamo();  
+	            Cliente cliente = new Cliente();  
+	            Cuenta cuenta = new Cuenta();  
+
+	            // Asignar datos del ResultSet al objeto Cliente  
+	            cliente.setNombre(rs.getString("Nombre"));  
+	            cliente.setApellido(rs.getString("Apellido"));  
+	            cliente.setCorreo(rs.getString("Correo"));  
+	            cliente.setTelefono(rs.getString("Telefono"));  
+
+	           
+	            cuenta.setCbu(rs.getString("CBU"));  
+
+	          
+	            prestamo.setId(rs.getLong("id"));   
+	            
+	            prestamo.setCuenta(cuenta);  
+	            prestamo.setCliente(cliente);  
+	            prestamo.setFechaSolicitud(rs.getDate("FechaSolicitud").toLocalDate());  
+	            prestamo.setImporte(rs.getBigDecimal("Importe"));  
+	            prestamo.setCuotas(rs.getInt("TotalCuotas"));
+	            prestamo.setObservaciones(rs.getString("Observaciones"));  
+
+  
+	            prestamo.setEstado(rs.getString("Estado").equals("Pendiente"));  
+
+	            // Agregar el prestamo a la lista  
+	            prestamos.add(prestamo);  
+	        }  
+	    } catch (SQLException e) {  
+	        e.printStackTrace();  
+	    } finally {  
+	        cn.close(); 
+	    }  
+
+	    return prestamos;  
+	}
+
+	
 	
 }

@@ -24,7 +24,6 @@
         response.sendRedirect("Login.jsp");
         return;
       }
-      System.out.println(usuario.toString());
     %>
     <div class="container mt-5">
       <h1>Menu de Gestion de Banco</h1>
@@ -116,6 +115,26 @@
                     </li>
                   </ul>
                 </li>
+                  <li class="list-group-item">
+                  Prestamos Solicitados
+                  <ul>
+                    <li>
+                      <a
+                        href="PrestamosPersonales.jsp"
+                        class="text-decoration-none"
+                        >Ver Prestamos solicitados</a
+                      >
+                    </li>
+                       <li>
+                      <a
+                        href="ListarPrestamos.jsp"
+                        class="text-decoration-none"
+                        >Listar Prestamos Solicitados</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                
               </ul>
             </div>
           </div>
@@ -156,6 +175,9 @@
                     </li>
                   </ul>
                 </li>
+                
+                
+                
                 <li class="list-group-item">
                   Gestion de Cuentas
                   <ul>
