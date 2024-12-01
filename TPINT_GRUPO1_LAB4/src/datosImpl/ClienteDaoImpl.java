@@ -305,6 +305,55 @@ public class ClienteDaoImpl implements ClienteDao{
 	           }
 	       }
 	       return usuarioBD;
-	   }	
+	   }
+
+
+
+	@Override
+	public Cliente obtenerClientePorUsuario(String usuario) {
+		Cliente cliente = null; 
+	    cn.Open(); 
+
+	    String query = "{CALL obtenerClienteXUsuario(?)}"; 
+
+	    try (CallableStatement stmt = cn.connection.prepareCall(query)) {
+	        stmt.setString(1, usuario);
+
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                cliente = new Cliente();
+	                cliente.setId(rs.getInt("Id"));
+	                cliente.setDni(rs.getString("Dni"));
+	                cliente.setCuil(rs.getString("Cuil"));
+	                cliente.setNombre(rs.getString("Nombre"));
+	                cliente.setApellido(rs.getString("Apellido"));
+	                cliente.setSexo(rs.getString("Sexo"));
+	                cliente.setUsuario(rs.getString("Usuario"));
+	                cliente.setPassword(rs.getString("Password"));
+
+	                if (rs.getObject("PaisNacimientoId") != null) {
+	                    Pais paisNacimiento = new Pais();
+	                    paisNacimiento.setId(rs.getInt("PaisNacimientoId"));
+	                    paisNacimiento.setNombre(rs.getString("PaisNacimientoNombre"));
+	                    cliente.setPaisNacimiento(paisNacimiento);
+	                } else {
+	                    cliente.setPaisNacimiento(null);
+	                }
+
+	                cliente.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+	                cliente.setCorreo(rs.getString("Correo"));
+	                cliente.setTelefono(rs.getString("Telefono"));
+	                cliente.setCelular(rs.getString("Celular"));
+	                cliente.setAdmin(rs.getBoolean("Admin"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        cn.close(); 
+	    }
+
+	    return cliente; 
+	}
 }
 

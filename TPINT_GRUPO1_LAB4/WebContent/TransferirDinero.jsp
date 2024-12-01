@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="entidad.Cliente" %>
+<%@ page import="entidad.Cuenta" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,6 +19,12 @@
         response.sendRedirect("Login.jsp");
         return;
       }
+      
+      List<Cuenta> listaDeOrigen = new ArrayList<Cuenta>();;
+      if(request.getAttribute("listaDeMisCuentas") != null)
+      {
+    	  listaDeOrigen = (List<Cuenta>) request.getAttribute("listaDeMisCuentas");
+      }
     %>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Transferir Dinero</h2>
@@ -23,9 +32,11 @@
             <div class="form-group">
                 <label for="cuentaOrigen">Cuenta Origen:</label>
                 <select class="form-control" id="cuentaOrigen" name="cuentaOrigen" required>
-                    <option value="">Seleccionar</option>
-                    <option value="12345678">12345678 - Cuenta Ahorros</option>
-                    <option value="87654321">87654321 - Cuenta Corriente</option>
+                    <%if (listaDeOrigen != null){
+                    	for(Cuenta cuenta : listaDeOrigen){%>
+                    	<option value=<%=cuenta.getNroCuenta() %>><%=cuenta.toString() %></option>
+                    <%	}
+                      }%>
                 </select>
             </div>
             <div class="form-group">

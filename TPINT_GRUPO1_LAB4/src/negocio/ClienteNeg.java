@@ -11,6 +11,7 @@ public interface ClienteNeg {
 	 public boolean editarCliente(Cliente cliente);
 	 public boolean eliminarCliente(int idCliente);
 	 public Cliente iniciarSesion(String nombreUsuario, String contrasena);
+	 public Cliente obtenerClientePorUsuario(String usuario);
 	
 
 }
