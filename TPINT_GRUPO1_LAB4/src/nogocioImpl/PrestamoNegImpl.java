@@ -42,6 +42,13 @@ public class PrestamoNegImpl implements PrestamoNeg{
 		return dao.rechazarPrestamo(id);
 	}
 
+	@Override
+	public ArrayList<Prestamo> listarPrestamos() {
+		return (ArrayList<Prestamo>) dao.obtenerDatosPrestamos();
+		
+	}
+}
+/*
 public class PrestamoNegImpl implements PrestamoNeg {
 	
 	
@@ -69,3 +76,4 @@ private PrestamoDao  prestamoDao = new PrestamoDaoImpl();
 
 
 }
+*/
