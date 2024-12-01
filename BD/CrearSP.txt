@@ -297,7 +297,19 @@ $$
 
 CREATE PROCEDURE ObtenerCuentasXIdCliente(IN idCliente INT)
 BEGIN
-	SELECT * FROM cuentas WHERE cuentas.id_cliente = idCliente;
+	SELECT * FROM cuentas LEFT JOIN tiposcuenta ON tiposcuenta.id = cuentas.id_tipo_cuenta WHERE cuentas.id_cliente = idCliente;
+END;
+$$
+
+CREATE PROCEDURE obtenerClienteXUsuario(IN usuarioElegido VARCHAR(255))
+BEGIN
+	 SELECT 
+        c.Id, c.Dni, c.Cuil, c.Nombre,
+        c.Apellido, c.Sexo, c.Usuario, c.Password,
+        c.pais, c.fecha_nacimiento, c.Correo, c.Telefono,
+        c.Celular, c.Admin, c.deleted as borrado
+    FROM Clientes c
+    WHERE c.Usuario = usuarioElegido;
 END;
 $$
 

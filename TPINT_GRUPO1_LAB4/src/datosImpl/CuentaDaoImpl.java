@@ -202,7 +202,7 @@ public class CuentaDaoImpl implements CuentaDao {
 					aux.setFechaCreacion(rs.getDate("fecha_creacion").toLocalDate());
 					aux.setCbu(rs.getString("cbu")); //CBU UNIQUE
 					aux.setSaldo(rs.getBigDecimal("saldo"));
-					aux.setEstado(rs.getBoolean("borrado"));
+					aux.setEstado(rs.getBoolean("deleted"));
 					
 					aux.getTipoCuenta().setId(rs.getInt("id_tipo_cuenta"));
 					aux.getTipoCuenta().setDescripcion(rs.getString("descripcion"));

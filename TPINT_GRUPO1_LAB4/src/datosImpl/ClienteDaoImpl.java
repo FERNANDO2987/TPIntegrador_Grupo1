@@ -331,14 +331,7 @@ public class ClienteDaoImpl implements ClienteDao{
 	                cliente.setUsuario(rs.getString("Usuario"));
 	                cliente.setPassword(rs.getString("Password"));
 
-	                if (rs.getObject("PaisNacimientoId") != null) {
-	                    Pais paisNacimiento = new Pais();
-	                    paisNacimiento.setId(rs.getInt("PaisNacimientoId"));
-	                    paisNacimiento.setNombre(rs.getString("PaisNacimientoNombre"));
-	                    cliente.setPaisNacimiento(paisNacimiento);
-	                } else {
-	                    cliente.setPaisNacimiento(null);
-	                }
+	                cliente.getPaisNacimiento().setNombre(rs.getString("pais"));
 
 	                cliente.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
 	                cliente.setCorreo(rs.getString("Correo"));
