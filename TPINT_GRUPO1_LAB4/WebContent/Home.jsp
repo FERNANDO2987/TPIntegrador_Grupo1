@@ -190,6 +190,24 @@
                     </li>
                   </ul>
                 </li>
+                
+                <li class="list-group-item">
+                  Transferencias
+                  <ul>
+                    <li>
+                      <a
+                        href="servletTransferencia"
+                        class="text-decoration-none"
+                        >Transferir a una cuenta externa</a>
+                    </li>
+                    <li>
+                      <a
+                        href="servletTransferenciaEntreCuentas"
+                        class="text-decoration-none"
+                        >Transferir a mis cuentas</a>
+                    </li>
+                  </ul>
+                </li>
                 <li class="list-group-item">
 				  <form action="<%= request.getContextPath() %>/servletLogout" method="post">
 				    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
