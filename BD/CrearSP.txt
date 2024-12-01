@@ -43,9 +43,9 @@ BEGIN
     SELECT 
         c.Id, c.Dni, c.Cuil, c.Nombre, c.Apellido, c.Sexo, c.Usuario, c.Password,
         p.Id AS PaisNacimientoId, p.Nombre AS PaisNacimientoNombre,
-        c.FechaNacimiento, c.Correo, c.Telefono, c.Celular, c.Admin
+        c.fecha_nacimiento, c.Correo, c.Telefono, c.Celular, c.Admin
     FROM Clientes c
-    LEFT JOIN Paises p ON c.PaisNacimiento = p.Id
+    LEFT JOIN Paises p ON c.pais = p.Id
     WHERE c.Id = Id AND c.deleted = 0;
 END$$
 
@@ -223,7 +223,7 @@ BEGIN
 END$$
 
 
-CREATE PROCEDURE `ObtenerClientes`()
+CREATE PROCEDURE ObtenerClientes()
 BEGIN
     SELECT 
         c.Id,
@@ -245,11 +245,11 @@ BEGIN
         clientes c
     LEFT JOIN 
         paises p ON c.pais = p.Id;
-END
+END$$
 
 
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `EliminarCliente`(
+CREATE PROCEDURE EliminarCliente(
     IN p_id INT
 )
 BEGIN
@@ -266,6 +266,7 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'El cliente no existe o ya fue eliminado.';
     END IF;
-END
+END$$
 
 DELIMITER ;
+

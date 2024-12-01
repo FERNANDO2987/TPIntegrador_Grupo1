@@ -2,9 +2,6 @@
 CREATE DATABASE IF NOT EXISTS bdbanco;
 USE bdbanco;
 
-ALTER TABLE Prestamos 
-ADD COLUMN observaciones NVARCHAR(255) NULL AFTER estado;
-
 -- Tabla Paises
 CREATE TABLE Paises (  
     id INT PRIMARY KEY AUTO_INCREMENT,  
@@ -114,13 +111,16 @@ CREATE TABLE Prestamos (
     fecha_solicitud DATE NOT NULL,  
     importe DECIMAL(10,2) NOT NULL,
     cuotas INT NOT NULL,
-    estado BIT NOT NULL DEFAULT NULL,
+    estado BIT NULL DEFAULT NULL,
     createDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,  
     deleteDate DATETIME NULL,  
     deleted BIT NOT NULL DEFAULT 0,	
     FOREIGN KEY (nro_cuenta) REFERENCES Cuentas(nro_cuenta),  
     FOREIGN KEY (id_cliente) REFERENCES Clientes(id)
 );
+
+ALTER TABLE Prestamos 
+ADD COLUMN observaciones NVARCHAR(255) NULL AFTER estado;
 
 -- Tabla Cuotas
 CREATE TABLE Cuotas (
