@@ -80,10 +80,11 @@ public class Cuenta {
         this.saldo = saldo;
     }
 
+	
+
 	@Override
 	public String toString() {
-		return "Cuenta [nroCuenta=" + nroCuenta + ", cliente=" + cliente + ", fechaCreacion=" + fechaCreacion
-				+ ", tipoCuenta=" + tipoCuenta + ", cbu=" + cbu + ", saldo=" + saldo + "]";
+		return "Cuenta [nroCuenta=" + nroCuenta + ", tipoCuenta=" + tipoCuenta.getDescripcion() + ", cbu=" + cbu + "]";
 	}
 
 	public boolean getEstado() {

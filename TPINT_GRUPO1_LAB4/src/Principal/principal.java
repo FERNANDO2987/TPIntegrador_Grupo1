@@ -27,7 +27,11 @@ public class principal {
 		System.out.println(clienteLogeado.toString());
 		
 		lista = cuentaNeg.obtenerCuentasXIdCliente(clienteLogeado.getId());
-        
+        for(Cuenta cuenta : lista)
+        {
+        	System.out.println(cuenta.toString());
+        	
+        }
     
 
 	}

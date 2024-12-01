@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="entidad.Cliente" %>
+<%@ page import="entidad.Cuenta" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,6 +21,12 @@
         response.sendRedirect("Login.jsp");
         return;
       }
+      
+      List<Cuenta> listaDeOrigen = new ArrayList<Cuenta>();;
+      if(request.getAttribute("listaDeMisCuentas") != null)
+      {
+    	  listaDeOrigen = (List<Cuenta>) request.getAttribute("listaDeMisCuentas");
+      }
     %>
     
     <!-- Modal -->
@@ -33,7 +42,7 @@
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-		        <input type="submit" class="btn btn-primary" value="Transferir" name="btnModificarCuenta">
+		        <input type="submit" class="btn btn-primary" value="Transferir" name="btnTransferir">
 		      </div>
 		    </div>
 		  </div>
@@ -51,9 +60,11 @@
                 <div class="form-group">
                     <label for="cuentaOrigen">Cuenta de origen</label>
                     <select class="form-control" id="cuentaOrigen" required>
-                        <option value="">Selecciona una cuenta</option>
-                        <option value="1">Cuenta corriente - 1</option>
-                        <option value="3">Caja de ahorro - 3</option>
+                        <%if (listaDeOrigen != null){
+                    	for(Cuenta cuenta : listaDeOrigen){%>
+                    	<option value=<%=cuenta.getNroCuenta() %>><%=cuenta.toString() %></option>
+                    <%	}
+                      }%>
                     </select>
                 </div>
                 

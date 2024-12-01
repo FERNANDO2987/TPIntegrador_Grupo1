@@ -157,15 +157,14 @@ public class Cliente {
     public void setAdmin(Boolean admin) {
         this.admin = admin;
     }
-    
 
 	@Override
 	public String toString() {
-		return "Cliente [id=" + id + ", dni=" + dni + ", cuil=" + cuil + ", nombre=" + nombre + ", apellido=" + apellido
-				+ ", sexo=" + sexo + ", usuario=" + usuario + ", password=" + password + ", paisNacimiento="
-				+ paisNacimiento + ", fechaNacimiento=" + fechaNacimiento + ", correo=" + correo + ", telefono="
-				+ telefono + ", celular=" + celular + ", admin=" + admin + "]";
+		return "Cliente [dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + "]";
 	}
+    
+
+	
 	
 	    
 	    
