@@ -12,8 +12,6 @@ import java.util.List;
 import datos.PrestamoDao;
 import entidad.Cliente;
 import entidad.Cuenta;
-import entidad.Cuota;
-import entidad.Pais;
 import entidad.Prestamo;
 
 public class PrestamoDaoImpl  implements PrestamoDao{
@@ -201,7 +199,7 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	    cn = new Conexion();  
 	    cn.Open();  
 
-	    String query = "{CALL ObtenerDatosPrestamos()}"; // Llamada al procedimiento almacenado  
+	    String query = "{CALL ObtenerDatosPrestamos()}"; 
 
 	    try (CallableStatement stmt = cn.connection.prepareCall(query);  
 	         ResultSet rs = stmt.executeQuery()) {  
@@ -211,7 +209,7 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	            Cliente cliente = new Cliente();  
 	            Cuenta cuenta = new Cuenta();  
 
-	            // Asignar datos del ResultSet al objeto Cliente  
+	            
 	            cliente.setNombre(rs.getString("Nombre"));  
 	            cliente.setApellido(rs.getString("Apellido"));  
 	            cliente.setCorreo(rs.getString("Correo"));  
@@ -231,9 +229,17 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	            prestamo.setObservaciones(rs.getString("Observaciones"));  
 
   
-	            prestamo.setEstado(rs.getString("Estado").equals("Pendiente"));  
-
-	            // Agregar el prestamo a la lista  
+	            String estado = rs.getString("Estado");
+	            if ("Autorizado".equals(estado)) {
+	                prestamo.setEstado(true);  
+	            } else if ("Rechazado".equals(estado)) {
+	                prestamo.setEstado(false); 
+	            } else {
+	                prestamo.setEstado(false); 
+	            }
+ 
+	            
+	            
 	            prestamos.add(prestamo);  
 	        }  
 	    } catch (SQLException e) {  
@@ -244,6 +250,79 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 
 	    return prestamos;  
 	}
+
+	
+	@Override
+	public boolean aprobarPrestamo(int id, String comentario) {
+	    boolean estado = true;
+	    cn = new Conexion();
+	    cn.Open();
+	    
+	   
+	    String query = "UPDATE prestamos SET estado = 1, observaciones = ? WHERE id = ? ";   
+	    try (PreparedStatement stmt = cn.connection.prepareStatement(query)) {
+	       
+	        stmt.setString(1, comentario);
+	        stmt.setInt(2, id);            
+	        
+	   
+	        int rowsAffected = stmt.executeUpdate();
+	        
+	        if (rowsAffected == 0) {
+	            
+	            System.out.println("No se encontró un préstamo pendiente con ID: " + id);
+	            estado = false;
+	        } else {
+	            System.out.println("Préstamo con ID: " + id + " aprobado exitosamente.");
+	        }
+	    } catch (SQLException e) {
+	        estado = false;
+	        System.out.println("Error al aprobar el préstamo: " + e.getMessage());
+	        e.printStackTrace();
+	    } finally {
+	        cn.close();
+	    }
+	    
+	    return estado;
+	}
+	
+	
+	@Override
+	public boolean rechazarPrestamo(int id, String comentario) {
+	    boolean estado = true;
+	    cn = new Conexion();
+	    cn.Open();
+	    
+	  
+	    String query = "UPDATE prestamos SET estado = 0, observaciones = ? WHERE id = ? ";   
+	    
+	    try (PreparedStatement stmt = cn.connection.prepareStatement(query)) {
+	     
+	        stmt.setString(1, comentario); 
+	        stmt.setInt(2, id);           
+	        
+	        // Ejecutar la actualización
+	        int rowsAffected = stmt.executeUpdate();
+	        
+	        if (rowsAffected == 0) {
+	         
+	            System.out.println("No se encontró un préstamo pendiente con ID: " + id);
+	            estado = false;
+	        } else {
+	            System.out.println("Préstamo con ID: " + id + " rechazado exitosamente.");
+	        }
+	    } catch (SQLException e) {
+	        estado = false;
+	        System.out.println("Error al rechazado el préstamo: " + e.getMessage());
+	        e.printStackTrace();
+	    } finally {
+	        cn.close();
+	    }
+	    
+	    return estado;
+	}
+
+
 
 	
 	

@@ -4,7 +4,7 @@ package negocio;
 import java.util.List;
 
 
-import java.util.ArrayList;
+
 
 
 
@@ -15,11 +15,12 @@ public interface PrestamoNeg {
 	public boolean agregarPrestamo(Prestamo prestamo);
 	public Prestamo obtenerPrestamoxId(Long id);
 	public List<Prestamo> obtenerPrestamos();
-	public boolean aprobarPrestamo(Long id);
-	public boolean rechazarPrestamo(Long id);
+	public boolean aprobarPrestamoCliente(int id, String comentario);
+	public boolean rechazarPrestamoCliente(int id, String comentario);
+	public List<Prestamo> obtenerDatosPrestamosCliente();
 
 	
-	 public ArrayList<Prestamo> listarPrestamos();
+
 
 
 }

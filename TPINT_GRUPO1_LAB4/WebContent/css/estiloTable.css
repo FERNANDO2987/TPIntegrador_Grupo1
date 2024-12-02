@@ -1,0 +1,51 @@
+@charset "ISO-8859-1";
+
+  .container {  
+            margin-left: 0; /* Elimina margen izquierdo */  
+            padding-left: 0; /* Elimina padding izquierdo */  
+        }  
+
+        .dataTables_wrapper {  
+            margin-top: 20px; /* Espacio superior para el contenedor DataTables */  
+        }  
+
+        .dataTables_filter {  
+            display: flex;  
+            align-items: center;  
+            margin-bottom: 20px;  
+        }  
+
+        .dataTables_filter label {  
+            margin-right: 10px;  
+            font-weight: bold;  
+        }  
+
+        .dataTables_filter input {  
+            width: 200px; /* Ancho ajustado */  
+            height: 30px; /* Altura ajustada */  
+            padding: 5px;  
+            border: 1px solid #ccc; /* Borde gris claro */  
+            border-radius: 15px; /* Bordes redondeados */  
+            font-size: 14px; /* Tamaño de fuente ajustado */  
+            transition: border-color 0.3s; /* Transición para el borde */  
+        }  
+
+        .dataTables_filter input:focus {  
+            border-color: #007bff; /* Borde azul al enfocar */  
+            outline: none; /* Sin borde de enfoque */  
+        }  
+
+        /* Estilos para mover la paginación a la izquierda */  
+        .dataTables_wrapper .dataTables_paginate {  
+            float: left; /* Mueve la paginación hacia la izquierda */  
+            margin-top: 10px; /* Espacio superior opcional */  
+        }  
+
+        .dataTables_wrapper .dataTables_length {  
+            float: left; /* Asegura que la opción de longitud también flote a la izquierda */  
+            margin-right: 20px; /* Espacio a la derecha de la opción de longitud */  
+        }  
+
+        .dataTables_wrapper .dataTables_filter {  
+            float: right; /* Mueve el campo de búsqueda a la derecha */  
+        }  

@@ -3,14 +3,14 @@ DELIMITER $$
 
 CREATE PROCEDURE ObtenerDatosPrestamos()
 BEGIN  
-     SELECT   
-        p.id AS id,  -- Se agrega el ID del préstamo  
+    SELECT   
+        p.id AS id,  
         cl.nombre AS Nombre,  
         cl.apellido AS Apellido,  
         ct.correo AS Correo,  
         ct.telefono AS Telefono,  
         cu.cbu AS CBU,  
-        c.monto AS Monto,   -- Aquí estamos seleccionando 'monto' de la tabla 'Cuotas'  
+        c.monto AS Monto,  
         p.cuotas AS Cuotas,  
         c.nro_cuota AS NumeroCuota,  
         p.fecha_solicitud AS FechaSolicitud,  
@@ -18,11 +18,12 @@ BEGIN
         p.cuotas AS TotalCuotas,  
         p.observaciones AS Observaciones,  
         CASE   
-            WHEN p.estado = 1 THEN 'Pendiente'  
-            ELSE 'Autorizado'  
-        END AS Estado  
+    WHEN p.estado = 0 THEN 'Rechazado'  
+    WHEN p.estado = 1 THEN 'Autorizado'  
+    ELSE 'Pendiente'  
+END AS Estado
     FROM   
-       bdbanco.prestamos p  
+        bdbanco.prestamos p  
     JOIN   
         bdbanco.clientes cl ON p.id_cliente = cl.id  
     JOIN   
@@ -32,9 +33,10 @@ BEGIN
     LEFT JOIN   
         bdbanco.cuotas c ON p.id = c.id_prestamo AND c.deleted = 0  
     WHERE   
-        p.deleted = 0;
+        p.deleted = 0  
+    ORDER BY   
+        p.fecha_solicitud DESC;  -- Ordenar por fecha de solicitud, más reciente primero  
 END$$
-
 
 CREATE PROCEDURE ObtenerClientePorId(
     IN Id INT
@@ -43,9 +45,9 @@ BEGIN
     SELECT 
         c.Id, c.Dni, c.Cuil, c.Nombre, c.Apellido, c.Sexo, c.Usuario, c.Password,
         p.Id AS PaisNacimientoId, p.Nombre AS PaisNacimientoNombre,
-        c.FechaNacimiento, c.Correo, c.Telefono, c.Celular, c.Admin
+        c.fecha_nacimiento, c.Correo, c.Telefono, c.Celular, c.Admin
     FROM Clientes c
-    LEFT JOIN Paises p ON c.PaisNacimiento = p.Id
+    LEFT JOIN Paises p ON c.pais = p.Id
     WHERE c.Id = Id AND c.deleted = 0;
 END$$
 
@@ -223,7 +225,7 @@ BEGIN
 END$$
 
 
-CREATE PROCEDURE `ObtenerClientes`()
+CREATE PROCEDURE ObtenerClientes()
 BEGIN
     SELECT 
         c.Id,
@@ -245,11 +247,11 @@ BEGIN
         clientes c
     LEFT JOIN 
         paises p ON c.pais = p.Id;
-END
+END$$
 
 
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `EliminarCliente`(
+CREATE PROCEDURE EliminarCliente(
     IN p_id INT
 )
 BEGIN
@@ -266,7 +268,52 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'El cliente no existe o ya fue eliminado.';
     END IF;
-END
+END$$
+
+-- Recibir Cuenta Origen, Cuenta Destino, Monto
+CREATE PROCEDURE transferir(IN cuentaOrigen INT, IN cuentaDestino INT, IN monto DECIMAL, IN detalleTransferencia VARCHAR(255))
+BEGIN
+	DECLARE saldoOrigen DECIMAL DEFAULT 0;
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+		SELECT 'Ocurrio un error' AS mensaje;
+	END;
+    -- Iniciar la transaccion
+    START TRANSACTION;
+		SELECT saldo FROM cuentas WHERE cuentas.nro_cuenta = CuentaOrigen INTO saldoOrigen;
+	-- Chequear que el Origen tenga el Monto
+        IF (saldoOrigen - monto) >= 0 THEN
+			-- Dar de Baja Origen (Movimiento e impacto en Saldo)
+            INSERT INTO movimientos (fecha, detalle, importe, tipo_movimiento, nro_cuenta, estado, deleted) values
+            (CURDATE(), detalleTransferencia, (monto * -1), 4, cuentaOrigen, 1, 0);
+            UPDATE cuentas SET saldo = saldo - monto where cuentas.nro_cuenta = cuentaOrigen;
+            -- Dar de Alta Destino (Movimiento e impacto en Saldo)
+            INSERT INTO movimientos (fecha, detalle, importe, tipo_movimiento, nro_cuenta, estado, deleted) values
+            (CURDATE(), detalleTransferencia, monto, 4, cuentaDestino, 1, 0);
+            UPDATE cuentas SET saldo = saldo + monto where cuentas.nro_cuenta = cuentaDestino;
+        END IF;
+    COMMIT;
+END;
+$$
+
+CREATE PROCEDURE ObtenerCuentasXIdCliente(IN idCliente INT)
+BEGIN
+	SELECT * FROM cuentas LEFT JOIN tiposcuenta ON tiposcuenta.id = cuentas.id_tipo_cuenta WHERE cuentas.id_cliente = idCliente;
+END;
+$$
+
+CREATE PROCEDURE obtenerClienteXUsuario(IN usuarioElegido VARCHAR(255))
+BEGIN
+	 SELECT 
+        c.Id, c.Dni, c.Cuil, c.Nombre,
+        c.Apellido, c.Sexo, c.Usuario, c.Password,
+        c.pais, c.fecha_nacimiento, c.Correo, c.Telefono,
+        c.Celular, c.Admin, c.deleted as borrado
+    FROM Clientes c
+    WHERE c.Usuario = usuarioElegido;
+END;
+$$
 
 DELIMITER ;
 

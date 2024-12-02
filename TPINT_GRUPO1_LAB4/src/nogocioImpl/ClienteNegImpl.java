@@ -65,5 +65,11 @@ private ClienteDao  clienteDao = new ClienteDaoImpl();
 		return clienteDao.darDeBajaCliente(idCliente);
 		
 	}
+
+
+	@Override
+	public Cliente obtenerClientePorUsuario(String usuario) {
+		return clienteDao.obtenerClientePorUsuario(usuario);
+	}
 	
 }

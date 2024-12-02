@@ -129,7 +129,7 @@
                       <a
                         href="ListarPrestamos.jsp"
                         class="text-decoration-none"
-                        >Listar Prestamos Solicitados</a
+                        >Listar Prestamos Solicitados - Autorizar/Rechazar</a
                       >
                     </li>
                   </ul>
@@ -187,6 +187,24 @@
                         class="text-decoration-none"
                         >Ver Cuentas Asociadas</a
                       >
+                    </li>
+                  </ul>
+                </li>
+                
+                <li class="list-group-item">
+                  Transferencias
+                  <ul>
+                    <li>
+                      <a
+                        href="servletTransferencia"
+                        class="text-decoration-none"
+                        >Transferir a una cuenta externa</a>
+                    </li>
+                    <li>
+                      <a
+                        href="servletTransferenciaEntreCuentas"
+                        class="text-decoration-none"
+                        >Transferir a mis cuentas</a>
                     </li>
                   </ul>
                 </li>

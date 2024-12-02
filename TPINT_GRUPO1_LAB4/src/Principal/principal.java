@@ -1,45 +1,27 @@
 package Principal;
 
-import java.util.List;
+import java.time.LocalDate;
 
-import datosImpl.PrestamoDaoImpl;
-
-import entidad.Prestamo;
+import datosImpl.InformesDaoImpl;
+import entidad.Movimiento;
+import entidad.ReporteMovimientos;
 
 public class principal {
 
 	public static void main(String[] args) {
 
-	  
-        PrestamoDaoImpl prestamoDao = new PrestamoDaoImpl();  
 
-      
-        try {  
-            List<Prestamo> prestamos = prestamoDao.obtenerDatosPrestamos();  
+		  InformesDaoImpl movimientoDao = new InformesDaoImpl();
+	        LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
+	        LocalDate fechaFin = LocalDate.of(2024, 12, 31);
 
-          
-            if (prestamos != null && !prestamos.isEmpty()) {  
-               
-                for (Prestamo prestamo : prestamos) {  
-                    System.out.println("ID: " + prestamo.getId());  
-                    System.out.println("Nombre: " + prestamo.getCliente().getNombre());  
-                    System.out.println("Apellido: " + prestamo.getCliente().getApellido());  
-                    System.out.println("Monto: " + prestamo.getImporte());  
-                    System.out.println("Cuotas: " + prestamo.getCuotas());  
-                    System.out.println("Estado: " + (prestamo.isEstado() ? "Pendiente" : "Autorizado"));  
-                    System.out.println("Observaciones: " + prestamo.getObservaciones());  
-                    System.out.println("-----------------------------");  
-                }  
-            } else {  
-                System.out.println("No se encontraron préstamos.");  
-            }  
-        } catch (Exception e) {  
-             
-            System.err.println("Error al obtener los datos de préstamos: " + e.getMessage());  
-            e.printStackTrace();  
-        }  
+	        ReporteMovimientos reporte = movimientoDao.generarReporteMovimientos(fechaInicio, fechaFin);
 
-    
+	        if (reporte != null) {
+	            System.out.println("Reporte generado: " + reporte);
+	        } else {
+	            System.out.println("No se pudo generar el reporte.");
+	        }
 
 	}
 }
