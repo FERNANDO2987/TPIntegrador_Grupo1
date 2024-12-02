@@ -1,16 +1,16 @@
 DELIMITER $$
 
 
-CREATE PROCEDURE ObtenerDatosPrestamos()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerDatosPrestamos`()
 BEGIN  
-     SELECT   
-        p.id AS id,  -- Se agrega el ID del préstamo  
+    SELECT   
+        p.id AS id,  
         cl.nombre AS Nombre,  
         cl.apellido AS Apellido,  
         ct.correo AS Correo,  
         ct.telefono AS Telefono,  
         cu.cbu AS CBU,  
-        c.monto AS Monto,   -- Aquí estamos seleccionando 'monto' de la tabla 'Cuotas'  
+        c.monto AS Monto,  
         p.cuotas AS Cuotas,  
         c.nro_cuota AS NumeroCuota,  
         p.fecha_solicitud AS FechaSolicitud,  
@@ -18,11 +18,12 @@ BEGIN
         p.cuotas AS TotalCuotas,  
         p.observaciones AS Observaciones,  
         CASE   
-            WHEN p.estado = 1 THEN 'Pendiente'  
-            ELSE 'Autorizado'  
-        END AS Estado  
+    WHEN p.estado = 0 THEN 'Rechazado'  
+    WHEN p.estado = 1 THEN 'Autorizado'  
+    ELSE 'Pendiente'  
+END AS Estado
     FROM   
-       bdbanco.prestamos p  
+        bdbanco.prestamos p  
     JOIN   
         bdbanco.clientes cl ON p.id_cliente = cl.id  
     JOIN   
@@ -32,7 +33,9 @@ BEGIN
     LEFT JOIN   
         bdbanco.cuotas c ON p.id = c.id_prestamo AND c.deleted = 0  
     WHERE   
-        p.deleted = 0;
+        p.deleted = 0  
+    ORDER BY   
+        p.fecha_solicitud DESC;  -- Ordenar por fecha de solicitud, más reciente primero  
 END$$
 
 
