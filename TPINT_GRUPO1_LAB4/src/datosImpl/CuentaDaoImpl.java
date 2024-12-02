@@ -227,6 +227,7 @@ public class CuentaDaoImpl implements CuentaDao {
 		return lista;
 	}
 	
+	@Override
 	public List<Cuenta> obtenerCuentasXIdCliente(int id) {
 		List<Cuenta> lista = new ArrayList<Cuenta>();
 		cn = new Conexion();
