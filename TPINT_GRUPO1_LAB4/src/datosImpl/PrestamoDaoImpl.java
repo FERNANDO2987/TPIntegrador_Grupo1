@@ -12,8 +12,6 @@ import java.util.List;
 import datos.PrestamoDao;
 import entidad.Cliente;
 import entidad.Cuenta;
-import entidad.Cuota;
-import entidad.Pais;
 import entidad.Prestamo;
 
 public class PrestamoDaoImpl  implements PrestamoDao{
@@ -231,9 +229,17 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	            prestamo.setObservaciones(rs.getString("Observaciones"));  
 
   
-	            prestamo.setEstado(rs.getString("Estado").equals("Pendiente"));  
-
-	            // Agregar el prestamo a la lista  
+	            String estado = rs.getString("Estado");
+	            if ("Autorizado".equals(estado)) {
+	                prestamo.setEstado(true);  // Autorizado se mapea como true
+	            } else if ("Rechazado".equals(estado)) {
+	                prestamo.setEstado(false); // Rechazado se mapea como false
+	            } else {
+	                prestamo.setEstado(false); // Pendiente también se maneja como false
+	            }
+ 
+	            
+	            
 	            prestamos.add(prestamo);  
 	        }  
 	    } catch (SQLException e) {  
@@ -244,6 +250,80 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 
 	    return prestamos;  
 	}
+
+	
+	@Override
+	public boolean aprobarPrestamo(int id, String comentario) {
+	    boolean estado = true;
+	    cn = new Conexion();
+	    cn.Open();
+	    
+	    // SQL para actualizar el estado y agregar el comentario
+	    String query = "UPDATE prestamos SET estado = 1, observaciones = ? WHERE id = ? ";   // Solo actualiza si el estado es 'Pendiente'
+	    
+	    try (PreparedStatement stmt = cn.connection.prepareStatement(query)) {
+	        // Establecer los parámetros
+	        stmt.setString(1, comentario); // Agregar el comentario
+	        stmt.setInt(2, id);            // El ID del préstamo
+	        
+	        // Ejecutar la actualización
+	        int rowsAffected = stmt.executeUpdate();
+	        
+	        if (rowsAffected == 0) {
+	            // Si no se actualizó ninguna fila, significa que el préstamo ya estaba aprobado o no existe
+	            System.out.println("No se encontró un préstamo pendiente con ID: " + id);
+	            estado = false;
+	        } else {
+	            System.out.println("Préstamo con ID: " + id + " aprobado exitosamente.");
+	        }
+	    } catch (SQLException e) {
+	        estado = false;
+	        System.out.println("Error al aprobar el préstamo: " + e.getMessage());
+	        e.printStackTrace();
+	    } finally {
+	        cn.close();
+	    }
+	    
+	    return estado;
+	}
+	
+	
+	@Override
+	public boolean rechazarPrestamo(int id, String comentario) {
+	    boolean estado = true;
+	    cn = new Conexion();
+	    cn.Open();
+	    
+	    // SQL para actualizar el estado y agregar el comentario
+	    String query = "UPDATE prestamos SET estado = 0, observaciones = ? WHERE id = ? ";   // Solo actualiza si el estado es 'Pendiente'
+	    
+	    try (PreparedStatement stmt = cn.connection.prepareStatement(query)) {
+	        // Establecer los parámetros
+	        stmt.setString(1, comentario); // Agregar el comentario
+	        stmt.setInt(2, id);            // El ID del préstamo
+	        
+	        // Ejecutar la actualización
+	        int rowsAffected = stmt.executeUpdate();
+	        
+	        if (rowsAffected == 0) {
+	            // Si no se actualizó ninguna fila, significa que el préstamo ya estaba aprobado o no existe
+	            System.out.println("No se encontró un préstamo pendiente con ID: " + id);
+	            estado = false;
+	        } else {
+	            System.out.println("Préstamo con ID: " + id + " rechazado exitosamente.");
+	        }
+	    } catch (SQLException e) {
+	        estado = false;
+	        System.out.println("Error al rechazado el préstamo: " + e.getMessage());
+	        e.printStackTrace();
+	    } finally {
+	        cn.close();
+	    }
+	    
+	    return estado;
+	}
+
+
 
 	
 	

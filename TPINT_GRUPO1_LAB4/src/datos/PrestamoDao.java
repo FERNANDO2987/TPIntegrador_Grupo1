@@ -12,6 +12,8 @@ public interface PrestamoDao {
 	public boolean aprobarPrestamo(Long id);
 	public boolean rechazarPrestamo(Long id);
 	public List<Prestamo> obtenerDatosPrestamos();
+	public boolean aprobarPrestamo(int id, String comentario);
+	public boolean rechazarPrestamo(int id, String comentario);
 	
 	
 }
