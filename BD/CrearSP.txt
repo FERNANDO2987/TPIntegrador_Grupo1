@@ -1,7 +1,7 @@
 DELIMITER $$
 
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerDatosPrestamos`()
+CREATE PROCEDURE ObtenerDatosPrestamos()
 BEGIN  
     SELECT   
         p.id AS id,  
@@ -37,7 +37,6 @@ END AS Estado
     ORDER BY   
         p.fecha_solicitud DESC;  -- Ordenar por fecha de solicitud, más reciente primero  
 END$$
-
 
 CREATE PROCEDURE ObtenerClientePorId(
     IN Id INT
