@@ -269,3 +269,32 @@ BEGIN
 END
 
 DELIMITER ;
+
+-- Listar cuentas por cliente
+
+USE `bdbanco`;
+DROP procedure IF EXISTS `bdbanco`.`ListarCuentasXCliente`;
+;
+
+DELIMITER $$
+USE `bdbanco`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ListarCuentasXCliente`(
+	IN p_IdCliente INT
+)
+BEGIN
+	SELECT nro_cuenta, 
+    id_cliente, 
+    fecha_creacion, 
+    id_tipo_cuenta, 
+    tiposcuenta.descripcion AS descripcion,
+    cbu, 
+    saldo, 
+    cuentas.deleted AS borrado 
+	FROM cuentas 
+	LEFT JOIN tiposcuenta ON tiposcuenta.id = id_tipo_cuenta 
+    where cuentas.deleted = 0 and p_IdCliente = id_cliente;
+    
+END$$
+
+DELIMITER ;
+;
