@@ -39,21 +39,21 @@ public class servletRechazarPrestamo extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		if (request.getParameter("btnRechazar") != null) 
-		{
-	        System.out.println("Botón Rechazar fue presionadoooooooooooooooo");
-	        Long id = Long.parseLong(request.getParameter("id"));
-            dao.rechazarPrestamo(id);
-            response.sendRedirect(request.getContextPath() + "/servletListarPrestamos?btnListarPrestamos=Traer+prestamos");
-		}
-		if (request.getParameter("btnAceptar") != null) 
-		{
-	        System.out.println("Botón Aceptar fue presionadooooooooooooooo");
-	        Long id = Long.parseLong(request.getParameter("id"));
-            dao.aprobarPrestamo(id);
-            response.sendRedirect(request.getContextPath() + "/servletListarPrestamos?btnListarPrestamos=Traer+prestamos");
-		}
-		doGet(request, response);
+//		if (request.getParameter("btnRechazar") != null) 
+//		{
+//	        System.out.println("Botón Rechazar fue presionadoooooooooooooooo");
+//	        Long id = Long.parseLong(request.getParameter("id"));
+//            dao.rechazarPrestamo(id);
+//            response.sendRedirect(request.getContextPath() + "/servletListarPrestamos?btnListarPrestamos=Traer+prestamos");
+//		}
+//		if (request.getParameter("btnAceptar") != null) 
+//		{
+//	        System.out.println("Botón Aceptar fue presionadooooooooooooooo");
+//	        Long id = Long.parseLong(request.getParameter("id"));
+//            dao.aprobarPrestamo(id);
+//            response.sendRedirect(request.getContextPath() + "/servletListarPrestamos?btnListarPrestamos=Traer+prestamos");
+//		}
+//		doGet(request, response);
 	}
 
 }

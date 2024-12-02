@@ -3,116 +3,57 @@ package nogocioImpl;
 
 import java.util.List;
 
-
-import java.util.ArrayList;
-
-import datos.PrestamoDao;
-
 import datosImpl.PrestamoDaoImpl;
 import entidad.Prestamo;
 import negocio.PrestamoNeg;
 
-//
-//public class PrestamoNegImpl implements PrestamoNeg{
-//
-//	PrestamoDaoImpl dao = new PrestamoDaoImpl();
-//	
-//	@Override
-//	public boolean agregarPrestamo(Prestamo prestamo) {
-//		return dao.agregarPrestamo(prestamo);
-//	}
-//
-//	@Override
-//	public Prestamo obtenerPrestamoxId(Long id) {
-//		return (Prestamo)dao.obtenerPrestamoxId(id);
-//	}
-//
-//	@Override
-//	public List<Prestamo> obtenerPrestamos() {
-//		return (List<Prestamo>)dao.obtenerPrestamos();
-//	}
-//
-//	@Override
-//	public boolean aprobarPrestamo(Long id) {
-//		return dao.aprobarPrestamo(id);
-//	}
-//
-//	@Override
-//	public boolean rechazarPrestamo(Long id) {
-//		return dao.rechazarPrestamo(id);
-//	}
 
-	@Override
-	public ArrayList<Prestamo> listarPrestamos() {
-		return (ArrayList<Prestamo>) dao.obtenerDatosPrestamos();
-		
-	}
-}
-/*
-public class PrestamoNegImpl implements PrestamoNeg {
-	
-	
-private PrestamoDao  prestamoDao = new PrestamoDaoImpl();
-	
-	public  PrestamoNegImpl(PrestamoDao prestamoDao)
-	{
-		this.prestamoDao = prestamoDao;
-	}
-	
-	
-	public PrestamoNegImpl()
-	{
-		
-	}
-	
+public class PrestamoNegImpl implements PrestamoNeg{
 
-	
-	@Override
-	public ArrayList<Prestamo> listarPrestamos() {
-		 return (ArrayList<Prestamo>) prestamoDao.obtenerDatosPrestamos();
-		
-	}
-
+	PrestamoDaoImpl dao = new PrestamoDaoImpl();
 
 	@Override
 	public boolean agregarPrestamo(Prestamo prestamo) {
 		// TODO Auto-generated method stub
-		return false;
+		return dao.agregarPrestamo(prestamo);
 	}
-
 
 	@Override
 	public Prestamo obtenerPrestamoxId(Long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.obtenerPrestamoxId(id);
 	}
-
 
 	@Override
 	public List<Prestamo> obtenerPrestamos() {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.obtenerPrestamos();
 	}
-
 
 	@Override
 	public boolean aprobarPrestamoCliente(int id, String comentario) {
 		// TODO Auto-generated method stub
-		return prestamoDao.aprobarPrestamo(id, comentario);
+		return dao.aprobarPrestamo(id, comentario);
 	}
-
 
 	@Override
 	public boolean rechazarPrestamoCliente(int id, String comentario) {
 		// TODO Auto-generated method stub
-		return prestamoDao.rechazarPrestamo(id, comentario);
+		return dao.rechazarPrestamo(id, comentario);
+	}
+
+	@Override
+	public List<Prestamo> obtenerDatosPrestamosCliente() {
+		
+		return dao.obtenerDatosPrestamos();
 	}
 
 
 
-}
-<<<<<<< Updated upstream
-*/
-=======
 
->>>>>>> Stashed changes
+
+
+
+
+
+}
