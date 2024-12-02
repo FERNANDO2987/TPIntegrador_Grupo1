@@ -41,9 +41,9 @@ public class CuentaNegImpl implements CuentaNeg{
 	}
 
 	@Override
-	public List<Cuenta> obtenerCuentasXIdCliente(int idCliente) {
+	public List<Cuenta> obtenerCuentasXIdCliente_2(int idCliente) {
 		CuentaDao cuentaDao = new CuentaDaoImpl();
-		List<Cuenta> lista = cuentaDao.obtenerCuentasXIdCliente(idCliente);
+		List<Cuenta> lista = cuentaDao.obtenerCuentasXIdCliente_2(idCliente);
 		return lista;
 	}
 

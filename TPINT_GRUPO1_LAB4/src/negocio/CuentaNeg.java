@@ -11,6 +11,6 @@ public interface CuentaNeg {
 	public boolean modificarCuenta(Cuenta cuenta);
 	public boolean darDeBajaCuenta(Long nroCuenta);
 	public Cuenta obtenerCuentaXNroCuenta(Long nroCuenta);
-	public List<Cuenta> obtenerCuentasXIdCliente(int idCliente);
+	public List<Cuenta> obtenerCuentasXIdCliente_2(int idCliente);
 	
 }

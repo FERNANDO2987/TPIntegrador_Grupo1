@@ -38,7 +38,7 @@ public class servletListarCuentasXCliente extends HttpServlet {
 			int idCliente = Integer.parseInt(request.getParameter("idusuario"));
 			CuentaNeg cuentaNeg = new CuentaNegImpl();
 			List<Cuenta> listado = new ArrayList<Cuenta>();
-			listado = cuentaNeg.obtenerCuentasXIdCliente(idCliente);
+			listado = cuentaNeg.obtenerCuentasXIdCliente_2(idCliente);
 			
 			request.setAttribute("listado", listado);
 			request.getRequestDispatcher("VerCuentasAsociadas.jsp").forward(request, response);

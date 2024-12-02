@@ -181,7 +181,7 @@ public class CuentaDaoImpl implements CuentaDao {
 	}
 
 	@Override
-	public List<Cuenta> obtenerCuentasXIdCliente(int idCliente) {
+	public List<Cuenta> obtenerCuentasXIdCliente_2(int idCliente) {
 		List<Cuenta> lista = new ArrayList<Cuenta>();
 		cn = new Conexion();
 		cn.Open();
