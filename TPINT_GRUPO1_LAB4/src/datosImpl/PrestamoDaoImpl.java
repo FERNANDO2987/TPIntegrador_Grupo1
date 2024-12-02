@@ -199,7 +199,7 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	    cn = new Conexion();  
 	    cn.Open();  
 
-	    String query = "{CALL ObtenerDatosPrestamos()}"; // Llamada al procedimiento almacenado  
+	    String query = "{CALL ObtenerDatosPrestamos()}"; 
 
 	    try (CallableStatement stmt = cn.connection.prepareCall(query);  
 	         ResultSet rs = stmt.executeQuery()) {  
@@ -209,7 +209,7 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	            Cliente cliente = new Cliente();  
 	            Cuenta cuenta = new Cuenta();  
 
-	            // Asignar datos del ResultSet al objeto Cliente  
+	            
 	            cliente.setNombre(rs.getString("Nombre"));  
 	            cliente.setApellido(rs.getString("Apellido"));  
 	            cliente.setCorreo(rs.getString("Correo"));  
@@ -231,11 +231,11 @@ public class PrestamoDaoImpl  implements PrestamoDao{
   
 	            String estado = rs.getString("Estado");
 	            if ("Autorizado".equals(estado)) {
-	                prestamo.setEstado(true);  // Autorizado se mapea como true
+	                prestamo.setEstado(true);  
 	            } else if ("Rechazado".equals(estado)) {
-	                prestamo.setEstado(false); // Rechazado se mapea como false
+	                prestamo.setEstado(false); 
 	            } else {
-	                prestamo.setEstado(false); // Pendiente también se maneja como false
+	                prestamo.setEstado(false); 
 	            }
  
 	            
@@ -258,19 +258,18 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	    cn = new Conexion();
 	    cn.Open();
 	    
-	    // SQL para actualizar el estado y agregar el comentario
-	    String query = "UPDATE prestamos SET estado = 1, observaciones = ? WHERE id = ? ";   // Solo actualiza si el estado es 'Pendiente'
-	    
+	   
+	    String query = "UPDATE prestamos SET estado = 1, observaciones = ? WHERE id = ? ";   
 	    try (PreparedStatement stmt = cn.connection.prepareStatement(query)) {
-	        // Establecer los parámetros
-	        stmt.setString(1, comentario); // Agregar el comentario
-	        stmt.setInt(2, id);            // El ID del préstamo
+	       
+	        stmt.setString(1, comentario);
+	        stmt.setInt(2, id);            
 	        
-	        // Ejecutar la actualización
+	   
 	        int rowsAffected = stmt.executeUpdate();
 	        
 	        if (rowsAffected == 0) {
-	            // Si no se actualizó ninguna fila, significa que el préstamo ya estaba aprobado o no existe
+	            
 	            System.out.println("No se encontró un préstamo pendiente con ID: " + id);
 	            estado = false;
 	        } else {
@@ -294,19 +293,19 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	    cn = new Conexion();
 	    cn.Open();
 	    
-	    // SQL para actualizar el estado y agregar el comentario
-	    String query = "UPDATE prestamos SET estado = 0, observaciones = ? WHERE id = ? ";   // Solo actualiza si el estado es 'Pendiente'
+	  
+	    String query = "UPDATE prestamos SET estado = 0, observaciones = ? WHERE id = ? ";   
 	    
 	    try (PreparedStatement stmt = cn.connection.prepareStatement(query)) {
-	        // Establecer los parámetros
-	        stmt.setString(1, comentario); // Agregar el comentario
-	        stmt.setInt(2, id);            // El ID del préstamo
+	     
+	        stmt.setString(1, comentario); 
+	        stmt.setInt(2, id);           
 	        
 	        // Ejecutar la actualización
 	        int rowsAffected = stmt.executeUpdate();
 	        
 	        if (rowsAffected == 0) {
-	            // Si no se actualizó ninguna fila, significa que el préstamo ya estaba aprobado o no existe
+	         
 	            System.out.println("No se encontró un préstamo pendiente con ID: " + id);
 	            estado = false;
 	        } else {

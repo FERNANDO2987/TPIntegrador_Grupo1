@@ -29,7 +29,7 @@ public class servletAutorizarPrestamo extends HttpServlet {
 	
 	 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -41,8 +41,7 @@ public class servletAutorizarPrestamo extends HttpServlet {
 
 	        if (comentarios == null || comentarios.trim().isEmpty()) {
 	            request.setAttribute("errorMessage", "El campo de comentarios es obligatorio.");
-	            request.getRequestDispatcher("ListarPrestamos.jsp").forward(request, response);  // Redirigir de vuelta al formulario
-	            return;  // Terminar ejecución del método
+	            request.getRequestDispatcher("ListarPrestamos.jsp").forward(request, response); 
 	        }
 	        
 	        
@@ -54,7 +53,7 @@ public class servletAutorizarPrestamo extends HttpServlet {
 	            request.setAttribute("errorMessage", "Error al autorizar el préstamo.");
 	        }
 
-	        // Redirige al JSP con la lista de préstamos actualizada
+	
 	        request.getRequestDispatcher("ListarPrestamos.jsp").forward(request, response);
 		
 	}

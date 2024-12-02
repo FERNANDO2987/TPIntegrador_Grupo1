@@ -129,7 +129,7 @@
                       <a
                         href="ListarPrestamos.jsp"
                         class="text-decoration-none"
-                        >Listar Prestamos Solicitados</a
+                        >Listar Prestamos Solicitados - Autorizar/Rechazar</a
                       >
                     </li>
                   </ul>

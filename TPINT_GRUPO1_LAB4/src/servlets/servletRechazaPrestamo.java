@@ -45,8 +45,8 @@ public class servletRechazaPrestamo extends HttpServlet {
 	       
 	        if (comentarios == null || comentarios.trim().isEmpty()) {
 	            request.setAttribute("errorMessage", "El campo de comentarios es obligatorio.");
-	            request.getRequestDispatcher("ListarPrestamos.jsp").forward(request, response);  // Redirigir de vuelta al formulario
-	            return;  // Terminar ejecución del método
+	            request.getRequestDispatcher("ListarPrestamos.jsp").forward(request, response);  
+	            return;  
 	        }
 	        
 	        
@@ -58,7 +58,7 @@ public class servletRechazaPrestamo extends HttpServlet {
 	            request.setAttribute("errorMessage", "Error al Rechazado el préstamo.");
 	        }
 
-	        // Redirige al JSP con la lista de préstamos actualizada
+	        
 	        request.getRequestDispatcher("ListarPrestamos.jsp").forward(request, response);
 
 	}
