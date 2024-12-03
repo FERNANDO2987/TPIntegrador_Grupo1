@@ -30,8 +30,6 @@ public class servletTransferencia extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try 
-		{
 			CuentaNeg cuentaNeg = new CuentaNegImpl();
 			ClienteNeg clienteNeg = new ClienteNegImpl();
 			List<Cuenta> lista = new ArrayList<Cuenta>();
@@ -41,20 +39,13 @@ public class servletTransferencia extends HttpServlet {
 			
 			lista = cuentaNeg.obtenerCuentasXIdCliente(clienteLogeado.getId());
 			request.setAttribute("listaDeMisCuentas", lista);
-			request.getRequestDispatcher("TransferirAOtroCliente.jsp").forward(request, response);
-		} 
-		catch (Exception e) 
-		{
-			request.setAttribute("error", e.getMessage());
-			request.getRequestDispatcher("error.jsp").forward(request, response);
-		}		
+			request.getRequestDispatcher("TransferirAOtroCliente.jsp").forward(request, response);	
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try 
-		{
-			if(request.getAttribute("btnTransferir")!= null)
+			if(request.getParameter("btnTransferir") != null)
 			{
+				System.out.println("ejecute el if");
 				CuentaNeg cuentaNeg = new CuentaNegImpl();
 				
 				int cuentaOrigen;
@@ -62,9 +53,9 @@ public class servletTransferencia extends HttpServlet {
 				BigDecimal monto;
 				String detalle;
 				
-				cuentaOrigen = request.getParameter("cuentaOrigen") != null ? Integer.parseInt(request.getParameter("cuentaOrigen")) : null;
+				cuentaOrigen = request.getParameter("cuentaOrigen") != null ? Integer.parseInt(request.getParameter("cuentaOrigen")) : -1;
 				cuentaDestino = request.getParameter("cbuDestino") != null ? request.getParameter("cbuDestino") : "";
-				monto = request.getParameter("monto") != null ? new BigDecimal(request.getParameter("monto")) : null;
+				monto = request.getParameter("monto") != null ? new BigDecimal(request.getParameter("monto")) : new BigDecimal(0);
 				detalle = request.getParameter("descripcion") != null ? request.getParameter("descripcion") : "";
 				Transferencia transferencia = new Transferencia();
 				
@@ -76,14 +67,7 @@ public class servletTransferencia extends HttpServlet {
 				TransferenciaNeg transferenciaNeg = new TransferenciaNegImpl();
 				transferenciaNeg.agregarTransferencia(transferencia);
 				request.getRequestDispatcher("TransferirAOtroCliente.jsp").forward(request, response);
-				
 			}
-		}
-		catch (Exception e) 
-		{
-			request.setAttribute("error", e.getMessage());
-			request.getRequestDispatcher("error.jsp").forward(request, response);
-		}	
 	}
 
 }

@@ -11,6 +11,8 @@ public class Transferencia {
 	
 	public Transferencia() {
 		super();
+		cuentaOrigen = new Cuenta();
+		cuentaDestino = new Cuenta();
 	}
 	
 	public Cuenta getCuentaOrigen() {

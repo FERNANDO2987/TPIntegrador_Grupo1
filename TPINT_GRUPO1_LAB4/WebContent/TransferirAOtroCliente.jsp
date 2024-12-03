@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="t1ext/html; charset=ISO-8859-1">
-<title>Transferencia a Cuentas Externas</title>
+<title>Transferencia</title>
 	<!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Icono -->
@@ -56,10 +56,9 @@
     
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form>
                 <div class="form-group">
                     <label for="cuentaOrigen">Cuenta de origen</label>
-                    <select class="form-control" id="cuentaOrigen" required>
+                    <select class="form-control" id="cuentaOrigen" name="cuentaOrigen" required>
                         <%if (listaDeOrigen != null){
                     	for(Cuenta cuenta : listaDeOrigen){%>
                     	<option value=<%=cuenta.getNroCuenta() %>><%=cuenta.toString() %></option>
@@ -70,26 +69,25 @@
                 
                 <div class="form-group">
                     <label for="cbuDestino">CBU de la cuenta de destino</label>
-                    <input type="text" class="form-control" id="cbuDestino" placeholder="Ingresa el CBU de destino" required>
+                    <input type="text" class="form-control" id="cbuDestino" name="cbuDestino" placeholder="Ingresa el CBU de destino" required>
                 </div>
                 
                 
                 <div class="form-group">
                     <label for="monto">Monto a transferir</label>
-                    <input type="number" class="form-control" id="monto" placeholder="Ingrese el monto" required>
+                    <input type="number" class="form-control" id="monto" name="monto" placeholder="Ingrese el monto" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="descripcion">Detalle</label>
-                    <input type="text" class="form-control" id="descripcion" placeholder="Motivo de la transferencia">
+                    <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Motivo de la transferencia">
                 </div>
                 
-                <button type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ModalConfirmacion">Realizar transferencia</button>
+                <button type="button" class="btn btn-primary btn-block mt-3" data-toggle="modal" data-target="#ModalConfirmacion">Modificar Cuenta</button>
             </form>
         </div>
     </div>
 </div>
-</form>
 
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
