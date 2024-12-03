@@ -13,7 +13,9 @@ import java.util.List;
 
 import datos.ClienteDao;
 import entidad.Cliente;
+import entidad.Localidad;
 import entidad.Pais;
+import entidad.Provincia;
 
 public class ClienteDaoImpl implements ClienteDao{
 	
@@ -147,6 +149,14 @@ public class ClienteDaoImpl implements ClienteDao{
 	            Pais paisNacimiento = new Pais();
 	            paisNacimiento.setNombre(rs.getString("pais"));
 	            cliente.setPaisNacimiento(paisNacimiento);
+	            
+//	            Localidad localidad = new Localidad();
+//	            localidad.setNombre(rs.getString("localidad"));
+//	            cliente.setLocalidad(localidad);
+//	            
+//	            Provincia provincia = new Provincia();
+//	            provincia.setNombre(rs.getString("provincia"));
+//	            cliente.setProvincia(provincia);
 
 	            cliente.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
 	            cliente.setCorreo(rs.getString("correo"));
@@ -289,8 +299,21 @@ public class ClienteDaoImpl implements ClienteDao{
 	        	   usuarioBD.getPaisNacimiento().setNombre("pais");
 	        	   usuarioBD.setDni(rs.getString("dni"));
 	        	   usuarioBD.setCorreo(rs.getString("correo"));
+	        	   usuarioBD.setDireccion(rs.getString("direccion"));
 	        	   usuarioBD.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
 	        	   usuarioBD.setSexo(rs.getString("sexo"));
+
+	        	   Pais paisNacimiento = new Pais();
+		            paisNacimiento.setNombre(rs.getString("pais"));
+		            usuarioBD.setPaisNacimiento(paisNacimiento);
+		            
+		            Localidad localidad = new Localidad();
+		            localidad.setNombre(rs.getString("localidad"));
+		            usuarioBD.setLocalidad(localidad);
+		            
+		            Provincia provincia = new Provincia();
+		            provincia.setNombre(rs.getString("provincia"));
+		            usuarioBD.setProvincia(provincia);
 	           }
 	       } catch (SQLException e) {
 	           e.printStackTrace();

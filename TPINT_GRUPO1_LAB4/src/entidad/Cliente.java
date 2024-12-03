@@ -10,7 +10,34 @@ public class Cliente {
     private String apellido;
     private String sexo;
     private String usuario;
-    private String password;
+    private String direccion;
+    private Localidad localidad;
+    private Provincia provincia;
+    public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public Localidad getLocalidad() {
+		return localidad;
+	}
+
+	public void setLocalidad(Localidad localidad) {
+		this.localidad = localidad;
+	}
+
+	public Provincia getProvincia() {
+		return provincia;
+	}
+
+	public void setProvincia(Provincia provincia) {
+		this.provincia = provincia;
+	}
+
+	private String password;
     private Pais paisNacimiento;  // Relación con la clase Pais
     private Date fechaNacimiento;
     private String correo;
@@ -156,6 +183,18 @@ public class Cliente {
 
     public void setAdmin(Boolean admin) {
         this.admin = admin;
+    }
+    
+    public String getPaisNombre() {
+    	return this.paisNacimiento.getNombre();
+    }
+    
+    public String getLocalidadNombre() {
+    	return this.localidad.getNombre();
+    }
+    
+    public String getProvinciaNombre() {
+    	return this.provincia.getNombre();
     }
 
 	@Override

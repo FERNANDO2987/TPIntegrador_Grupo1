@@ -23,56 +23,56 @@
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-md-6">
-                    	<p><strong>Nombre:</strong> Juan</p>
+                    	<p><strong>Nombre:</strong> <%= usuario.getNombre() %> </p>
                         
                     </div>
                     <div class="col-md-6">
-                    	<p><strong>Apellido:</strong> Carlo</p>
+                    	<p><strong>Apellido:</strong> <%= usuario.getApellido() %></p>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <p><strong>DNI:</strong> 35698745</p>
+                        <p><strong>DNI:</strong> <%= usuario.getDni() %></p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong>CUIL:</strong> 20-35698745-9</p>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><strong>Correo:</strong> juancarlo@gmail.com </p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Nacionalidad:</strong> Argentina</p>
+                        <p><strong>CUIL:</strong> <%= usuario.getCuil() %></p>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <p><strong>Fecha de Nacimiento:</strong> 15/08/1990</p>
+                        <p><strong>Correo:</strong> <%= usuario.getCorreo() %> </p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong>Localidad:</strong> Don Torcuato</p>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><strong>Dirección:</strong> riobamba 232</p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Provincia</strong> Buenos Aires </p>
+                        <p><strong>Nacionalidad:</strong> <%= usuario.getPaisNombre() %></p>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <p><strong>Teléfono:</strong>11 12845678</p>
+                        <p><strong>Fecha de Nacimiento:</strong> </p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong>Sexo:</strong> Masculino</p>
+                        <p><strong>Localidad:</strong> <%= usuario.getLocalidadNombre() %></p>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <p><strong>Usuario:</strong> juancarlo </p>
+                        <p><strong>Dirección:</strong> <%= usuario.getDireccion() %></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Provincia</strong> <%= usuario.getProvinciaNombre() %> </p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>Teléfono:</strong><%= usuario.getTelefono() %></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Sexo:</strong> <%= usuario.getSexo() %></p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>Usuario:</strong> <%= usuario.getUsuario() %> </p>
                     </div>
                 </div>
             </div>
