@@ -180,6 +180,54 @@ public class CuentaDaoImpl implements CuentaDao {
 		return cuentaSeleccionada;
 	}
 
+	@Override
+	public List<Cuenta> obtenerCuentasXIdCliente_2(int idCliente) {
+		List<Cuenta> lista = new ArrayList<Cuenta>();
+		cn = new Conexion();
+		cn.Open();
+		
+		
+		String query = "{CALL ListarCuentasXCliente(?)}";
+		try 
+		{
+			CallableStatement cst = cn.connection.prepareCall(query);
+			cst.setLong(1, idCliente);
+			boolean hayResultados = cst.execute();
+			
+			if(hayResultados)
+			{
+				ResultSet rs = cst.getResultSet();
+				while (rs.next())
+				{
+					ClienteDao clienteDao = new ClienteDaoImpl();
+					Cuenta aux = new Cuenta();
+					aux.setNroCuenta(rs.getLong("nro_cuenta"));
+					aux.setFechaCreacion(rs.getDate("fecha_creacion").toLocalDate());
+					aux.setCbu(rs.getString("cbu")); //CBU UNIQUE
+					aux.setSaldo(rs.getBigDecimal("saldo"));
+					aux.setEstado(rs.getBoolean("borrado"));
+					
+					aux.getTipoCuenta().setId(rs.getInt("id_tipo_cuenta"));
+					aux.getTipoCuenta().setDescripcion(rs.getString("descripcion"));
+					aux.setCliente(clienteDao.obtenerClientePorId(rs.getInt("id_cliente")));
+					
+					
+					lista.add(aux);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally 
+		{
+			cn.close();
+		}
+		return lista;
+	}
+	
+	@Override
 	public List<Cuenta> obtenerCuentasXIdCliente(int id) {
 		List<Cuenta> lista = new ArrayList<Cuenta>();
 		cn = new Conexion();
@@ -223,6 +271,7 @@ public class CuentaDaoImpl implements CuentaDao {
 		}
 		return lista;
 	}
+	
 
 }
 

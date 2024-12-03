@@ -40,7 +40,7 @@ public class servletListarPrestamos extends HttpServlet {
 	
 		  if (request.getParameter("btnListarPrestamos") != null) {
 	            try {
-	                List<Prestamo> prestamos = prestamoNeg.listarPrestamos();
+	                List<Prestamo> prestamos = prestamoNeg.obtenerDatosPrestamosCliente();
 
 	                request.setAttribute("prestamos", prestamos);
 
