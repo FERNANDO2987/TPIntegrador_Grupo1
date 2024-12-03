@@ -26,7 +26,7 @@
       }
     %>
     <!-- Modal -->
-	<form action="servletTransferencia" method="post">
+	<form action="servletTransferenciaEntreCuentas" method="post">
 		<div class="modal fade" id="ModalConfirmacion" tabindex="-1" aria-labelledby="ConfirmacionModalLabel" aria-hidden="true">
 		  <div class="modal-dialog">
 		    <div class="modal-content">

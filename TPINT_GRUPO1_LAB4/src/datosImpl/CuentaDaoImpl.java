@@ -291,7 +291,7 @@ public class CuentaDaoImpl implements CuentaDao {
 				rs.next();
 				
 				ClienteDao clienteDao = new ClienteDaoImpl();
-				cuentaSeleccionada.setNroCuenta(rs.getLong("nro_cuenta"));
+				cuentaSeleccionada.setNroCuenta(rs.getInt("nro_cuenta"));
 				cuentaSeleccionada.setCbu(rs.getString("cbu")); //CBU UNIQUE
 				cuentaSeleccionada.setEstado(rs.getBoolean("deleted"));
 				
