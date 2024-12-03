@@ -38,7 +38,6 @@ public class servletListarPrestamos extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		  if (request.getParameter("btnListarPrestamos") != null) {
 	            try {
 	                List<Prestamo> prestamos = prestamoNeg.obtenerDatosPrestamosCliente();
 
@@ -50,9 +49,8 @@ public class servletListarPrestamos extends HttpServlet {
 	                e.printStackTrace();
 
 	                request.setAttribute("error", "Ocurrió un error al procesar la solicitud.");
-	                request.getRequestDispatcher("Error.jsp").forward(request, response);
+	                request.getRequestDispatcher("error.jsp").forward(request, response);
 	            }
-		  }
 		
 		
 	}

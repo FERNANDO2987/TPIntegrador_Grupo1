@@ -170,10 +170,6 @@
 
         
         
-        <form method="get" action="servletListarPrestamos">
-            <input type="submit" name="btnListarPrestamos" value="Traer Préstamos" class="btn btn-primary mb-3" title="Haga clic para listar todos los préstamos">
-        </form>
-        
         <%
             //
             List<Prestamo> listaPrestamos = (List<Prestamo>) request.getAttribute("prestamos");

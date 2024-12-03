@@ -66,7 +66,7 @@
                     </li>
                     <li>
                       <a
-                        href="<%= request.getContextPath() %>/ListarClientes.jsp"
+                        href="servletListarCliente"
                         class="text-decoration-none"
                         >Listar Clientes</a
                       >
@@ -127,7 +127,7 @@
                     </li>
                        <li>
                       <a
-                        href="ListarPrestamos.jsp"
+                        href="servletListarPrestamos"
                         class="text-decoration-none"
                         >Listar Prestamos Solicitados - Autorizar/Rechazar</a
                       >
