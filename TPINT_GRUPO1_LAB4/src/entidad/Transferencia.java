@@ -6,11 +6,13 @@ public class Transferencia {
 	private Cuenta cuentaOrigen;
 	private Cuenta cuentaDestino;
 	private BigDecimal monto;
+	private String detalle;
 	
 	
 	public Transferencia() {
 		super();
 	}
+	
 	public Cuenta getCuentaOrigen() {
 		return cuentaOrigen;
 	}
@@ -28,6 +30,14 @@ public class Transferencia {
 	}
 	public void setMonto(BigDecimal monto) {
 		this.monto = monto;
+	}
+
+	public String getDetalle() {
+		return detalle;
+	}
+
+	public void setDetalle(String detalle) {
+		this.detalle = detalle;
 	}
 	
 	

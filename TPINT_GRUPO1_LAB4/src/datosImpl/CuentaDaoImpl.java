@@ -253,7 +253,6 @@ public class CuentaDaoImpl implements CuentaDao {
 					aux.setEstado(rs.getBoolean("deleted"));
 					
 					aux.getTipoCuenta().setId(rs.getInt("id_tipo_cuenta"));
-					aux.getTipoCuenta().setDescripcion(rs.getString("descripcion"));
 					aux.setCliente(clienteDao.obtenerClientePorId(rs.getInt("id_cliente")));
 					
 					
@@ -270,6 +269,46 @@ public class CuentaDaoImpl implements CuentaDao {
 			cn.close();
 		}
 		return lista;
+	}
+
+	@Override
+	public Cuenta obtenerCuentaXCBU(String cbu) {
+		Cuenta cuentaSeleccionada = new Cuenta();
+		cn = new Conexion();
+		cn.Open();
+		
+		
+		String query = "{CALL obtenerCuentaXCBU(?)}";
+		try 
+		{
+			CallableStatement cst = cn.connection.prepareCall(query);
+			cst.setString(1, cbu);
+			boolean hayResultados = cst.execute();
+			
+			if(hayResultados)
+			{
+				ResultSet rs = cst.getResultSet();
+				rs.next();
+				
+				ClienteDao clienteDao = new ClienteDaoImpl();
+				cuentaSeleccionada.setNroCuenta(rs.getLong("nro_cuenta"));
+				cuentaSeleccionada.setCbu(rs.getString("cbu")); //CBU UNIQUE
+				cuentaSeleccionada.setEstado(rs.getBoolean("deleted"));
+				
+				cuentaSeleccionada.getTipoCuenta().setId(rs.getInt("id_tipo_cuenta"));
+				cuentaSeleccionada.getTipoCuenta().setDescripcion(rs.getString("descripcion"));
+				cuentaSeleccionada.setCliente(clienteDao.obtenerClientePorId(rs.getInt("id_cliente")));
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally 
+		{
+			cn.close();
+		}
+		return cuentaSeleccionada;
 	}
 	
 

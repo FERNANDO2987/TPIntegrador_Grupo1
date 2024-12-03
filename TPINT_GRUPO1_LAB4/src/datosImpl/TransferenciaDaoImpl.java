@@ -15,12 +15,14 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 		cn = new Conexion();
 		cn.Open();
 		
-		String query = "{CALL AgregarCuenta (?,?)}";
+		String query = "{CALL transferir (?,?,?,?)}";
 		try
 		{
 			CallableStatement cst = cn.connection.prepareCall(query);
-			cst.setInt(1, transferencia.getCuentaOrigen());
-			cst.setInt(2, transferencia.getCuentaDestino());
+			cst.setInt(1, (int) transferencia.getCuentaOrigen().getNroCuenta());
+			cst.setInt(2, (int) transferencia.getCuentaDestino().getNroCuenta());
+			cst.setBigDecimal(3, transferencia.getMonto());
+			cst.setString(4, transferencia.getDetalle());
 			cst.execute();
 			
 		}

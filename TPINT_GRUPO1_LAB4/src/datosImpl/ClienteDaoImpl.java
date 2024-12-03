@@ -286,7 +286,7 @@ public class ClienteDaoImpl implements ClienteDao{
 	        	   usuarioBD.setCelular(rs.getString("Celular"));
 	        	   usuarioBD.setTelefono(rs.getString("Telefono"));
 	        	   usuarioBD.setCuil(rs.getString("cuil"));
-	        	   usuarioBD.setPaisNacimiento(new Pais(rs.getInt("id_pais"),rs.getString("pais")));
+	        	   usuarioBD.getPaisNacimiento().setNombre("pais");
 	        	   usuarioBD.setDni(rs.getString("dni"));
 	        	   usuarioBD.setCorreo(rs.getString("correo"));
 	        	   usuarioBD.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
