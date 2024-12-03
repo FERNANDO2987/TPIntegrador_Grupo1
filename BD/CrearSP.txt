@@ -118,10 +118,13 @@ BEGIN
 	DECLARE ultimoNroCuenta INT DEFAULT 0;
 	DECLARE ultimoIdMovimiento INT DEFAULT 0;
 	DECLARE saldo INT DEFAULT 0;
+    DECLARE error_msg TEXT;
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
+		GET DIAGNOSTICS CONDITION 1
+        error_msg = MESSAGE_TEXT;
+        Select error_msg;
 		ROLLBACK;
-		SELECT 'Ocurrio un error' AS mensaje;
 	END;
 
 	START TRANSACTION;
@@ -134,12 +137,8 @@ BEGIN
 		VALUES (idClienteIngresado, CURDATE(), idTipoCuentaIngresada, REPLACE(REPLACE(REPLACE(DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'), '-', ''), ':', ''), ' ', ''), 0, CURDATE(), NULL, 0);
 
 		SELECT LAST_INSERT_ID() INTO ultimoNroCuenta;
-		INSERT INTO movimientos(fecha, importe, tipo_movimiento, estado, createDate, deleted) 
-		VALUES (CURDATE(), 10000, 1, 1, CURDATE(), 0);
-
-		SELECT LAST_INSERT_ID() INTO ultimoIdMovimiento;
-		INSERT INTO movimientos(id, nro_cuenta, createDate, deleted) 
-		VALUES (ultimoIdMovimiento, ultimoNroCuenta, CURDATE(), 0);
+		INSERT INTO movimientos(fecha, detalle, importe, tipo_movimiento, nro_cuenta, estado, createDate, deleted) 
+		VALUES (CURDATE(), 'Alta de Cuenta', 10000, 1, ultimoNroCuenta, 1, CURDATE(), 0);
 
 		UPDATE cuentas SET saldo = saldo + 10000 WHERE nro_cuenta = ultimoNroCuenta;
 	ELSE
