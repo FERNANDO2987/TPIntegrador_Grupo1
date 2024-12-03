@@ -37,7 +37,7 @@ public class servletTransferencia extends HttpServlet {
 			Cliente clienteLogeado =  (Cliente) request.getSession().getAttribute("usuario");
 			clienteLogeado = clienteNeg.obtenerClientePorUsuario(clienteLogeado.getUsuario());
 			
-			lista = cuentaNeg.obtenerCuentasXIdCliente(clienteLogeado.getId());
+			lista = cuentaNeg.obtenerCuentasXIdCliente_2(clienteLogeado.getId());
 			request.setAttribute("listaDeMisCuentas", lista);
 			request.getRequestDispatcher("TransferirAOtroCliente.jsp").forward(request, response);	
 	}

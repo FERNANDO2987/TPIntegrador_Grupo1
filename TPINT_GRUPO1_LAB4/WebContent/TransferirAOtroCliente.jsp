@@ -83,7 +83,7 @@
                     <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Motivo de la transferencia">
                 </div>
                 
-                <button type="button" class="btn btn-primary btn-block mt-3" data-toggle="modal" data-target="#ModalConfirmacion">Modificar Cuenta</button>
+                <button type="button" class="btn btn-primary btn-block mt-3" data-toggle="modal" data-target="#ModalConfirmacion">Realizar Transferencia</button>
             </form>
         </div>
     </div>

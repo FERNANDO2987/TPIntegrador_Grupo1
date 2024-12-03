@@ -325,17 +325,7 @@ BEGIN
 END;
 $$
 
-DELIMITER ;
-
--- Listar cuentas por cliente
-
-USE `bdbanco`;
-DROP procedure IF EXISTS `bdbanco`.`ListarCuentasXCliente`;
-;
-
-DELIMITER $$
-USE `bdbanco`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ListarCuentasXCliente`(
+CREATE PROCEDURE ListarCuentasXCliente(
 	IN p_IdCliente INT
 )
 BEGIN

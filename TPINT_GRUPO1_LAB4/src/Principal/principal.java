@@ -19,22 +19,10 @@ public class principal {
 
 
 		  CuentaNeg cuentaNeg = new CuentaNegImpl();
-		  Cuenta cuentaOrigen = new Cuenta();
-		  cuentaOrigen.setNroCuenta(101010101);
-		  Cuenta cuenta = cuentaNeg.obtenerCuentaXCBU("20-00003-0000");
-		  
-		  Transferencia transferencia = new Transferencia();
-		  transferencia.setCuentaOrigen(cuentaOrigen);
-		  transferencia.setCuentaDestino(cuenta);
-		  transferencia.setMonto(new BigDecimal("100"));
-		  transferencia.setDetalle("Mi primer Transferencia");
-		  
-		  TransferenciaNeg transferenciaNeg = new TransferenciaNegImpl();
-		  boolean exito = transferenciaNeg.agregarTransferencia(transferencia);
-		  if(exito)
-		  {
-			  System.out.println("SI");
-		  }
+		  Cuenta cuenta = new Cuenta();
+		  cuenta.getTipoCuenta().setId(1);
+		  cuenta.getCliente().setId(1);
+		  cuentaNeg.agregarCuenta(cuenta);
 		  
 		  
 

@@ -159,3 +159,6 @@ CREATE TABLE Movimientos (
     FOREIGN KEY (tipo_movimiento) REFERENCES TiposMovimiento(id),
     FOREIGN KEY (nro_cuenta) REFERENCES Cuentas(nro_cuenta)
 );  
+
+ALTER TABLE `bdbanco`.`cuentas` 
+CHANGE COLUMN `nro_cuenta` `nro_cuenta` INT(11) NOT NULL AUTO_INCREMENT ;
