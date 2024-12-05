@@ -1,11 +1,12 @@
 package datos;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import entidad.ReporteMovimientos;
 
 public interface InformesDao {
 	
-	  public ReporteMovimientos generarReporteMovimientos(LocalDate fechaInicio, LocalDate fechaFin);
+	  public List<ReporteMovimientos> generarReporteMovimientos(LocalDate fechaInicio, LocalDate fechaFin);
 
 }
