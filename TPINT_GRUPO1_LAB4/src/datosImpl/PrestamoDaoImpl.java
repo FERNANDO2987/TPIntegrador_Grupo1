@@ -29,17 +29,17 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	    cn = new Conexion();
 	    cn.Open();
 	    
-	    //Call AgregarPrestamo (nro_cuenta, id_cliente , importe, cuotas);
+	   
 	    String query = "{CALL AgregarPrestamo(?, ?, ?, ?)}";
 	    
 	    try (CallableStatement stmt = cn.connection.prepareCall(query)) {
 	        // Establecer los parámetros
-	        stmt.setLong(1, prestamo.getCuenta().getNroCuenta()); // p_nro_cuenta
-	        stmt.setLong(2, prestamo.getCliente().getId()); // p_id_cliente
-	        stmt.setBigDecimal(3, prestamo.getImporte()); // p_importe
-	        stmt.setInt(4, prestamo.getCuotas()); // p_cuotas
+	        stmt.setLong(1, prestamo.getCuenta().getNroCuenta()); 
+	        stmt.setLong(2, prestamo.getCliente().getId()); 
+	        stmt.setBigDecimal(3, prestamo.getImporte()); 
+	        stmt.setInt(4, prestamo.getCuotas());
 	        
-	        // Ejecutar el procedimiento
+	      
 	        stmt.executeUpdate();
 	        
 	    } catch (SQLException e) {
@@ -61,14 +61,14 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	    cn = new Conexion();
 	    cn.Open();
 	    
-	    //Call RechazarPrestamo (id_prestamo);
+	  
 	    String query = "{CALL AprobarPrestamo(?)}";
 	    
 	    try (CallableStatement stmt = cn.connection.prepareCall(query)) {
-	        // Establecer los parámetros
+	       
 	        
-	        stmt.setLong(1, id); // p_id_prestamo
-	        // Ejecutar el procedimiento
+	        stmt.setLong(1, id); 
+	       
 	        stmt.executeUpdate();
 	        
 	    } catch (SQLException e) {
@@ -87,14 +87,14 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	    cn = new Conexion();
 	    cn.Open();
 	    
-	    //Call RechazarPrestamo (id_prestamo);
+	   
 	    String query = "{CALL RechazarPrestamo(?)}";
 	    
 	    try (CallableStatement stmt = cn.connection.prepareCall(query)) {
-	        // Establecer los parámetros
+	      
 	        
-	        stmt.setLong(1, id); // p_id_prestamo
-	        // Ejecutar el procedimiento
+	        stmt.setLong(1, id); 
+	       
 	        stmt.executeUpdate();
 	        
 	    } catch (SQLException e) {
@@ -138,7 +138,7 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		    } finally {
-		        // Close connection
+		      
 		        cn.close();
 		    }
 		return aux;
@@ -301,7 +301,7 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	        stmt.setString(1, comentario); 
 	        stmt.setInt(2, id);           
 	        
-	        // Ejecutar la actualización
+	      
 	        int rowsAffected = stmt.executeUpdate();
 	        
 	        if (rowsAffected == 0) {

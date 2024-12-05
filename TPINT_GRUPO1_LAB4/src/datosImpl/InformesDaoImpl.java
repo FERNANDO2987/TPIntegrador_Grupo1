@@ -4,6 +4,8 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import datos.InformesDao;
 import entidad.ReporteMovimientos;
@@ -19,26 +21,29 @@ public class InformesDaoImpl implements InformesDao{
 	}
 	
 	
-	  public ReporteMovimientos generarReporteMovimientos(LocalDate fechaInicio, LocalDate fechaFin) {
-	        ReporteMovimientos reporte = null;
+	  public List<ReporteMovimientos> generarReporteMovimientos(LocalDate fechaInicio, LocalDate fechaFin) {
+	        List<ReporteMovimientos> reporteList = new ArrayList<>();
 	        cn = new Conexion();
 	        cn.Open();
 
-	        String query = "{CALL GenerarReporteMovimientos(?, ?)}";
+	        String query = "{CALL GenerarReporteMovimientosMesPorMes(?, ?)}";
 
 	        try (CallableStatement stmt = cn.connection.prepareCall(query)) {
-	            // Establecer los parámetros de entrada
+	           
 	            stmt.setDate(1, java.sql.Date.valueOf(fechaInicio));
 	            stmt.setDate(2, java.sql.Date.valueOf(fechaFin));
 
-	            // Ejecutar el procedimiento y procesar el resultado
+	            
 	            try (ResultSet rs = stmt.executeQuery()) {
-	                if (rs.next()) {
+	                while (rs.next()) {
 	                    double totalIngresos = rs.getDouble("Total_Ingresos");
 	                    double totalEgresos = rs.getDouble("Total_Egresos");
+	                    int anio = rs.getInt("Anio");
+	                    int mes = rs.getInt("Mes");
 
-	                    // Crear instancia de ReporteMovimientos
-	                    reporte = new ReporteMovimientos(totalIngresos, totalEgresos);
+	                  
+	                    ReporteMovimientos reporte = new ReporteMovimientos(anio, mes, totalIngresos, totalEgresos);
+	                    reporteList.add(reporte);
 	                }
 	            }
 
@@ -49,7 +54,7 @@ public class InformesDaoImpl implements InformesDao{
 	            cn.close();
 	        }
 
-	        return reporte;
+	        return reporteList;
 	    }
 
 	
