@@ -47,6 +47,7 @@
 		
 		
 	%>
+	
 	<form action="servletAgregarCuenta" method="get">
 		<!-- Modal -->
 		<div class="modal fade" id="ModalConfirmacion" tabindex="-1" aria-labelledby="ConfirmacionModalLabel" aria-hidden="true">
@@ -65,9 +66,17 @@
 		    </div>
 		  </div>
 		</div>
+		
 	<div class="container mt-5">
         <h2 class="text-center mb-4">Agregar Cuenta</h2>
-        <%=exito %>
+        <%if(exito)
+		{%>
+			<div class="alert alert-success" id="successMessage">
+            cuenta creada con Exito
+        	</div>
+        	
+		<%} %>
+        
         
             
 				<div class="form-group">
@@ -112,6 +121,7 @@
             
 
     </div>
+		
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
