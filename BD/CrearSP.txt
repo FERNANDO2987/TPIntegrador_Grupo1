@@ -342,5 +342,11 @@ BEGIN
     
 END$$
 
+CREATE PROCEDURE obtenerCountCuentasXCliente (IN idClienteIngresado INT)
+BEGIN
+	select count(*) from cuentas where cuentas.id_cliente = idClienteIngresado and deleted = 0;
+END;
+$$
+
 DELIMITER ;
 ;

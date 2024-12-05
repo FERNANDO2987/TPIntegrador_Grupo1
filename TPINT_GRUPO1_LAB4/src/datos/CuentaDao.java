@@ -13,4 +13,5 @@ public interface CuentaDao {
 	public List<Cuenta> obtenerCuentasXIdCliente_2(int idCliente);
 	public List<Cuenta> obtenerCuentasXIdCliente(int id);
 	public Cuenta obtenerCuentaXCBU(String cbu);
+	public int obtenerCountCuentasXCliente(int idCliente);
 }

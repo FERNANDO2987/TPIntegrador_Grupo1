@@ -16,6 +16,12 @@
         response.sendRedirect("Login.jsp");
         return;
       }
+      
+      boolean exito = false;
+      if(request.getAttribute("exitoAlAgregar") != null)
+      {
+    	  exito = (boolean)request.getAttribute("exitoAlAgregar");
+      }
     %>
 	<%
 		List<Cliente> listaClientes;
@@ -38,11 +44,32 @@
         {
         	listaTipoCuenta = null;
         }
+		
+		
 	%>
+	<form action="servletAgregarCuenta" method="get">
+		<!-- Modal -->
+		<div class="modal fade" id="ModalConfirmacion" tabindex="-1" aria-labelledby="ConfirmacionModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title fs-5" id="ConfirmacionModalLabel">Confirmacion Requerida</h4>
+		      </div>
+		      <div class="modal-body">
+		        Desea confirmar la modificacion del registro?
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+		        <input type="submit" class="btn btn-primary" value="Agregar Cuenta" name="btnAgregar">
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	<div class="container mt-5">
         <h2 class="text-center mb-4">Agregar Cuenta</h2>
+        <%=exito %>
         
-            <form action="servletAgregarCuenta" method="get">
+            
 				<div class="form-group">
 					<label for="cliente">Cliente:</label>
                     <select class="form-control" id="cliente" name="cliente" required>
@@ -78,7 +105,7 @@
                         	<%} %>
                     </select>
                 </div>
-                <input type="submit" class="btn btn-primary btn-block mt-3" value="Agregar Cuenta" name="btnAgregar">
+                <button type="button" class="btn btn-primary btn-block mt-3" data-toggle="modal" data-target="#ModalConfirmacion">Agregar Cuenta</button>
                 <a class= "btn btn-secondary btn-block" href="servletListarCuentas">Volver</a>
             </form>
             

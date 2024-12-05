@@ -47,17 +47,27 @@ public class servletAgregarCuenta extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("btnAgregar") != null)
 		{
-			System.out.println("llegue");
+			CuentaNeg cuentaNeg = new CuentaNegImpl();
 			int idCliente = Integer.parseInt(request.getParameter("cliente"));
 			int idTipoCuenta = Integer.parseInt(request.getParameter("TipoCuenta"));
-			System.out.println(idCliente);
-			System.out.println(idTipoCuenta);
-			Cuenta aux = new Cuenta();
-			aux.getCliente().setId(idCliente);
-			aux.getTipoCuenta().setId(idTipoCuenta);
-			CuentaNeg cuentaNeg = new CuentaNegImpl();
-			cuentaNeg.agregarCuenta(aux);
-			boolean exito = true;
+			boolean exito;
+			//validar
+			if(cuentaNeg.obtenerCountCuentasXCliente(idCliente) < 3)
+			{
+				Cuenta aux = new Cuenta();
+				aux.getCliente().setId(idCliente);
+				aux.getTipoCuenta().setId(idTipoCuenta);
+				cuentaNeg.agregarCuenta(aux);
+				exito = true;
+				System.out.println("creado");
+				
+			}
+			else
+			{
+				System.out.println("excedido");
+				exito = false;
+			}
+			
 			request.setAttribute("exitoAlAgregar", exito);
 			
 		}

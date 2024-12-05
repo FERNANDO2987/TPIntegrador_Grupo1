@@ -58,4 +58,10 @@ public class CuentaNegImpl implements CuentaNeg{
 		CuentaDao cuentaDao = new CuentaDaoImpl();
 		return cuentaDao.obtenerCuentaXCBU(cbu);
 	}
+
+	@Override
+	public int obtenerCountCuentasXCliente(int idCliente) {
+		CuentaDao cuentaDao = new CuentaDaoImpl();
+		return cuentaDao.obtenerCountCuentasXCliente(idCliente);
+	}
 }

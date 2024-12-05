@@ -15,7 +15,7 @@ public class CuentaDaoImpl implements CuentaDao {
 	
 	@Override
 	public boolean agregarCuenta(Cuenta cuenta) {
-		boolean exito = true;
+		boolean exito = false;
 		cn = new Conexion();
 		cn.Open();
 		
@@ -25,7 +25,7 @@ public class CuentaDaoImpl implements CuentaDao {
 			CallableStatement cst = cn.connection.prepareCall(query);
 			cst.setLong(1, cuenta.getCliente().getId());
 			cst.setInt(2, cuenta.getTipoCuenta().getId());
-			cst.execute();
+			exito = cst.execute();
 			
 		}
 		catch(Exception e)
@@ -309,6 +309,35 @@ public class CuentaDaoImpl implements CuentaDao {
 			cn.close();
 		}
 		return cuentaSeleccionada;
+	}
+
+	@Override
+	public int obtenerCountCuentasXCliente(int idCliente) {
+		int resultado = 0;
+		cn = new Conexion();
+		cn.Open();
+		String query = "{CALL obtenerCountCuentasXCliente(?)}";
+		try 
+		{
+			CallableStatement cst = cn.connection.prepareCall(query);
+			cst.setInt(1, idCliente);
+			Boolean hayResultados = cst.execute();
+			if(hayResultados)
+			{
+				ResultSet rs = cst.getResultSet();
+				rs.next();
+				resultado = rs.getInt("count(*)");
+			}
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			cn.close();
+		}
+		return resultado;
 	}
 	
 

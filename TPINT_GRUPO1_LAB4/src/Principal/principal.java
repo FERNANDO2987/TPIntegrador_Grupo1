@@ -19,10 +19,7 @@ public class principal {
 
 
 		  CuentaNeg cuentaNeg = new CuentaNegImpl();
-		  Cuenta cuenta = new Cuenta();
-		  cuenta.getTipoCuenta().setId(1);
-		  cuenta.getCliente().setId(1);
-		  cuentaNeg.agregarCuenta(cuenta);
+		  System.out.println(cuentaNeg.obtenerCountCuentasXCliente(1));
 		  
 		  
 
