@@ -50,15 +50,15 @@ public class servletModificarCuenta extends HttpServlet {
 			cuenta.setEstado(chkActivo);
 			
 			CuentaDao cuentaDao = new CuentaDaoImpl();
-			boolean exito;
+			String exito;
 			if(cuentaDao.modificarCuenta(cuenta))
 			{
-				exito = true;
+				exito = "Modificacion hecha con exito";
 				System.out.println("Operacion exitosa");
 			}
 			else
 			{
-				exito = false;
+				exito = "Modificacion rechazada";
 				System.out.println("Sin cambios en DB");
 			}
 			request.setAttribute("exito", exito );

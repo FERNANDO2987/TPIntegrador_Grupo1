@@ -50,7 +50,7 @@ public class servletAgregarCuenta extends HttpServlet {
 			CuentaNeg cuentaNeg = new CuentaNegImpl();
 			int idCliente = Integer.parseInt(request.getParameter("cliente"));
 			int idTipoCuenta = Integer.parseInt(request.getParameter("TipoCuenta"));
-			boolean exito;
+			String exito;
 			//validar
 			if(cuentaNeg.obtenerCountCuentasXCliente(idCliente) < 3)
 			{
@@ -58,14 +58,13 @@ public class servletAgregarCuenta extends HttpServlet {
 				aux.getCliente().setId(idCliente);
 				aux.getTipoCuenta().setId(idTipoCuenta);
 				cuentaNeg.agregarCuenta(aux);
-				exito = true;
-				System.out.println("creado");
+				exito = "Se agrego exitosamente";
 				
 			}
 			else
 			{
 				System.out.println("excedido");
-				exito = false;
+				exito = "Excede el limite de 3(tres) cuentas";
 			}
 			
 			request.setAttribute("exitoAlAgregar", exito);

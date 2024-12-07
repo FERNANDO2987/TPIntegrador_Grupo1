@@ -17,10 +17,10 @@
         return;
       }
       
-      boolean exito = false;
+      String exito = new String();
       if(request.getAttribute("exitoAlAgregar") != null)
       {
-    	  exito = (boolean)request.getAttribute("exitoAlAgregar");
+    	  exito = (String)request.getAttribute("exitoAlAgregar");
       }
     %>
 	<%
@@ -69,13 +69,19 @@
 		
 	<div class="container mt-5">
         <h2 class="text-center mb-4">Agregar Cuenta</h2>
-        <%if(exito)
+        <%if(exito.compareTo("Se agrego exitosamente") == 0)
 		{%>
 			<div class="alert alert-success" id="successMessage">
-            cuenta creada con Exito
+            <%=exito %>
         	</div>
         	
-		<%} %>
+		<%}
+        if(exito.compareTo("Excede el limite de 3(tres) cuentas") == 0)
+        {%>
+        	<div class="alert alert-danger" id="errorMessage">
+            <%=exito %>
+        	</div>
+        <%} %>
         
         
             

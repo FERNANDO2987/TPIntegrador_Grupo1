@@ -18,6 +18,11 @@
 </head>
 <body>
 	<%
+		String exito = new String();
+		if(request.getAttribute("exito") != null)
+		{
+			exito = (String) request.getAttribute("exito");
+		}
       Cliente usuario = (Cliente)session.getAttribute("usuario");
       if (usuario == null) {
         response.sendRedirect("Login.jsp");
