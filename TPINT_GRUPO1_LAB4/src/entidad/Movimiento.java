@@ -10,6 +10,7 @@ public class Movimiento {
 	    private String detalle;
 	    private BigDecimal importe;
 	    private TipoMovimiento tipoMovimiento;
+	    private long nroCuenta;
 	    private boolean estado;
 
 	    // Constructor vacío
@@ -79,6 +80,14 @@ public class Movimiento {
 		public String toString() {
 			return "Movimiento [id=" + id + ", fecha=" + fecha + ", detalle=" + detalle + ", importe=" + importe
 					+ ", tipoMovimiento=" + tipoMovimiento + ", estado=" + estado + "]";
+		}
+
+		public long getNroCuenta() {
+			return nroCuenta;
+		}
+
+		public void setNroCuenta(long nroCuenta) {
+			this.nroCuenta = nroCuenta;
 		}
 	    
 	    

@@ -3,6 +3,7 @@ package datos;
 import java.util.List;
 
 import entidad.Cuenta;
+import entidad.Movimiento;
 
 public interface CuentaDao {
 	public boolean agregarCuenta(Cuenta cuenta);
@@ -14,4 +15,5 @@ public interface CuentaDao {
 	public List<Cuenta> obtenerCuentasXIdCliente(int id);
 	public Cuenta obtenerCuentaXCBU(String cbu);
 	public int obtenerCountCuentasXCliente(int idCliente);
+	public List<Movimiento> listarMovimientosXCuenta(long idCuenta);
 }

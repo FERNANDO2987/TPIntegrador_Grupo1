@@ -5,6 +5,7 @@ import java.util.List;
 import datos.CuentaDao;
 import datosImpl.CuentaDaoImpl;
 import entidad.Cuenta;
+import entidad.Movimiento;
 import negocio.CuentaNeg;
 
 public class CuentaNegImpl implements CuentaNeg{
@@ -63,5 +64,11 @@ public class CuentaNegImpl implements CuentaNeg{
 	public int obtenerCountCuentasXCliente(int idCliente) {
 		CuentaDao cuentaDao = new CuentaDaoImpl();
 		return cuentaDao.obtenerCountCuentasXCliente(idCliente);
+	}
+	
+	@Override
+	public List<Movimiento> listarMovimientosXCuenta(long idCuenta) {
+		CuentaDao cuentaDao = new CuentaDaoImpl();
+		return cuentaDao.listarMovimientosXCuenta(idCuenta);
 	}
 }

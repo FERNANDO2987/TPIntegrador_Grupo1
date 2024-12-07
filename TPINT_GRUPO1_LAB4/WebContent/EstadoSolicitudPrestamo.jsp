@@ -10,13 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-	<%
-      Cliente usuario = (Cliente)session.getAttribute("usuario");
-      if (usuario == null) {
-        response.sendRedirect("Login.jsp");
-        return;
-      }
-    %>
+	
     <div class="container mt-5">
         <h2 class="text-center mb-4">Estado de Solicitud de Préstamo</h2>
         <form action="servletEstadoSolicitud" method="POST">

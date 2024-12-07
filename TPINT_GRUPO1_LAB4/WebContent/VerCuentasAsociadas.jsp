@@ -32,7 +32,7 @@
     <div class="row pt-1">
 
 		<%
-            // Obtener lista de préstamos del request
+            // Obtener lista de préstamos del request	
             List<Cuenta> listaCuentas = (List<Cuenta>) request.getAttribute("listado");
             if (listaCuentas == null || listaCuentas.isEmpty()) {
         %>
@@ -60,7 +60,10 @@
                     <li class="list-group-item" style="font-size: 23px;"><strong> $<%=c.getSaldo()%> </strong></li>
                 </ul>
                 <div class="card-body pt-1 pb-1">
-                    <a href="<%= request.getContextPath() %>/HistorialDeMovimientos.jsp" style="font-size:13px;">Historial de movimientos</a>
+                	<form method="get" action="servletListarMovimientosXCuenta">
+			            <input type="submit" name="btnListarMovimientosXCuenta" value="Historial de movimientos" class="btn btn-secondary">
+			            <input type="hidden" name="nroCuenta" value="<%=c.getNroCuenta()%>">
+        			</form>
                 </div>
             </div>
             <%

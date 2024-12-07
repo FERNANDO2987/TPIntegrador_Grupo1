@@ -3,6 +3,7 @@ package negocio;
 import java.util.List;
 
 import entidad.Cuenta;
+import entidad.Movimiento;
 
 public interface CuentaNeg {
 	
@@ -15,5 +16,6 @@ public interface CuentaNeg {
 	public List<Cuenta> obtenerCuentasXIdCliente(int id);
 	public Cuenta obtenerCuentaXCBU(String cbu);
 	public int obtenerCountCuentasXCliente(int idCliente);
+	public List<Movimiento> listarMovimientosXCuenta(long idCuenta);
 	
 }

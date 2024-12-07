@@ -8,6 +8,8 @@ import java.util.List;
 import datos.ClienteDao;
 import datos.CuentaDao;
 import entidad.Cuenta;
+import entidad.Movimiento;
+import entidad.TipoMovimiento;
 
 public class CuentaDaoImpl implements CuentaDao {
 	
@@ -338,6 +340,66 @@ public class CuentaDaoImpl implements CuentaDao {
 			cn.close();
 		}
 		return resultado;
+	}
+	@Override
+	public List<Movimiento> listarMovimientosXCuenta(long idCuenta) {
+		List<Movimiento> lista = new ArrayList<Movimiento>();
+		cn = new Conexion();
+		cn.Open();
+		
+		
+		String query = "{CALL ListarMovimientosXCuenta(?)}";
+		try 
+		{
+			CallableStatement cst = cn.connection.prepareCall(query);
+			cst.setLong(1, idCuenta);
+			boolean hayResultados = cst.execute();
+			
+			if(hayResultados)
+			{
+				ResultSet rs = cst.getResultSet();
+				while (rs.next())
+				{
+					System.out.println("Creo movimiento");
+					Movimiento aux = new Movimiento(); 
+					
+					aux.setNroCuenta(rs.getLong("nro_cuenta"));
+					System.out.println("set nro cuenta");
+					
+					aux.setId(rs.getInt("id"));
+					System.out.println("set id");
+					
+					aux.setFecha(rs.getDate("fecha").toLocalDate());
+					System.out.println("set fecha");
+					
+					aux.setDetalle(rs.getString("detalle"));
+					System.out.println("set detalle");
+					
+					aux.setImporte(rs.getBigDecimal("importe"));
+					System.out.println("Set importe");
+
+					TipoMovimiento auxtm = new TipoMovimiento();
+					auxtm.setDescripcion(rs.getString("descripcion"));
+					auxtm.setId(rs.getInt("m.tipo_movimiento"));
+					aux.setTipoMovimiento(auxtm);
+
+					
+					aux.setEstado(rs.getBoolean("estado"));
+					System.out.println("set estado");
+					
+					lista.add(aux);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally 
+		{
+			cn.close();
+		}
+		return lista;
 	}
 	
 
