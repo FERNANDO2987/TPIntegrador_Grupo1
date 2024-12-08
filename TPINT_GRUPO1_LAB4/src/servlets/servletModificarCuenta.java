@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import datos.CuentaDao;
 import datosImpl.CuentaDaoImpl;
@@ -39,31 +40,39 @@ public class servletModificarCuenta extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
+		String exito = new String();
 		if(request.getParameter("btnModificarCuenta") != null)
 		{	
 			
 			Cuenta cuenta = new Cuenta();
 			cuenta.setNroCuenta(Long.parseLong((String) request.getParameter("txtCuenta")));
 			cuenta.getTipoCuenta().setId(Integer.parseInt(request.getParameter("TipoCuenta")));
+			cuenta.getCliente().setId(Integer.parseInt(request.getParameter("idCliente")));
 			Boolean chkActivo = request.getParameter("chkActivo") == "Activo"? true : false;
 			cuenta.setEstado(chkActivo);
 			
 			CuentaDao cuentaDao = new CuentaDaoImpl();
-			String exito;
-			if(cuentaDao.modificarCuenta(cuenta))
+			
+			if(cuenta.getEstado() && cuentaDao.obtenerCountCuentasXCliente(cuenta.getCliente().getId()) < 3)
 			{
-				exito = "Modificacion hecha con exito";
-				System.out.println("Operacion exitosa");
+				if(cuentaDao.modificarCuenta(cuenta))
+				{
+					exito = "Modificacion hecha con exito";
+				}
+				else
+				{
+					exito = "Modificacion rechazada";
+				}
 			}
 			else
 			{
-				exito = "Modificacion rechazada";
-				System.out.println("Sin cambios en DB");
+				exito = "Numero de cuentas maxima superada";
 			}
 			request.setAttribute("exito", exito );
 			
-		}	
+		}
+		HttpSession session = request.getSession();
+		session.setAttribute("exitoModificacion", exito);
 		response.sendRedirect("servletListarCuentas");
 		
 	}

@@ -69,6 +69,7 @@
             
 				<div class="form-group">
 					<label for="txtCliente">Cliente:</label>
+					<input type="hidden" name="idCliente" id="idCliente" readonly="true" value="<%= cuenta.getCliente().getId()%>">
                     <input type="text" class="form-control" name="txtCliente" readonly="true" value="<%= cuenta.getCliente().getNombre() %> <%= cuenta.getCliente().getApellido() %>">
                     
                     <label for="txtCuenta">Nro Cuenta:</label>

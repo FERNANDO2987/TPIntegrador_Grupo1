@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import entidad.Cuenta;
 import entidad.TipoCuenta;
@@ -37,6 +38,11 @@ public class servletListarCuentas extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("exito") != null)
+		{
+			String exito = (String) session.getAttribute("exito");
+		}	
 		CuentaNeg cuentaNeg = new CuentaNegImpl();
 		List<Cuenta> listado = new ArrayList<Cuenta>();
 		listado = cuentaNeg.obtenerCuentas();
