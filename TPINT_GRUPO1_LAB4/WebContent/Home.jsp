@@ -113,6 +113,13 @@
                         >Generar Informe de Ingresos y Egresos</a
                       >
                     </li>
+                     <li>
+                      <a
+                        href="InformeCuotasPendientesYPagas.jsp"
+                        class="text-decoration-none"
+                        >Generar Informe de Cuotas Pagas e Impagas</a
+                      >
+                    </li>
                   </ul>
                 </li>
                   <li class="list-group-item">

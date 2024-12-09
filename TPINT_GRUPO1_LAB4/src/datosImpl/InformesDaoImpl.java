@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import datos.InformesDao;
+import entidad.ReporteCuotas;
 import entidad.ReporteMovimientos;
 
 public class InformesDaoImpl implements InformesDao{
@@ -19,6 +20,43 @@ public class InformesDaoImpl implements InformesDao{
 	{
 		 cn = new Conexion();
 	}
+	
+	 public List<ReporteCuotas> obtenerCuotasPagadasYPendientesPorMes(LocalDate fechaDesde, LocalDate fechaHasta) {
+	        List<ReporteCuotas> reporteList = new ArrayList<>();
+	        cn = new Conexion();
+	        cn.Open();
+
+	        // Modificado para incluir los parámetros de fecha
+	        String query = "{CALL ObtenerCuotasPagadasYPendientesPorMes(?, ?)}";
+
+	        try (CallableStatement stmt = cn.connection.prepareCall(query)) {
+	            // Establecer los parámetros de fecha en el CallableStatement
+	            stmt.setDate(1, java.sql.Date.valueOf(fechaDesde));
+	            stmt.setDate(2, java.sql.Date.valueOf(fechaHasta));
+
+	            // Ejecutar el procedimiento almacenado
+	            try (ResultSet rs = stmt.executeQuery()) {
+	                while (rs.next()) {
+	                    int anio = rs.getInt("Anio");  // Obtener el año como entero
+	                    int mes = rs.getInt("Mes");    // Obtener el mes como entero
+	                    double totalPagado = rs.getDouble("TotalPagado");
+	                    double totalPendiente = rs.getDouble("TotalPendiente");
+
+	                    // Crear un objeto ReporteCuotas con los datos obtenidos
+	                    ReporteCuotas reporte = new ReporteCuotas(anio, mes, totalPagado, totalPendiente);
+	                    reporteList.add(reporte);
+	                }
+	            }
+
+	        } catch (SQLException e) {
+	            System.out.println("Error al obtener cuotas pagadas y pendientes: " + e.getMessage());
+	            e.printStackTrace();
+	        } finally {
+	            cn.close();
+	        }
+
+	        return reporteList;
+	    }
 	
 	
 	  public List<ReporteMovimientos> generarReporteMovimientos(LocalDate fechaInicio, LocalDate fechaFin) {
