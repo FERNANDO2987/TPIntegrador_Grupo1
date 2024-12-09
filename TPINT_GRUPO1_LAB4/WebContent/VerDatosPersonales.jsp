@@ -48,23 +48,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <p><strong>Fecha de Nacimiento:</strong> </p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Localidad:</strong> <%= usuario.getLocalidadNombre() %></p>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><strong>Dirección:</strong> <%= usuario.getDireccion() %></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Provincia</strong> <%= usuario.getProvinciaNombre() %> </p>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <p><strong>Teléfono:</strong><%= usuario.getTelefono() %></p>
+                        <p><strong>Fecha de Nacimiento:</strong> <%= usuario.getFechaNacimiento() %> </p>
                     </div>
                     <div class="col-md-6">
                         <p><strong>Sexo:</strong> <%= usuario.getSexo() %></p>
@@ -72,7 +56,15 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
+                        <p><strong>Dirección:</strong> <%= usuario.getDireccion() %></p>
+                    </div>
+                    <div class="col-md-6">
                         <p><strong>Usuario:</strong> <%= usuario.getUsuario() %> </p>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>Teléfono:</strong><%= usuario.getTelefono() %></p>
                     </div>
                 </div>
             </div>

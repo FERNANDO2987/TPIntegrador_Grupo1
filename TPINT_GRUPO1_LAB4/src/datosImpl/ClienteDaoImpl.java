@@ -307,13 +307,8 @@ public class ClienteDaoImpl implements ClienteDao{
 		            paisNacimiento.setNombre(rs.getString("pais"));
 		            usuarioBD.setPaisNacimiento(paisNacimiento);
 		            
-		            Localidad localidad = new Localidad();
-		            localidad.setNombre(rs.getString("localidad"));
-		            usuarioBD.setLocalidad(localidad);
 		            
-		            Provincia provincia = new Provincia();
-		            provincia.setNombre(rs.getString("provincia"));
-		            usuarioBD.setProvincia(provincia);
+		            System.out.println(usuarioBD.toString());
 	           }
 	       } catch (SQLException e) {
 	           e.printStackTrace();
