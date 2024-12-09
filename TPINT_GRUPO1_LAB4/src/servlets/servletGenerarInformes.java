@@ -50,7 +50,7 @@ public class servletGenerarInformes extends HttpServlet {
                     ? LocalDate.parse(fechaFinParam)  
                     : LocalDate.of(2024, 12, 31);  
         } catch (DateTimeParseException e) {  
-            // En caso de error en el formato de la fecha, usar valores predeterminados  
+            
             fechaInicio = LocalDate.of(2024, 1, 1);  
             fechaFin = LocalDate.of(2024, 12, 31);  
         }  
