@@ -218,7 +218,10 @@
                     <td><%= p.getFechaSolicitud() %></td>
                     <td>$<%= p.getImporte() %></td>
                     <td><%= p.getCuotas() %></td>
-                  <td><%= p.isEstado() ? "Autorizado" : "Rechazado" %></td>
+                 <td>
+    <%= p.isEstado() == null ? "Pendiente" : (p.isEstado() ? "Autorizado" : "Rechazado") %>
+</td>
+
 
 
                     <td><%= observaciones %></td>

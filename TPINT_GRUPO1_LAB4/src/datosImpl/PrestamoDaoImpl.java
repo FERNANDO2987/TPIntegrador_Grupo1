@@ -231,13 +231,12 @@ public class PrestamoDaoImpl  implements PrestamoDao{
   
 	            String estado = rs.getString("Estado");
 	            if ("Autorizado".equals(estado)) {
-	                prestamo.setEstado(true);  
+	                prestamo.setEstado(true);  // Authorized
 	            } else if ("Rechazado".equals(estado)) {
-	                prestamo.setEstado(false); 
+	                prestamo.setEstado(false); // Rejected
 	            } else {
-	                prestamo.setEstado(false); 
+	                prestamo.setEstado(false); // Pending (default to false for now)
 	            }
- 
 	            
 	            
 	            prestamos.add(prestamo);  
