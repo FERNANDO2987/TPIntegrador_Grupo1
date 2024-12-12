@@ -39,6 +39,7 @@ public class servletListarCuentas extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		//variable exito proveniente del servlet modificarCuenta
 		if (session.getAttribute("exito") != null)
 		{
 			String exito = (String) session.getAttribute("exito");

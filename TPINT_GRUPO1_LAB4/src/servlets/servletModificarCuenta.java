@@ -48,9 +48,13 @@ public class servletModificarCuenta extends HttpServlet {
 			cuenta.setNroCuenta(Long.parseLong((String) request.getParameter("txtCuenta")));
 			cuenta.getTipoCuenta().setId(Integer.parseInt(request.getParameter("TipoCuenta")));
 			cuenta.getCliente().setId(Integer.parseInt(request.getParameter("idCliente")));
-			Boolean chkActivo = request.getParameter("chkActivo") == "Activo"? true : false;
-			cuenta.setEstado(chkActivo);
+			String chkActivo = request.getParameter("chkActivo");
 			
+			
+			System.out.println(cuenta.getNroCuenta());
+			System.out.println(cuenta.getTipoCuenta().getId());
+			System.out.println(cuenta.getCliente().getId());
+			System.out.println(chkActivo);
 			CuentaDao cuentaDao = new CuentaDaoImpl();
 			
 			if(cuenta.getEstado() && cuentaDao.obtenerCountCuentasXCliente(cuenta.getCliente().getId()) < 3)
@@ -58,15 +62,18 @@ public class servletModificarCuenta extends HttpServlet {
 				if(cuentaDao.modificarCuenta(cuenta))
 				{
 					exito = "Modificacion hecha con exito";
+					System.out.println("Modificacion hecha con exito");
 				}
 				else
 				{
 					exito = "Modificacion rechazada";
+					System.out.println("Modificacion rechazada");
 				}
 			}
 			else
 			{
 				exito = "Numero de cuentas maxima superada";
+				System.out.println("Numero de cuentas maxima superada");
 			}
 			request.setAttribute("exito", exito );
 			
