@@ -100,7 +100,7 @@ public class CuentaDaoImpl implements CuentaDao {
 			CallableStatement cst = cn.connection.prepareCall(query);
 			cst.setLong(1, cuenta.getNroCuenta());
 			cst.setInt(2, cuenta.getTipoCuenta().getId());
-			cst.setBoolean(3, cuenta.getEstado());
+			cst.setBoolean(3, !(cuenta.getEstado()));
 			cst.execute();
 		}
 		catch(Exception e)

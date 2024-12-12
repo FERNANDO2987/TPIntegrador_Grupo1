@@ -87,7 +87,7 @@
                     <%	}%>
                     </select>
                     <label for="chkActivo">Activo:</label>
-                    <input type="checkbox" class="form-check align-left" name="chkActivo" value="Activo" <%=cuenta.getEstado()?"":"checked" %>>
+                    <input type="checkbox" class="form-check align-left" name="chkActivo" id="chkActivo" value="1" <%=cuenta.getEstado()?"":"checked" %>>
                     
                     
                 </div>

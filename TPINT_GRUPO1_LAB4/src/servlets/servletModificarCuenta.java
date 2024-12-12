@@ -48,13 +48,23 @@ public class servletModificarCuenta extends HttpServlet {
 			cuenta.setNroCuenta(Long.parseLong((String) request.getParameter("txtCuenta")));
 			cuenta.getTipoCuenta().setId(Integer.parseInt(request.getParameter("TipoCuenta")));
 			cuenta.getCliente().setId(Integer.parseInt(request.getParameter("idCliente")));
-			String chkActivo = request.getParameter("chkActivo");
+			int chkActivo = Integer.parseInt(request.getParameter("chkActivo"));
+			if(chkActivo == 1)
+			{
+				System.out.println("me puse true");
+				cuenta.setEstado(true);
+			}
+			else
+			{
+				System.out.println("me puse false");
+				cuenta.setEstado(false);
+			}
 			
 			
 			System.out.println(cuenta.getNroCuenta());
 			System.out.println(cuenta.getTipoCuenta().getId());
 			System.out.println(cuenta.getCliente().getId());
-			System.out.println(chkActivo);
+			System.out.println(cuenta.getEstado());
 			CuentaDao cuentaDao = new CuentaDaoImpl();
 			
 			if(cuenta.getEstado() && cuentaDao.obtenerCountCuentasXCliente(cuenta.getCliente().getId()) < 3)
