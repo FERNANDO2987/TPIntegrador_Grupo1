@@ -37,17 +37,11 @@
         response.sendRedirect("Login.jsp");
         return;
       }
-      String exitoModificacion = new String();
-      if (session.getAttribute("exito") != null)
-      {
-    	  exitoModificacion = (String) session.getAttribute("exito");
-      }
     %>
 <div class="container mt-5">
         <h2 class="text-center mb-4">Listado de Cuentas</h2>
        <div class="d-flex justify-content-between align-items-center mb-4"> 
         <a href="servletAgregarCuenta" class="btn btn-primary mr-2 mb-4">Agregar Nueva Cuenta</a>
-        <h1><%=exitoModificacion %></h1>
          </div>
         <!-- Tabla de cuentas -->
         <%
