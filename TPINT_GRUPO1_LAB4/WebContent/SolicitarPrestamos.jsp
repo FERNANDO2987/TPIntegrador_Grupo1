@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="entidad.Cliente" %>
+<%@ page import="entidad.Cuenta" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,13 +19,31 @@
         response.sendRedirect("Login.jsp");
         return;
       }
+      
+      List<Cuenta> listaDeOrigen = new ArrayList<Cuenta>();;
+      if(request.getAttribute("listaDeMisCuentas") != null)
+      {
+    	  listaDeOrigen = (List<Cuenta>) request.getAttribute("listaDeMisCuentas");
+      }
     %>
+    
+      
+      
     <div class="container mt-5">
     	<div class="row">
     		<div class="col-6 mx-auto">
 		        <h2 class="text-center mb-4">Solicitar Préstamo</h2>
-		        <form action="servletAgregarPrestamo" method="POST">
-		            
+		        <form action="servletAgregarPrestamo" method="post">
+		            <div class="form-group">
+	                    <label for="cuentaDestino">Cuenta</label>
+	                    <select class="form-control" id="cuentaDestino" name="cuentaDestino" required>
+	                    <%if (listaDeOrigen != null){
+                    		for(Cuenta cuenta : listaDeOrigen){%>
+                    		<option value=<%=cuenta.getNroCuenta() %>><%=cuenta.toString() %></option>
+                   		 	<%}
+                      	}%>
+	                    </select>
+	                </div>
 		            <div class="form-group">
 		                <label for="monto">Monto Solicitado:</label>
 		                <input type="number" class="form-control" id="monto" name="monto" placeholder="Ingrese el monto a solicitar" required>
@@ -31,6 +52,7 @@
 						<label for="cuotas">Cuotas:</label>
 		                <input type="number" min="1" max="24"  class="form-control" id="cuotas" name="cuotas" placeholder="Ingrese la cantidad de cuotas" required>
 		            </div>
+		            <input type="hidden" name="usuarioID" value="<%=usuario.getId() %>">
 					<input type="submit" class="btn btn-primary btn-block" name=btnSubmit value="Solicitar Préstamo">
 		        </form>
     		</div>

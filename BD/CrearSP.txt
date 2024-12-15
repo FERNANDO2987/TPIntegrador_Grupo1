@@ -397,3 +397,28 @@ $$
 
 DELIMITER ;
 ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarPrestamo`(
+    IN p_nro_cuenta INT,
+    IN p_id_cliente INT,
+    IN p_importe DECIMAL(10,2),
+    IN p_cuotas INT
+)
+BEGIN
+    INSERT INTO prestamos (
+        nro_cuenta, 
+        id_cliente, 
+        fecha_solicitud, 
+        importe, 
+        cuotas
+    )
+    VALUES (
+         p_nro_cuenta, 
+         p_id_cliente, 
+         CURRENT_DATE, 
+         p_importe, 
+         p_cuotas
+     );
+ END$$
+ DELIMITER ;

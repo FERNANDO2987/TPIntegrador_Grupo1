@@ -216,6 +216,16 @@
                   </ul>
                 </li>
                 <li class="list-group-item">
+                	Prestamos
+                	<ul>
+                		<li>
+                			<a href="servletAgregarPrestamo" class="text-decoration-none">
+                			Solicitar un prestamo
+                			</a>
+                		</li>
+                	</ul>
+                </li>
+                <li class="list-group-item">
 				  <form action="<%= request.getContextPath() %>/servletLogout" method="post">
 				    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
 				  </form>

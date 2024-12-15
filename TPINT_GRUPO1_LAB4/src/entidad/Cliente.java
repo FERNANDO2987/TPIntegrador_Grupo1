@@ -68,6 +68,10 @@ public class Cliente {
        
     }
 
+    public Cliente(int id) {
+    	this.id = id;
+    }
+
     public Cliente()
     {
     	this.paisNacimiento = new Pais();
