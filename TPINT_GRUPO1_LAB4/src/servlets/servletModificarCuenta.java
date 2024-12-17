@@ -40,11 +40,10 @@ public class servletModificarCuenta extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		System.out.println("Servlet ModificarCuenta Invocado");
 		Cuenta cuenta = (Cuenta)request.getSession().getAttribute("cuentaAModificar");
 		CuentaNeg cuentaNeg = new CuentaNegImpl();
 		cuenta = cuentaNeg.obtenerCuentaXNroCuenta(cuenta.getNroCuenta());
-		
 		TipoCuentaNeg tipoCuentaNeg = new TipoCuentaNegImpl();
 		List<TipoCuenta> lista = tipoCuentaNeg.obtenerCuentas();
 		
@@ -64,7 +63,7 @@ public class servletModificarCuenta extends HttpServlet {
 		if(request.getParameter("btnModificarCuenta") != null)
 		{	
 			CuentaNeg cuentaNeg = new CuentaNegImpl();
-			//Cuenta Modificada
+			// Cuenta Modificada
 			Cuenta cuenta = new Cuenta();
 			cuenta.setNroCuenta(Long.parseLong((String) request.getParameter("txtCuenta")));
 			cuenta.getTipoCuenta().setId(Integer.parseInt(request.getParameter("TipoCuenta")));
@@ -78,7 +77,7 @@ public class servletModificarCuenta extends HttpServlet {
 			System.out.println(cuenta.getEstado());
 			
 			System.out.println("----------");
-			//Cuenta Sin Modificar
+			// Cuenta Sin Modificar
 			Cuenta cuentaEnBd = cuentaNeg.obtenerCuentaXNroCuenta(cuenta.getNroCuenta());
 			System.out.println(cuentaEnBd.getNroCuenta());
 			System.out.println(cuentaEnBd.getTipoCuenta().getId());
@@ -95,11 +94,19 @@ public class servletModificarCuenta extends HttpServlet {
 				}	
 			}
 			request.setAttribute("resultadoModificacion", resultadoModificacion);
+			
+			// volver a cargar datos
+			Cuenta cuentaAModificar = (Cuenta)request.getSession().getAttribute("cuentaAModificar");
+			cuentaAModificar = cuentaNeg.obtenerCuentaXNroCuenta(cuenta.getNroCuenta());
+			
+			TipoCuentaNeg tipoCuentaNeg = new TipoCuentaNegImpl();
+			List<TipoCuenta> lista = tipoCuentaNeg.obtenerCuentas();
+			
+			request.setAttribute("cuenta", cuentaAModificar);
+			request.setAttribute("listaTiposCuentas", lista);
+			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("ModificarCuenta.jsp");
 			dispatcher.forward(request, response);	
 		}
-		//no llamar al doget, separarlo en una funcion aparte
-		doGet(request, response);
 	}
-
 }

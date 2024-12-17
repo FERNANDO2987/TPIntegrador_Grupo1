@@ -60,7 +60,6 @@ public class servletListarCuentas extends HttpServlet {
 			Cuenta cuenta = cuentaNeg.obtenerCuentaXNroCuenta(nroCuenta);
 			
 			request.getSession().setAttribute("cuentaAModificar", cuenta);
-			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/servletModificarCuenta");
 			dispatcher.forward(request, response);
 		}
