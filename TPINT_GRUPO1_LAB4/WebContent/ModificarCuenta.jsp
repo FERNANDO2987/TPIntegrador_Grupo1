@@ -64,7 +64,20 @@
 		%>
 		<div class="container mt-5">
 	        <h2 class="text-center mb-4">Modificar Cuenta</h2>
-        	<h1><%=exito %></h1>
+        	<%if(exito.compareTo("se realizo el cambio con exito") == 0)
+		{%>
+			<div class="alert alert-success" id="successMessage">
+            <%=exito %>
+        	</div>
+        	
+		<%}
+        if(exito.compareTo("error, no hubo exito en la modificacion") == 0)
+        {%>
+        	<div class="alert alert-danger" id="errorMessage">
+            <%=exito %>
+        	</div>
+        <%} %>
+        	
             
             
 				<div class="form-group">
