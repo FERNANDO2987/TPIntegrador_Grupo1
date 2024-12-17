@@ -58,19 +58,6 @@ VALUES
 ('Avenida 10', '11223344', '201122334', 'Elena', 'Ruiz', 'Femenino', 'elenar', 'password107', 'México', '1989-10-10', 'elena.ruiz@example.com', '077-8901-2345', '077-0123-6789', 0);
 
 
--- Insertar ejemplos en la tabla Contactos
-INSERT INTO Contactos (correo, telefono, id_cliente) VALUES
-('juanp@correo.com', '011-1234-5678', 1),
-('mariag@correo.com', '011-2345-6789', 2),
-('carlosl@correo.com', '011-3456-7890', 3),
-('anam@correo.com', '011-4567-8901', 4),
-('pedror@correo.com', '011-5678-9012', 5),
-('lauraf@correo.com', '011-6789-0123', 6),
-('miguels@correo.com', '011-7890-1234', 7),
-('silviap@correo.com', '011-8901-2345', 8),
-('eduardod@correo.com', '011-9012-3456', 9),
-('elenar@correo.com', '011-0123-4567', 10);
-
 -- Insertar ejemplos en la tabla TiposCuenta
 INSERT INTO TiposCuenta (descripcion) VALUES
 ('Cuenta corriente'),
