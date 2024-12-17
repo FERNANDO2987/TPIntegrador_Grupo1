@@ -84,8 +84,21 @@ public class servletModificarCuenta extends HttpServlet {
 			System.out.println(cuentaEnBd.getTipoCuenta().getId());
 			System.out.println(cuentaEnBd.getCliente().getId());
 			System.out.println(cuentaEnBd.getEstado());
-				
+			
+			String resultadoModificacion = "error, no hubo exito en la modificacion";
+			// si la cuenta en base de datos esta desactivada, la transaccion la quiere activar y las cuentas son menos de 3
+			if ((cuentaEnBd.getEstado() && cuenta.getEstado() == false) && cuentaNeg.obtenerCountCuentasXCliente(cuenta.getCliente().getId()) < 3)
+			{
+				if(cuentaNeg.modificarCuenta(cuenta))
+				{
+					resultadoModificacion = "se realizo el cambio con exito";
+				}	
+			}
+			request.setAttribute("resultadoModificacion", resultadoModificacion);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("ModificarCuenta.jsp");
+			dispatcher.forward(request, response);	
 		}
+		//no llamar al doget, separarlo en una funcion aparte
 		doGet(request, response);
 	}
 

@@ -19,9 +19,9 @@
 <body>
 	<%
 		String exito = new String();
-		if(request.getAttribute("exito") != null)
+		if(request.getAttribute("resultadoModificacion") != null)
 		{
-			exito = (String) request.getAttribute("exito");
+			exito = (String) request.getAttribute("resultadoModificacion");
 		}
       Cliente usuario = (Cliente)session.getAttribute("usuario");
       if (usuario == null) {
@@ -64,7 +64,7 @@
 		%>
 		<div class="container mt-5">
 	        <h2 class="text-center mb-4">Modificar Cuenta</h2>
-        
+        	<h1><%=exito %></h1>
             
             
 				<div class="form-group">
