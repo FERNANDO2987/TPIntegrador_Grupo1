@@ -42,6 +42,7 @@ public class servletAgregarPrestamo extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		/*
 		CuentaNeg cuentaNeg = new CuentaNegImpl();
 		ClienteNeg clienteNeg = new ClienteNegImpl();
 		List<Cuenta> lista = new ArrayList<Cuenta>();
@@ -52,6 +53,7 @@ public class servletAgregarPrestamo extends HttpServlet {
 		lista = cuentaNeg.obtenerCuentasXIdCliente_2(clienteLogeado.getId());
 		request.setAttribute("listaDeMisCuentas", lista);
 		request.getRequestDispatcher("SolicitarPrestamos.jsp").forward(request, response);	
+		 */
 	}
 
 	/**
@@ -59,9 +61,7 @@ public class servletAgregarPrestamo extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		try
-		{
-			
+		try{
 			long cuenta;
 			int cliente;
 			cuenta = request.getParameter("cuentaDestino") != null ? Long.valueOf(request.getParameter("cuentaDestino")) : -1;
@@ -72,12 +72,6 @@ public class servletAgregarPrestamo extends HttpServlet {
 
 			imp = imp.trim();
 			cuo = cuo.trim();
-			
-			System.out.println("cuenta: " + cuenta);
-			System.out.println("cliente: " + cliente);
-			System.out.println("importe: " + imp);
-			System.out.println("cuotas: " + cuo);
-			
 			
 			// Validar campos obligatorios
 			if (imp == null || imp.isEmpty() || 
@@ -100,27 +94,25 @@ public class servletAgregarPrestamo extends HttpServlet {
 			p.setCuotas(cuotas);
 			p.setImporte(importe);
 			//insertar prestamo
+			
+			
 			boolean estado = neg.agregarPrestamo(p);
 			
 			// Respuesta al prestamo
             if (estado) {  
-                request.setAttribute("mensajeExito", "Prestamo agregado exitosamente.");  
+                request.setAttribute("successMessage", "Prestamo agregado exitosamente.");  
             } else {  
-                request.setAttribute("mensajeError", "Error al agregar cliente.");  
+                request.setAttribute("errorMessage", "Error al agregar Prestamo.");  
             }
-            
          // Redirigir al JSP
-            request.getRequestDispatcher("Home.jsp").forward(request, response);
+            request.getRequestDispatcher("SolicitarPrestamos.jsp").forward(request, response);
 		}
-		catch(Exception e)
-		{
-			request.setAttribute("mensajeError", "Error inesperado: " + e.getMessage());  
+		catch(Exception e){
+			request.setAttribute("errorMessage", "Error inesperado: " + e.getMessage());  
             e.printStackTrace();  
-            request.getRequestDispatcher("Home.jsp").forward(request, response); 
+            request.getRequestDispatcher("SolicitarPrestamos.jsp").forward(request, response); 
 		}
 		
-		
-		doGet(request, response);
 	}
 
 }

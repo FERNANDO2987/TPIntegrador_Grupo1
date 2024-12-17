@@ -219,9 +219,7 @@
                 	Prestamos
                 	<ul>
                 		<li>
-                			<a href="servletAgregarPrestamo" class="text-decoration-none">
-                			Solicitar un prestamo
-                			</a>
+                			<a href="SolicitarPrestamos.jsp" >Solicitar un prestamo</a>
                 		</li>
                 	</ul>
                 </li>
