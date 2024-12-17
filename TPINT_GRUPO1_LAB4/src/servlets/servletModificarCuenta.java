@@ -1,6 +1,10 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +15,11 @@ import javax.servlet.http.HttpSession;
 import datos.CuentaDao;
 import datosImpl.CuentaDaoImpl;
 import entidad.Cuenta;
+import entidad.TipoCuenta;
+import negocio.CuentaNeg;
+import negocio.TipoCuentaNeg;
+import nogocioImpl.CuentaNegImpl;
+import nogocioImpl.TipoCuentaNegImpl;
 
 /**
  * Servlet implementation class servletModificarCuenta
@@ -32,6 +41,17 @@ public class servletModificarCuenta extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		Cuenta cuenta = (Cuenta)request.getSession().getAttribute("cuentaAModificar");
+		CuentaNeg cuentaNeg = new CuentaNegImpl();
+		cuenta = cuentaNeg.obtenerCuentaXNroCuenta(cuenta.getNroCuenta());
+		
+		TipoCuentaNeg tipoCuentaNeg = new TipoCuentaNegImpl();
+		List<TipoCuenta> lista = tipoCuentaNeg.obtenerCuentas();
+		
+		request.setAttribute("cuenta", cuenta);
+		request.setAttribute("listaTiposCuentas", lista);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("ModificarCuenta.jsp");
+		dispatcher.forward(request, response);
 		
 	}
 
@@ -43,55 +63,30 @@ public class servletModificarCuenta extends HttpServlet {
 		String exito = new String();
 		if(request.getParameter("btnModificarCuenta") != null)
 		{	
-			
+			CuentaNeg cuentaNeg = new CuentaNegImpl();
+			//Cuenta Modificada
 			Cuenta cuenta = new Cuenta();
 			cuenta.setNroCuenta(Long.parseLong((String) request.getParameter("txtCuenta")));
 			cuenta.getTipoCuenta().setId(Integer.parseInt(request.getParameter("TipoCuenta")));
 			cuenta.getCliente().setId(Integer.parseInt(request.getParameter("idCliente")));
-			int chkActivo = Integer.parseInt(request.getParameter("chkActivo"));
-			if(chkActivo == 1)
-			{
-				System.out.println("me puse true");
-				cuenta.setEstado(true);
-			}
-			else
-			{
-				System.out.println("me puse false");
-				cuenta.setEstado(false);
-			}
-			
+			int chkActivo = Integer.parseInt(request.getParameter("chkActivo") == "1"? "1":"0");
+			cuenta.setEstado(!(chkActivo == 1));
 			
 			System.out.println(cuenta.getNroCuenta());
 			System.out.println(cuenta.getTipoCuenta().getId());
 			System.out.println(cuenta.getCliente().getId());
 			System.out.println(cuenta.getEstado());
-			CuentaDao cuentaDao = new CuentaDaoImpl();
 			
-			if(cuenta.getEstado() && cuentaDao.obtenerCountCuentasXCliente(cuenta.getCliente().getId()) < 3)
-			{
-				if(cuentaDao.modificarCuenta(cuenta))
-				{
-					exito = "Modificacion hecha con exito";
-					System.out.println("Modificacion hecha con exito");
-				}
-				else
-				{
-					exito = "Modificacion rechazada";
-					System.out.println("Modificacion rechazada");
-				}
-			}
-			else
-			{
-				exito = "Numero de cuentas maxima superada";
-				System.out.println("Numero de cuentas maxima superada");
-			}
-			request.setAttribute("exito", exito );
-			
+			System.out.println("----------");
+			//Cuenta Sin Modificar
+			Cuenta cuentaEnBd = cuentaNeg.obtenerCuentaXNroCuenta(cuenta.getNroCuenta());
+			System.out.println(cuentaEnBd.getNroCuenta());
+			System.out.println(cuentaEnBd.getTipoCuenta().getId());
+			System.out.println(cuentaEnBd.getCliente().getId());
+			System.out.println(cuentaEnBd.getEstado());
+				
 		}
-		HttpSession session = request.getSession();
-		session.setAttribute("exitoModificacion", exito);
-		response.sendRedirect("servletListarCuentas");
-		
+		doGet(request, response);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -55,15 +56,13 @@ public class servletListarCuentas extends HttpServlet {
 		{
 			Long nroCuenta = Long.parseLong(request.getParameter("nroCuenta"));
 			
-			TipoCuentaNeg tipoCuentaNeg = new TipoCuentaNegImpl();
-			List<TipoCuenta> listaTipoCuenta = tipoCuentaNeg.obtenerCuentas();
-			request.setAttribute("listaTiposCuentas", listaTipoCuenta);
-			
 			CuentaNeg cuentaNeg = new CuentaNegImpl();
 			Cuenta cuenta = cuentaNeg.obtenerCuentaXNroCuenta(nroCuenta);
-			request.setAttribute("cuenta", cuenta);
 			
-			request.getRequestDispatcher("ModificarCuenta.jsp").forward(request, response);
+			request.getSession().setAttribute("cuentaAModificar", cuenta);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/servletModificarCuenta");
+			dispatcher.forward(request, response);
 		}
 		if(request.getParameter("btnEliminar") != null)
 		{
