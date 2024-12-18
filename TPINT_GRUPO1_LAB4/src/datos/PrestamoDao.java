@@ -14,6 +14,7 @@ public interface PrestamoDao {
 	public List<Prestamo> obtenerDatosPrestamos();
 	public boolean aprobarPrestamo(int id, String comentario);
 	public boolean rechazarPrestamo(int id, String comentario);
+	public List<Prestamo> obtenerPrestamosXCliente(int idCliente);
 	
 	
 }

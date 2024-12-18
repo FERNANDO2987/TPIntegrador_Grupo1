@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.List" %>
 <%@ page import="entidad.Cliente" %>
+<%@ page import="entidad.Prestamo" %>
+<%@ page import="negocio.PrestamoNeg" %>
+<%@ page import="nogocioImpl.PrestamoNegImpl" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,6 +13,7 @@
 <title>Mis prestamos</title>
 </head>
 <body>
+
 	<%
       Cliente usuario = (Cliente)session.getAttribute("usuario");
       if (usuario == null) {
@@ -16,53 +21,52 @@
         return;
       }
     %>
+    
 	<div class="container mt-5">
-		<table class="table">
-		  <thead>
-		    <tr>
-		      <th scope="col">Nro. Prestamo</th>
-		      <th scope="col">Nro. Cuenta</th>
-		      <th scope="col">Fecha Solicitud</th>
-		      <th scope="col">Importe</th>
-		      <th scope="col">Estado</th>
-		      <th scope="col">#</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		  	<form>
-			    <tr>
-			      <th scope="row">1</th>
-			      <td>123</td>
-			      <td>11/04/2024</td>
-			      <td>$130000</td>
-			      <td>Aprobado</td>
-			      <td><input type="button" value="Detalle" class="btn btn-primary">
-			    </tr>
-		    </form>
-		    
-		    <form>
-			    <tr>
-			      <th scope="row">2</th>
-			      <td>123</td>
-			      <td>09/07/2024</td>
-			      <td>$50000</td>
-			      <td>Aprobado</td>
-			      <td><input type="button" value="Detalle" class="btn btn-primary">
-			    </tr>
-		    </form>
-		    
-		    <form>
-		    <tr>
-		      <th scope="row">3</th>
-		      <td>234</td>
-		      <td>21/09/2024</td>
-		      <td>$100000</td>
-		      <td>Rechazado</td>
-		      <td><input type="button" value="Detalle" class="btn btn-primary">
-		    </tr>
-		    </form>
-		  </tbody>
+		<h1>Prestamos solicitados</h1>
+    	<a class="btn btn-secondary w-10 mb-1" href="Home.jsp" > 	Volver al Home </a> 
+	
+		<table border="1" id="table_id" class="table table-striped table-bordered" >
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nro. Prestamo</th>
+                    <th>Nro. Cuenta</th>
+                    <th>Fecha Solicitud</th>
+                    <th>Importe</th>
+                    <th>Observaciones</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+            <%
+		    PrestamoNegImpl prestamoNeg = new PrestamoNegImpl();
+		    List<Prestamo> prestamos = prestamoNeg.obtenerPrestamosXCliente(usuario.getId());
+			if (prestamos != null && !prestamos.isEmpty()) {
+			for (Prestamo p : prestamos) {
+		    %>
+            	<tr>
+			    	<td><%=p.getId() %></td>
+			    	<td><%=p.getCuenta().getNroCuenta() %></td>
+			      	<td><%=p.getFechaSolicitud() %></td>
+			      	<td>$<%=p.getImporte() %></td>
+			      	<%if(p.getObservaciones() != null){ %>
+			      	<td><%=p.getObservaciones() %></td>
+			      	<%}else{ %><td>---</td><%} %>
+			      	<% 
+					if(p.isEstado() == null){%>
+					<td>En Proceso</td>
+					<%}else if(p.isEstado() == true){%>
+			      	<td>Aprobado</td>
+			      	<%}else if(p.isEstado() == false){%>
+			      	<td>Rechazado</td>
+			      	<%} %>
+            	</tr>
+            	
+            <%}}%>
+            </tbody>
 		</table>
+		
+		
 	</div>
 </body>
 </html>

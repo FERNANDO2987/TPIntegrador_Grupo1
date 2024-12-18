@@ -107,6 +107,63 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 		return estado;
 	}
 
+	@Override
+	public List<Prestamo> obtenerPrestamosXCliente(int idCliente) {
+	    List<Prestamo> prestamos = new ArrayList<>();
+	    String query = "SELECT id, nro_cuenta, id_cliente, fecha_solicitud, importe, cuotas FROM prestamos WHERE id_cliente = ?;";
+	    cn = new Conexion();
+	    cn.Open();
+	    
+	    try (PreparedStatement stmt = cn.connection.prepareStatement(query)) {
+	        // Establecer el parámetro para el idCliente
+	        stmt.setInt(1, idCliente); 
+	        
+	        // Ejecutar la consulta
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            // Verificar si el ResultSet contiene datos
+	            if (rs != null) {
+	                while (rs.next()) {
+	                    long id = rs.getLong("id");
+	                    long nroCuenta = rs.getLong("nro_cuenta");
+	                    int idClienteDb = rs.getInt("id_cliente");
+	                    LocalDate fechaSolicitud = rs.getDate("fecha_solicitud").toLocalDate();
+	                    BigDecimal importe = rs.getBigDecimal("importe");
+	                    int cuotas = rs.getInt("cuotas");  
+
+	                    // Crear los objetos correspondientes
+	                    Prestamo prestamo = new Prestamo();
+	                    Cuenta cuenta = new Cuenta();
+	                    cuenta.setNroCuenta(nroCuenta);
+	                    Cliente cliente = new Cliente();
+	                    cliente.setId(idClienteDb);
+
+	                    // Establecer los valores en el prestamo
+	                    prestamo.setId(id);
+	                    prestamo.setCuenta(cuenta);
+	                    prestamo.setCliente(cliente);
+	                    prestamo.setImporte(importe);
+	                    prestamo.setCuotas(cuotas);
+	                    prestamo.setFechaSolicitud(fechaSolicitud);
+
+	                    // Agregar el prestamo a la lista
+	                    prestamos.add(prestamo);
+	                }
+	            } else {
+	                System.out.println("El ResultSet está vacío.");
+	            }
+	            System.out.println("Prestamos cargados: " + prestamos.size());
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        // Cerrar la conexión
+	        cn.close();
+	    }
+	    return prestamos;
+	}
+
 
 	@Override
 	public Prestamo obtenerPrestamoxId(Long id) {

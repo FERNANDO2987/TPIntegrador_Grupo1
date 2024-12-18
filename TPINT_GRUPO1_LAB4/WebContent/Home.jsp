@@ -125,13 +125,6 @@
                   <li class="list-group-item">
                   Prestamos Solicitados
                   <ul>
-                    <li>
-                      <a
-                        href="PrestamosPersonales.jsp"
-                        class="text-decoration-none"
-                        >Ver Prestamos solicitados</a
-                      >
-                    </li>
                        <li>
                       <a
                         href="servletListarPrestamos"
@@ -219,8 +212,11 @@
                 	Prestamos
                 	<ul>
                 		<li>
-                			<a href="SolicitarPrestamos.jsp" >Solicitar un prestamo</a>
+                			<a class="text-decoration-none" href="SolicitarPrestamos.jsp" >Solicitar un prestamo</a>
                 		</li>
+                		<li>
+                      		<a href="PrestamosPersonales.jsp" class="text-decoration-none" >Ver Prestamos solicitados</a>
+                   		</li>
                 	</ul>
                 </li>
                 <li class="list-group-item">
