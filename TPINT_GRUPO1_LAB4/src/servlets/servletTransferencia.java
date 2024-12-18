@@ -59,6 +59,8 @@ public class servletTransferencia extends HttpServlet {
 				Transferencia transferencia = new Transferencia();
 				
 				transferencia.getCuentaOrigen().setNroCuenta(cuentaOrigen);
+				transferencia.setCuentaOrigen(cuentaNeg.obtenerCuentaXNroCuenta((long) cuentaOrigen));
+				System.out.println(transferencia.getCuentaOrigen().getCbu());
 				transferencia.getCuentaDestino().setCbu(cuentaDestino);
 				transferencia.setMonto(monto);
 				transferencia.setDetalle(detalle);
