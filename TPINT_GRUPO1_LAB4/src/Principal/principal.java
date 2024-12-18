@@ -22,7 +22,6 @@ public class principal {
 	public static void main(String[] args) {
 
 		CuentaDaoImpl cuentaDao = new CuentaDaoImpl();
-		System.out.println(cuentaDao.validarCBU("20241210212023"));
 	}
 }
 
