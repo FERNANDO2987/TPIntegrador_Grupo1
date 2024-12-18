@@ -100,14 +100,16 @@
                     <%	}%>
                     </select>
                     <label for="chkActivo">Activo:</label>
-                    <input type="checkbox" class="form-check align-left" name="chkActivo" id="chkActivo" value="1" <%=cuenta.getEstado()?"":"checked" %>>
+                    <select class="form-control" id="chkActivo" name="chkActivo" required>
+                    <option <%= cuenta.getEstado() ? "" : "selected" %> value = "Activo">Activo</option>
+                    <option <%= cuenta.getEstado() ? "selected" : ""%> value = "Inactivo">Inactivo</option>
+                    </select>
                     
                     
                 </div>
                 <button type="button" class="btn btn-primary btn-block mt-3" data-toggle="modal" data-target="#ModalConfirmacion">Modificar Cuenta</button>
                 <a class= "btn btn-secondary btn-block" href="servletListarCuentas">Volver</a>
     </form>
-            <%= request.getAttribute("exito") != null? (boolean)request.getAttribute("exito") == true? "La Modificacion se realizo con exito":"":"" %>
              </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>

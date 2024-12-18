@@ -90,31 +90,34 @@ public class CuentaDaoImpl implements CuentaDao {
 
 	@Override
 	public boolean modificarCuenta(Cuenta cuenta) {
-		boolean exito = true;
-		cn = new Conexion();
-		cn.Open();
-		
-		String query = "{CALL ModificarCuenta(?,?,?)}";
-		try
-		{
-			CallableStatement cst = cn.connection.prepareCall(query);
-			cst.setLong(1, cuenta.getNroCuenta());
-			cst.setInt(2, cuenta.getTipoCuenta().getId());
-			cst.setBoolean(3, !(cuenta.getEstado()));
-			cst.execute();
-		}
-		catch(Exception e)
-		{
-			exito = false;
-			e.printStackTrace();
-		}
-		finally
-		{
-			cn.close();
-		}
-		
-		return exito;
+	    boolean exito = true;
+	    cn = new Conexion();
+	    cn.Open();
+
+	    String query = "{CALL ModificarCuenta(?,?,?)}";
+	    try {
+	        // Validar si la modificación es válida
+	        
+	            CallableStatement cst = cn.connection.prepareCall(query);
+	        if (validarModificacion(cuenta)) {
+	            cst.setLong(1, cuenta.getNroCuenta());
+	            cst.setInt(2, cuenta.getTipoCuenta().getId());
+	            cst.setBoolean(3, cuenta.getEstado());
+	            cst.execute();
+	        } else {
+	            exito = false;
+	            System.out.println("La modificación no es válida: Se excede el límite de cuentas activas.");
+	        }
+	    } catch (Exception e) {
+	        exito = false;
+	        e.printStackTrace();
+	    } finally {
+	        cn.close();
+	    }
+
+	    return exito;
 	}
+
 
 	@Override
 	public boolean darDeBajaCuenta(Long nroCuenta) {
@@ -401,6 +404,30 @@ public class CuentaDaoImpl implements CuentaDao {
 		}
 		return lista;
 	}
+	
+	private boolean validarModificacion(Cuenta cuenta) {
+	    int cantidadDeCuentas;
+	    boolean validado = false;
+
+	    // Obtener el estado actual de la cuenta en la base de datos
+	    Cuenta cuentaEnBd = obtenerCuentaXNroCuenta(cuenta.getNroCuenta());
+
+	    // Si la cuenta actual está inactiva (true) y se desea activar (false)
+	    if (cuentaEnBd.getEstado() == true && cuenta.getEstado() == false) {
+	        // Obtener la cantidad de cuentas activas del cliente
+	        cantidadDeCuentas = obtenerCountCuentasXCliente(cuenta.getCliente().getId());
+	        // Validar que no se exceda el límite de 3 cuentas activas
+	        if (cantidadDeCuentas < 3) {
+	            validado = true;
+	        }
+	    } else {
+	        // Si no se está intentando activar una cuenta, es válido
+	        validado = true;
+	    }
+
+	    return validado;
+	}
+
 	
 
 }

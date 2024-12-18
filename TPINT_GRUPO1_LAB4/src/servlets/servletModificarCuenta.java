@@ -40,7 +40,6 @@ public class servletModificarCuenta extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Servlet ModificarCuenta Invocado");
 		Cuenta cuenta = (Cuenta)request.getSession().getAttribute("cuentaAModificar");
 		CuentaNeg cuentaNeg = new CuentaNegImpl();
 		cuenta = cuentaNeg.obtenerCuentaXNroCuenta(cuenta.getNroCuenta());
@@ -68,13 +67,20 @@ public class servletModificarCuenta extends HttpServlet {
 			cuenta.setNroCuenta(Long.parseLong((String) request.getParameter("txtCuenta")));
 			cuenta.getTipoCuenta().setId(Integer.parseInt(request.getParameter("TipoCuenta")));
 			cuenta.getCliente().setId(Integer.parseInt(request.getParameter("idCliente")));
-			int chkActivo = Integer.parseInt(request.getParameter("chkActivo") == "1"? "1":"0");
-			cuenta.setEstado(!(chkActivo == 1));
+			String chkActivo = request.getParameter("chkActivo");
+			if("Activo".equals(chkActivo))
+			{
+				cuenta.setEstado(false);
+			}
+			if("Inactivo".equals(chkActivo))
+			{
+				cuenta.setEstado(true);
+			}
 			
 			System.out.println(cuenta.getNroCuenta());
 			System.out.println(cuenta.getTipoCuenta().getId());
 			System.out.println(cuenta.getCliente().getId());
-			System.out.println(cuenta.getEstado());
+			System.out.println("borrado: " + cuenta.getEstado());
 			
 			System.out.println("----------");
 			// Cuenta Sin Modificar
@@ -82,17 +88,15 @@ public class servletModificarCuenta extends HttpServlet {
 			System.out.println(cuentaEnBd.getNroCuenta());
 			System.out.println(cuentaEnBd.getTipoCuenta().getId());
 			System.out.println(cuentaEnBd.getCliente().getId());
-			System.out.println(cuentaEnBd.getEstado());
+			System.out.println("borrado: " + cuentaEnBd.getEstado());
 			
 			String resultadoModificacion = "error, no hubo exito en la modificacion";
-			// si la cuenta en base de datos esta desactivada, la transaccion la quiere activar y las cuentas son menos de 3
-			if ((cuentaEnBd.getEstado() && cuenta.getEstado() == false) && cuentaNeg.obtenerCountCuentasXCliente(cuenta.getCliente().getId()) < 3)
-			{
+			
 				if(cuentaNeg.modificarCuenta(cuenta))
 				{
 					resultadoModificacion = "se realizo el cambio con exito";
-				}	
-			}
+				}
+				
 			request.setAttribute("resultadoModificacion", resultadoModificacion);
 			
 			// volver a cargar datos
