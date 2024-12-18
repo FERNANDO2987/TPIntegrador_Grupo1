@@ -27,7 +27,7 @@ CREATE TABLE Localidades (
     nombre NVARCHAR(255) NOT NULL,
     createDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,  
     deleteDate DATETIME NULL,  
-    deleted BIT NOT NULL DEFAULT 0,	
+    deleted BIT NOT NULL DEFAULT 0,  
     FOREIGN KEY (id_provincia) REFERENCES Provincias(id)  
 ); 
 
@@ -41,43 +41,17 @@ CREATE TABLE Clientes (
     sexo NVARCHAR(50) NOT NULL,
     usuario NVARCHAR(255) NOT NULL UNIQUE,  
     password NVARCHAR(255) NOT NULL,
-	pais NVARCHAR(255) NOT NULL,    
+    pais NVARCHAR(255) NOT NULL,    
+    direccion NVARCHAR(255) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
     correo NVARCHAR(255) NOT NULL,
-	Telefono NVARCHAR(255) NULL,
+    Telefono NVARCHAR(255) NULL,
     Celular NVARCHAR(255) NOT NULL,  
     admin BOOLEAN NOT NULL,  
     deleteDate DATETIME NULL,  
     deleted BIT NOT NULL DEFAULT 0,  
     createDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
- 
 ); 
-
--- Tabla Contactos
-CREATE TABLE Contactos (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    correo NVARCHAR(255) NOT NULL,
-    telefono NVARCHAR(255),
-    id_cliente INT,
-    deleteDate DATETIME NULL,  
-    deleted BIT NOT NULL DEFAULT 0,  
-    createDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_cliente) REFERENCES Clientes(id)
-);
-
--- Tabla Direcciones
-CREATE TABLE Direcciones (
-    id INT PRIMARY KEY AUTO_INCREMENT, 
-    calle VARCHAR(255) NOT NULL,
-    numero_casa INT,
-    id_localidad INT NOT NULL,
-    id_cliente INT NOT NULL,
-    deleteDate DATETIME NULL,  
-    deleted BIT NOT NULL DEFAULT 0,  
-    createDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
-    FOREIGN KEY (id_localidad) REFERENCES Localidades(id)
-);
 
 -- Tabla TiposCuenta
 CREATE TABLE TiposCuenta (  
@@ -114,7 +88,7 @@ CREATE TABLE Prestamos (
     estado BIT NULL DEFAULT NULL,
     createDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,  
     deleteDate DATETIME NULL,  
-    deleted BIT NOT NULL DEFAULT 0,	
+    deleted BIT NOT NULL DEFAULT 0,  
     FOREIGN KEY (nro_cuenta) REFERENCES Cuentas(nro_cuenta),  
     FOREIGN KEY (id_cliente) REFERENCES Clientes(id)
 );
@@ -158,4 +132,4 @@ CREATE TABLE Movimientos (
     deleted BIT NOT NULL DEFAULT 0,
     FOREIGN KEY (tipo_movimiento) REFERENCES TiposMovimiento(id),
     FOREIGN KEY (nro_cuenta) REFERENCES Cuentas(nro_cuenta)
-);  
+);

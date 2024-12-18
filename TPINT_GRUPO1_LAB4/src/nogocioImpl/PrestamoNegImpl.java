@@ -48,6 +48,11 @@ public class PrestamoNegImpl implements PrestamoNeg{
 		return dao.obtenerDatosPrestamos();
 	}
 
+	@Override
+	public List<Prestamo> obtenerPrestamosXCliente(int idCliente) {
+		return dao.obtenerPrestamosXCliente(idCliente);
+	}
+
 
 
 

@@ -113,18 +113,18 @@
                         >Generar Informe de Ingresos y Egresos</a
                       >
                     </li>
+                     <li>
+                      <a
+                        href="InformeCuotasPendientesYPagas.jsp"
+                        class="text-decoration-none"
+                        >Generar Informe de Cuotas Pagas e Impagas</a
+                      >
+                    </li>
                   </ul>
                 </li>
                   <li class="list-group-item">
                   Prestamos Solicitados
                   <ul>
-                    <li>
-                      <a
-                        href="PrestamosPersonales.jsp"
-                        class="text-decoration-none"
-                        >Ver Prestamos solicitados</a
-                      >
-                    </li>
                        <li>
                       <a
                         href="servletListarPrestamos"
@@ -207,6 +207,17 @@
                         >Transferir a mis cuentas</a>
                     </li>
                   </ul>
+                </li>
+                <li class="list-group-item">
+                	Prestamos
+                	<ul>
+                		<li>
+                			<a class="text-decoration-none" href="SolicitarPrestamos.jsp" >Solicitar un prestamo</a>
+                		</li>
+                		<li>
+                      		<a href="PrestamosPersonales.jsp" class="text-decoration-none" >Ver Prestamos solicitados</a>
+                   		</li>
+                	</ul>
                 </li>
                 <li class="list-group-item">
 				  <form action="<%= request.getContextPath() %>/servletLogout" method="post">

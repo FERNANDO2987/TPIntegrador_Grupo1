@@ -1,6 +1,53 @@
 DELIMITER $$
 
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerCuotasPagadasYPendientesPorMes`(
+    IN fechaDesde DATE,
+    IN fechaHasta DATE
+)
+BEGIN
+    SELECT 
+        YEAR(cu.fecha_pago) AS Anio,   -- Año como entero
+        MONTH(cu.fecha_pago) AS Mes,   -- Mes como entero
+        SUM(cu.monto) AS TotalPagado,
+        (pr.importe - SUM(cu.monto)) AS TotalPendiente
+    FROM 
+        Cuotas cu
+    INNER JOIN 
+        Prestamos pr ON cu.id_prestamo = pr.id
+    WHERE 
+        cu.deleted = 0 
+        AND pr.deleted = 0
+        AND cu.fecha_pago BETWEEN fechaDesde AND fechaHasta
+    GROUP BY 
+        YEAR(cu.fecha_pago), MONTH(cu.fecha_pago), pr.id  -- Agrupando por año y mes
+    ORDER BY 
+        Anio, Mes;  -- Ordenando por año y mes
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerCuotasPagadasPorMesConClientes`()
+BEGIN
+    SELECT 
+        DATE_FORMAT(cu.fecha_pago, '%Y-%m') AS Mes,
+        cl.nombre AS NombreCliente,
+        cl.apellido AS ApellidoCliente,
+        SUM(cu.monto) AS TotalPagado
+    FROM 
+        Cuotas cu
+    INNER JOIN 
+        Prestamos pr ON cu.id_prestamo = pr.id
+    INNER JOIN 
+        Clientes cl ON pr.id_cliente = cl.id
+    WHERE 
+        cu.deleted = 0 -- Excluye cuotas marcadas como eliminadas
+        AND pr.deleted = 0 -- Excluye préstamos eliminados
+        AND cl.deleted = 0 -- Excluye clientes eliminados
+    GROUP BY 
+        DATE_FORMAT(cu.fecha_pago, '%Y-%m'), cl.id
+    ORDER BY 
+        Mes, NombreCliente, ApellidoCliente;
+END$$
+
 CREATE PROCEDURE ObtenerDatosPrestamos()
 BEGIN  
     SELECT   
@@ -350,3 +397,28 @@ $$
 
 DELIMITER ;
 ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarPrestamo`(
+    IN p_nro_cuenta INT,
+    IN p_id_cliente INT,
+    IN p_importe DECIMAL(10,2),
+    IN p_cuotas INT
+)
+BEGIN
+    INSERT INTO prestamos (
+        nro_cuenta, 
+        id_cliente, 
+        fecha_solicitud, 
+        importe, 
+        cuotas
+    )
+    VALUES (
+         p_nro_cuenta, 
+         p_id_cliente, 
+         CURRENT_DATE, 
+         p_importe, 
+         p_cuotas
+     );
+ END$$
+ DELIMITER ;

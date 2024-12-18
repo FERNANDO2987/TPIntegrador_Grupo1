@@ -30,6 +30,10 @@ public class Cuenta {
         this.estado = estado;
     }
     
+    // Constructor utilitario - solo nro cuenta
+    public Cuenta(long nroCuenta) {
+        this.nroCuenta = nroCuenta;
+    }
     
     // Getters y Setters
     public long getNroCuenta() {

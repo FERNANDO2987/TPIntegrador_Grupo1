@@ -18,7 +18,7 @@ public interface PrestamoNeg {
 	public boolean aprobarPrestamoCliente(int id, String comentario);
 	public boolean rechazarPrestamoCliente(int id, String comentario);
 	public List<Prestamo> obtenerDatosPrestamosCliente();
-
+	public List<Prestamo> obtenerPrestamosXCliente(int idCliente);
 	
 
 

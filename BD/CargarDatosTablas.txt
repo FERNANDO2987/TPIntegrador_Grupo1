@@ -44,45 +44,19 @@ INSERT INTO Localidades (id_provincia, nombre) VALUES
 
 -- Insertar ejemplos en la tabla Clientes
 
-INSERT INTO Clientes (dni, cuil, nombre, apellido, sexo, usuario, password, pais, fecha_nacimiento, correo, Telefono, Celular, admin) 
+INSERT INTO Clientes (direccion, dni, cuil, nombre, apellido, sexo, usuario, password, pais, fecha_nacimiento, correo, Telefono, Celular, admin) 
 VALUES
-('12345678', '203123456', 'Juan', 'Pérez', 'Masculino', 'juanp', 'password123', 'Argentina', '1980-01-01', 'juan.perez@example.com', '011-1234-5678', '011-9876-5432', 1),
-('23456789', '203234567', 'Maria', 'Gomez', 'Femenino', 'mariag', 'password456', 'Brasil', '1990-02-02', 'maria.gomez@example.com', '022-2345-6789', '022-6789-1234', 0),
-('34567890', '203345678', 'Carlos', 'Lopez', 'Masculino', 'carlosl', 'password789', 'Chile', '1985-03-03', 'carlos.lopez@example.com', NULL, '015-1234-5678', 0),
-('45678901', '203456789', 'Ana', 'Martinez', 'Femenino', 'anam', 'password101', 'Uruguay', '1992-04-04', 'ana.martinez@example.com', '014-2345-6789', '014-9876-5432', 1),
-('56789012', '203567890', 'Pedro', 'Rodriguez', 'Masculino', 'pedror', 'password102', 'Paraguay', '1988-05-05', 'pedro.rodriguez@example.com', '023-3456-7890', '023-5678-1234', 1),
-('67890123', '203678901', 'Laura', 'Fernandez', 'Femenino', 'lauraf', 'password103', 'Perú', '1991-06-06', 'laura.fernandez@example.com', '033-4567-8901', '033-6789-2345', 0),
-('78901234', '203789012', 'Miguel', 'Sanchez', 'Masculino', 'miguels', 'password104', 'Ecuador', '1987-07-07', 'miguel.sanchez@example.com', '044-5678-9012', '044-7890-3456', 1),
-('89012345', '203890123', 'Silvia', 'Perez', 'Femenino', 'silviap', 'password105', 'Colombia', '1993-08-08', 'silvia.perez@example.com', '055-6789-0123', '055-8901-4567', 0),
-('90123456', '203901234', 'Eduardo', 'Diaz', 'Masculino', 'eduardod', 'password106', 'Bolivia', '1986-09-09', 'eduardo.diaz@example.com', '066-7890-1234', '066-9012-5678', 1),
-('11223344', '201122334', 'Elena', 'Ruiz', 'Femenino', 'elenar', 'password107', 'México', '1989-10-10', 'elena.ruiz@example.com', '077-8901-2345', '077-0123-6789', 0);
+('Avenida 1', '12345678', '203123456', 'Juan', 'Pérez', 'Masculino', 'juanp', 'password123', 'Argentina', '1980-01-01', 'juan.perez@example.com', '011-1234-5678', '011-9876-5432', 1),
+('Avenida 2', '23456789', '203234567', 'Maria', 'Gomez', 'Femenino', 'mariag', 'password456', 'Brasil', '1990-02-02', 'maria.gomez@example.com', '022-2345-6789', '022-6789-1234', 0),
+('Avenida 3', '34567890', '203345678', 'Carlos', 'Lopez', 'Masculino', 'carlosl', 'password789', 'Chile', '1985-03-03', 'carlos.lopez@example.com', NULL, '015-1234-5678', 0),
+('Avenida 4', '45678901', '203456789', 'Ana', 'Martinez', 'Femenino', 'anam', 'password101', 'Uruguay', '1992-04-04', 'ana.martinez@example.com', '014-2345-6789', '014-9876-5432', 1),
+('Avenida 5', '56789012', '203567890', 'Pedro', 'Rodriguez', 'Masculino', 'pedror', 'password102', 'Paraguay', '1988-05-05', 'pedro.rodriguez@example.com', '023-3456-7890', '023-5678-1234', 1),
+('Avenida 6', '67890123', '203678901', 'Laura', 'Fernandez', 'Femenino', 'lauraf', 'password103', 'Perú', '1991-06-06', 'laura.fernandez@example.com', '033-4567-8901', '033-6789-2345', 0),
+('Avenida 7', '78901234', '203789012', 'Miguel', 'Sanchez', 'Masculino', 'miguels', 'password104', 'Ecuador', '1987-07-07', 'miguel.sanchez@example.com', '044-5678-9012', '044-7890-3456', 1),
+('Avenida 8', '89012345', '203890123', 'Silvia', 'Perez', 'Femenino', 'silviap', 'password105', 'Colombia', '1993-08-08', 'silvia.perez@example.com', '055-6789-0123', '055-8901-4567', 0),
+('Avenida 9', '90123456', '203901234', 'Eduardo', 'Diaz', 'Masculino', 'eduardod', 'password106', 'Bolivia', '1986-09-09', 'eduardo.diaz@example.com', '066-7890-1234', '066-9012-5678', 1),
+('Avenida 10', '11223344', '201122334', 'Elena', 'Ruiz', 'Femenino', 'elenar', 'password107', 'México', '1989-10-10', 'elena.ruiz@example.com', '077-8901-2345', '077-0123-6789', 0);
 
-
--- Insertar ejemplos en la tabla Contactos
-INSERT INTO Contactos (correo, telefono, id_cliente) VALUES
-('juanp@correo.com', '011-1234-5678', 1),
-('mariag@correo.com', '011-2345-6789', 2),
-('carlosl@correo.com', '011-3456-7890', 3),
-('anam@correo.com', '011-4567-8901', 4),
-('pedror@correo.com', '011-5678-9012', 5),
-('lauraf@correo.com', '011-6789-0123', 6),
-('miguels@correo.com', '011-7890-1234', 7),
-('silviap@correo.com', '011-8901-2345', 8),
-('eduardod@correo.com', '011-9012-3456', 9),
-('elenar@correo.com', '011-0123-4567', 10);
-
--- Insertar ejemplos en la tabla Direcciones
-INSERT INTO Direcciones (calle, numero_casa, id_localidad, id_cliente) VALUES
-('Calle 1', 100, 1, 1),
-('Calle 2', 200, 2, 2),
-('Calle 3', 300, 3, 3),
-('Calle 4', 400, 4, 4),
-('Calle 5', 500, 5, 5),
-('Calle 6', 600, 6, 6),
-('Calle 7', 700, 7, 7),
-('Calle 8', 800, 8, 8),
-('Calle 9', 900, 9, 9),
-('Calle 10', 1000, 10, 10);
 
 -- Insertar ejemplos en la tabla TiposCuenta
 INSERT INTO TiposCuenta (descripcion) VALUES

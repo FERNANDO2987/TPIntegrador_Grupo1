@@ -12,7 +12,7 @@ public class Prestamo {
 	    private LocalDate fechaSolicitud;
 	    private BigDecimal importe;
 	    private int cuotas;
-	    private boolean estado;
+	    private Boolean estado;
 	    private String observaciones;
 	   
 	   
@@ -21,7 +21,7 @@ public class Prestamo {
 	    public Prestamo() {}
 
 	    // Constructor con parámetros
-	    public Prestamo(long id, Cuenta cuenta, Cliente cliente, LocalDate fechaSolicitud, BigDecimal importe, int cuotas, boolean estado, String observaciones) {
+	    public Prestamo(long id, Cuenta cuenta, Cliente cliente, LocalDate fechaSolicitud, BigDecimal importe, int cuotas, Boolean estado, String observaciones) {
 	        this.id = id;
 	        this.cuenta = cuenta;
 	        this.cliente = cliente;
@@ -93,11 +93,11 @@ public class Prestamo {
 	        this.cuotas = cuotas;
 	    }
 
-	    public boolean isEstado() {
+	    public Boolean isEstado() {
 	        return estado;
 	    }
 
-	    public void setEstado(boolean estado) {
+	    public void setEstado(Boolean estado) {
 	        this.estado = estado;
 	    }
 
