@@ -11,7 +11,7 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 
 	@Override
 	public boolean agregarTransferencia(Transferencia transferencia) {
-		boolean exito = true;
+		boolean exito = false;
 		cn = new Conexion();
 		cn.Open();
 		
@@ -24,6 +24,7 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 			cst.setBigDecimal(3, transferencia.getMonto());
 			cst.setString(4, transferencia.getDetalle());
 			cst.execute();
+			exito = true;
 			
 		}
 		catch(Exception e)

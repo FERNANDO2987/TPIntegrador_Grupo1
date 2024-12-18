@@ -45,7 +45,6 @@ public class servletTransferencia extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			if(request.getParameter("btnTransferir") != null)
 			{
-				System.out.println("ejecute el if");
 				CuentaNeg cuentaNeg = new CuentaNegImpl();
 				
 				int cuentaOrigen;

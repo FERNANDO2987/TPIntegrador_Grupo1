@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.PreparedStatement;
+
 import datos.ClienteDao;
 import datos.CuentaDao;
 import entidad.Cuenta;
@@ -426,6 +428,31 @@ public class CuentaDaoImpl implements CuentaDao {
 	    }
 
 	    return validado;
+	}
+	
+	public boolean validarCBU(String cbu)
+	{
+		cn = new Conexion();
+		cn.Open();
+		String query = "SELECT 1 FROM Cuentas WHERE cbu = ? AND deleted = 0";
+		try 
+		{
+			PreparedStatement prst = (PreparedStatement) cn.connection.prepareStatement(query);
+			prst.setString(1, cbu);
+			try(ResultSet resultset = prst.executeQuery())
+			{
+				return resultset.next();
+			}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		finally
+		{
+			cn.close();
+		}
 	}
 
 	
