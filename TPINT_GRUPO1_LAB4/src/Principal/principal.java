@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import datos.CuentaDao;
+import datosImpl.CuentaDaoImpl;
 import datosImpl.InformesDaoImpl;
 import entidad.Cliente;
 import entidad.Cuenta;

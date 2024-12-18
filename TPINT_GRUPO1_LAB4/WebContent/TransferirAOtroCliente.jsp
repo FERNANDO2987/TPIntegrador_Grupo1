@@ -27,6 +27,11 @@
       {
     	  listaDeOrigen = (List<Cuenta>) request.getAttribute("listaDeMisCuentas");
       }
+      String exito = new String();
+      if(request.getAttribute("exitoTransfer") != null)
+      {
+    	  exito = (String)request.getAttribute("exitoTransfer");
+      }
     %>
     
     <!-- Modal -->
@@ -52,9 +57,24 @@
 <div class="container mt-5">
     <div class="text-center mb-4">
         <h3>Transferir a otro cliente</h3>
+        <%if(exito.compareTo("Transferencia realizada con exito") == 0)
+		{%>
+			<div class="alert alert-success" id="successMessage">
+            <%=exito %>
+        	</div>
+        	
+		<%}
+        if(exito.compareTo("No se pudo realizar la transferencia") == 0)
+        {%>
+        	<div class="alert alert-danger" id="errorMessage">
+            <%=exito %>
+        	</div>
+        <%} %>
     </div>
     
     <div class="row justify-content-center">
+    	
+    	
         <div class="col-md-6">
                 <div class="form-group">
                     <label for="cuentaOrigen">Cuenta de origen</label>

@@ -11,7 +11,7 @@ public class Cuenta {
     private TipoCuenta tipoCuenta;
     private String cbu;
     private BigDecimal saldo;
-    private boolean estado;
+    private boolean estado; //false es que no esta borrado
 
     // Constructor vacío
     public Cuenta() {

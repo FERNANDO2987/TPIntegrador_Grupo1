@@ -63,7 +63,6 @@ public class servletAgregarCuenta extends HttpServlet {
 			}
 			else
 			{
-				System.out.println("excedido");
 				exito = "Excede el limite de 3(tres) cuentas";
 			}
 			

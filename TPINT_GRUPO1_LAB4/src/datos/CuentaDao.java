@@ -16,4 +16,5 @@ public interface CuentaDao {
 	public Cuenta obtenerCuentaXCBU(String cbu);
 	public int obtenerCountCuentasXCliente(int idCliente);
 	public List<Movimiento> listarMovimientosXCuenta(long idCuenta);
+	
 }
