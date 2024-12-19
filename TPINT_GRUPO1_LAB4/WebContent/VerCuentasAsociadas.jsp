@@ -23,12 +23,12 @@
     <div class="text-center mb-5">
         <h3>Cuentas Asociadas</h3>
     </div>
-	<div class="row pt-5 ml-1">	
+<%-- 	<div class="row pt-5 ml-1">	
     	<form method="get" action="servletListarCuentasXCliente">
             <input type="submit" name="btnListarCuentasXCliente" value="Traer Cuentas" class="btn btn-secondary">
             <input type="hidden" name="idusuario" value="<%=usuario.getId()%>">
         </form>
-	</div>
+	</div> --%>
     <div class="row pt-1">
 
 		<%
