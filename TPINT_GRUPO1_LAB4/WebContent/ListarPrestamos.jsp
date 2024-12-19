@@ -138,9 +138,9 @@
     <script type="text/javascript"></script>
     
      <style>
-        /* Asegú
+   
   
-        /* Asegúrate de que el contenedor ocupe el 100% del ancho */  
+   
         table {  
             width: 100%;  
         }  

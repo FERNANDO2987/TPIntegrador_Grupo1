@@ -13,6 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
 /*import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -62,7 +71,7 @@ public class servletGenerarPDF extends HttpServlet {
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "inline; filename=\"Reporte_Ingresos_Egresos.pdf\"");
 
-        /*try (OutputStream out = response.getOutputStream()) {
+        try (OutputStream out = response.getOutputStream()) {
             Document document = new Document();
             PdfWriter.getInstance(document, out);
             document.open();
@@ -121,7 +130,7 @@ public class servletGenerarPDF extends HttpServlet {
         cell.setBorderColor(borderColor);
         cell.setPadding(5);
         return cell;
-        */
+        
     }
     
 	/**

@@ -208,6 +208,19 @@
                     </li>
                   </ul>
                 </li>
+                     <li class="list-group-item">
+                  Prestamos
+                  <ul>
+                    <li>
+                      <a
+                        href="PagarCuotasPrestamo.jsp"
+                        class="text-decoration-none"
+                        >Pagar Prestamos Solicitados</a>
+                    </li>
+                  
+                  </ul>
+                </li>
+                
                 <li class="list-group-item">
                 	Prestamos
                 	<ul>

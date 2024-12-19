@@ -3,16 +3,23 @@ package datosImpl;
 
 import java.math.BigDecimal;
 import java.sql.CallableStatement;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import datos.PrestamoDao;
 import entidad.Cliente;
 import entidad.Cuenta;
+import entidad.Cuota;
+import entidad.Movimiento;
 import entidad.Prestamo;
+import entidad.TipoMovimiento;
 
 public class PrestamoDaoImpl  implements PrestamoDao{
 	private Conexion cn;
@@ -379,6 +386,95 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	    return estado;
 	}
 
+
+	public Map<Prestamo, List<Movimiento>> obtenerDatosClientePrestamo(int clienteId) {
+	    Map<Prestamo, List<Movimiento>> prestamosConMovimientos = new HashMap<>();
+	    cn = new Conexion();
+	    cn.Open();
+
+	    String query = "{CALL ObtenerDatosClientePrestamo(?)}";
+
+	    try (CallableStatement stmt = cn.connection.prepareCall(query)) {
+	        stmt.setInt(1, clienteId);
+
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                // Crear instancias necesarias
+	                Prestamo prestamo = new Prestamo();
+	                Cliente cliente = new Cliente();
+	                Cuenta cuenta = new Cuenta();
+	                Movimiento movimiento = new Movimiento();
+	                TipoMovimiento tipoMovimiento = new TipoMovimiento();
+	                Cuota cuota = new Cuota();
+
+	                // Configurar cliente
+	                cliente.setId(rs.getInt("cliente_id"));
+	                prestamo.setCliente(cliente);
+
+	                // Configurar préstamo
+	                prestamo.setId(rs.getLong("prestamo_id"));
+	                Date fechaSolicitud = rs.getDate("fecha_solicitud");
+	                prestamo.setFechaSolicitud(fechaSolicitud != null ? fechaSolicitud.toLocalDate() : null);
+	                prestamo.setCuotas(rs.getInt("cuotas_prestamo"));
+	                prestamo.setImporte(rs.getBigDecimal("monto_cuota") != null ? rs.getBigDecimal("monto_cuota") : BigDecimal.ZERO);
+	                
+	  
+	
+	                // Configurar cuenta
+	                cuenta.setNroCuenta(rs.getLong("numero_cuenta"));
+	                cuenta.setSaldo(rs.getBigDecimal("cuenta_saldo"));
+	                prestamo.setCuenta(cuenta);
+
+	                // Configurar movimiento
+	                movimiento.setImporte(rs.getBigDecimal("importe_movimiento"));
+	                movimiento.setDetalle(rs.getString("detalle"));
+	                tipoMovimiento.setDescripcion(rs.getString("descripcion_movimiento"));
+	                tipoMovimiento.setId(rs.getInt("tipo_id"));
+	                movimiento.setTipoMovimiento(tipoMovimiento);
+
+	                // Asociar préstamo con movimientos
+	                prestamosConMovimientos.computeIfAbsent(prestamo, k -> new ArrayList<>()).add(movimiento);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        cn.close();
+	    }
+
+	    return prestamosConMovimientos;
+	}
+
+
+	@Override
+	public boolean actualizarCuota(int cuotasAActualizar, BigDecimal montoAActualizar, int idPrestamo, int nroCuenta, String detalle) {
+	    boolean estado = true;
+	    cn = new Conexion();
+	    cn.Open();
+	    
+	    // Llamar al procedimiento almacenado
+	    String query = "{CALL ActualizarCuota(?, ?, ?, ?, ?)}";
+	    
+	    try (CallableStatement stmt = cn.connection.prepareCall(query)) {
+	        // Establecer los parámetros
+	        stmt.setInt(1, cuotasAActualizar);              // p_cuotas_a_actualizar
+	        stmt.setBigDecimal(2, montoAActualizar);         // p_monto_a_actualizar
+	        stmt.setInt(3, idPrestamo);                      // p_id_prestamo
+	        stmt.setInt(4, nroCuenta);                       // nro_cuenta
+	        stmt.setString(5, detalle);                      // detalle
+
+	        // Ejecutar la actualización
+	        stmt.executeUpdate();
+	        
+	    } catch (SQLException e) {
+	        estado = false;
+	        e.printStackTrace();
+	    } finally {
+	        cn.close();
+	    }
+	    
+	    return estado;
+	}
 
 
 	
