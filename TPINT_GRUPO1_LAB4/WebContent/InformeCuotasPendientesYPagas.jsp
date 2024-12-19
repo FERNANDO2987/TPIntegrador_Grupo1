@@ -106,6 +106,26 @@
     </div>
 
     <script>
+    
+    // Función para habilitar el botón de generar informe y el de generar PDF
+    function habilitarBotonGenerar() {
+        const fechaInicio = document.getElementById('fechaInicio').value;
+        const fechaFin = document.getElementById('fechaFin').value;
+        const btnGenerar = document.getElementById('btnGenerar');
+        const btnGenerarPDF = document.getElementById('btnGenerarPDF');
+
+        // Si ambas fechas están completas, habilitamos los botones
+        if (fechaInicio && fechaFin) {
+            btnGenerar.disabled = false;
+            btnGenerarPDF.disabled = false;
+        } else {
+            btnGenerar.disabled = true;
+            btnGenerarPDF.disabled = true;
+        }
+    }
+    
+    // Llamamos a la función al cargar la página
+    habilitarBotonGenerar();
         // Habilitar botones dinámicamente
         function habilitarBotones() {
             const fechaInicio = document.getElementById('fechaInicio').value;

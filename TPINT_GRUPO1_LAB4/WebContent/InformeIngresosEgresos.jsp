@@ -64,36 +64,68 @@
         </div>
 
         <!-- Botón para generar PDF -->
-        <button class="btn btn-success mt-4"
+     
+        
+        <br>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                   <button class="btn btn-success w-100"
                 id="btnGenerarPDF"
                 onclick="window.location.href='servletGenerarPDF?fechaInicio=<%= URLEncoder.encode(fechaInicio, "UTF-8") %>&fechaFin=<%= URLEncoder.encode(fechaFin, "UTF-8") %>'"
                 disabled>Generar Reporte PDF
         </button>
+            </div>
+         <div class="col-md-4">
+                <a href="InformeIngresosEgresos.jsp" class="btn btn-danger w-100"
+                   id="btnLimpiar"
+                   onclick="return confirm('¿Estás seguro de que deseas limpiar el reporte? Perderás los datos.')">
+                    Limpiar
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="Home.jsp" class="btn btn-secondary w-100"
+                   onclick="return confirm('¿Estás seguro de que deseas volver al Home? Perderás los datos no guardados.')">
+                    Volver
+                </a>
+            </div>
+        </div>
 
         <!-- Botón para limpiar los gráficos y las fechas -->
-        <button type="button" class="btn btn-secondary mt-4" id="btnLimpiar" onclick="limpiarCampos()">Limpiar</button>
+        
 
         <script>
-            // Función para habilitar el botón de generar informe y el de generar PDF
-            function habilitarBotonGenerar() {
+        // Función para habilitar el botón de generar informe y el de generar PDF
+        function habilitarBotonGenerar() {
+            const fechaInicio = document.getElementById('fechaInicio').value;
+            const fechaFin = document.getElementById('fechaFin').value;
+            const btnGenerar = document.getElementById('btnGenerar');
+            const btnGenerarPDF = document.getElementById('btnGenerarPDF');
+
+            // Si ambas fechas están completas, habilitamos los botones
+            if (fechaInicio && fechaFin) {
+                btnGenerar.disabled = false;
+                btnGenerarPDF.disabled = false;
+            } else {
+                btnGenerar.disabled = true;
+                btnGenerarPDF.disabled = true;
+            }
+        }
+        
+        // Llamamos a la función al cargar la página
+        habilitarBotonGenerar();
+            // Habilitar botones dinámicamente
+            function habilitarBotones() {
                 const fechaInicio = document.getElementById('fechaInicio').value;
                 const fechaFin = document.getElementById('fechaFin').value;
                 const btnGenerar = document.getElementById('btnGenerar');
                 const btnGenerarPDF = document.getElementById('btnGenerarPDF');
 
-                // Si ambas fechas están completas, habilitamos los botones
-                if (fechaInicio && fechaFin) {
-                    btnGenerar.disabled = false;
-                    btnGenerarPDF.disabled = false;
-                } else {
-                    btnGenerar.disabled = true;
-                    btnGenerarPDF.disabled = true;
-                }
+                const habilitado = fechaInicio && fechaFin;
+                btnGenerar.disabled = !habilitado;
+                btnGenerarPDF.disabled = !habilitado;
             }
 
-            // Llamamos a la función al cargar la página
-            habilitarBotonGenerar();
-
+            habilitarBotones();
             const ingresosPorMes = <%= java.util.Arrays.toString(ingresosPorMes).replace("[", "[").replace("]", "]") %>;
             const egresosPorMes = <%= java.util.Arrays.toString(egresosPorMes).replace("[", "[").replace("]", "]") %>;
 
