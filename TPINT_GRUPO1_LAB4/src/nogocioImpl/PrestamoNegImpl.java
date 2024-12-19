@@ -54,7 +54,7 @@ public class PrestamoNegImpl implements PrestamoNeg{
 	}
 
 	@Override
-	public boolean aprobarPrestamo_2(Long id, String observacion) {
+	public boolean aprobarPrestamoCliente_2(Long id, String observacion) {
 		// TODO Auto-generated method stub
 		return dao.aprobarPrestamo_2(id, observacion);
 	}

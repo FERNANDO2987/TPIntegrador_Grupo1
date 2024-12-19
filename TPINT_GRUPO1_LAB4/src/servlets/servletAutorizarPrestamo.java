@@ -45,7 +45,7 @@ public class servletAutorizarPrestamo extends HttpServlet {
 	        }
 	        
 	        
-	        boolean exito = prestamoNeg.aprobarPrestamoCliente(prestamoId, comentarios);
+	        boolean exito = prestamoNeg.aprobarPrestamoCliente_2((long)prestamoId, comentarios);
 
 	        if (exito) {
 	            request.setAttribute("successMessage", "Préstamo Autorizado con éxito.");

@@ -16,7 +16,7 @@ public interface PrestamoNeg {
 	public Prestamo obtenerPrestamoxId(Long id);
 	public List<Prestamo> obtenerPrestamos();
 	public boolean aprobarPrestamoCliente(int id, String comentario);
-	public boolean aprobarPrestamo_2(Long id, String observacion);
+	public boolean aprobarPrestamoCliente_2(Long id, String observacion);
 	public boolean rechazarPrestamoCliente(int id, String comentario);
 	public List<Prestamo> obtenerDatosPrestamosCliente();
 	public List<Prestamo> obtenerPrestamosXCliente(int idCliente);
