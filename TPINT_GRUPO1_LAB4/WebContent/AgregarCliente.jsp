@@ -102,7 +102,7 @@
             </div>
           <div class="form-group">
                <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-               <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required readonly 
+               <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required  
                       onfocus="this.removeAttribute('readonly');">
               </div>
 

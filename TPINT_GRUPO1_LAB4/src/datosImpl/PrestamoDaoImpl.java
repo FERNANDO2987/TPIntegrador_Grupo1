@@ -118,7 +118,7 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	@Override
 	public List<Prestamo> obtenerPrestamosXCliente(int idCliente) {
 	    List<Prestamo> prestamos = new ArrayList<>();
-	    String query = "SELECT id, nro_cuenta, id_cliente, fecha_solicitud, importe, cuotas FROM prestamos WHERE id_cliente = ?;";
+	    String query = "SELECT id, nro_cuenta, id_cliente, fecha_solicitud, importe, cuotas, estado, observaciones FROM prestamos WHERE id_cliente = ?;";
 	    cn = new Conexion();
 	    cn.Open();
 	    
@@ -137,6 +137,9 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	                    LocalDate fechaSolicitud = rs.getDate("fecha_solicitud").toLocalDate();
 	                    BigDecimal importe = rs.getBigDecimal("importe");
 	                    int cuotas = rs.getInt("cuotas");  
+	                    Boolean estado = rs.getBoolean("estado");
+	                    String observacion = rs.getString("observaciones");
+	                    
 
 	                    // Crear los objetos correspondientes
 	                    Prestamo prestamo = new Prestamo();
@@ -152,6 +155,9 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 	                    prestamo.setImporte(importe);
 	                    prestamo.setCuotas(cuotas);
 	                    prestamo.setFechaSolicitud(fechaSolicitud);
+	                    prestamo.setEstado(estado);
+	                    prestamo.setObservaciones(observacion);
+	                    
 
 	                    // Agregar el prestamo a la lista
 	                    prestamos.add(prestamo);
