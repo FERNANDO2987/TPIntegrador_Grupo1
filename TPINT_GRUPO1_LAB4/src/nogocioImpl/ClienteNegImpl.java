@@ -6,6 +6,7 @@ import datos.ClienteDao;
 import datosImpl.ClienteDaoImpl;
 import entidad.Cliente;
 import negocio.ClienteNeg;
+import excepciones.ClienteNoLogueadoException;
 
 public class ClienteNegImpl implements ClienteNeg {
 
@@ -23,7 +24,8 @@ private ClienteDao  clienteDao = new ClienteDaoImpl();
 	}
 	
 	@Override
-	public Cliente iniciarSesion(String nombreUsuario, String contrasena) {
+	public Cliente iniciarSesion(String nombreUsuario, String contrasena) throws ClienteNoLogueadoException
+	{
 	    Cliente usuario = new Cliente();
 	    usuario.setUsuario(nombreUsuario);
 	    usuario.setPassword(contrasena);
@@ -33,7 +35,9 @@ private ClienteDao  clienteDao = new ClienteDaoImpl();
 	    if (usuarioValido != null) {
 	        return usuarioValido;
 	    } else {
-	        return null;
+	    	ClienteNoLogueadoException clienteNoLogueadoException = new ClienteNoLogueadoException()
+	    	{private static final long serialVersionUID = 1L;};
+	    	throw clienteNoLogueadoException;
 	    }
 	}
 	

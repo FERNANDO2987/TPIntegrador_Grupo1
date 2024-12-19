@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import entidad.Cliente;
+import excepciones.ClienteNoLogueadoException;
 import nogocioImpl.ClienteNegImpl;
 
 
@@ -40,24 +41,27 @@ public class servletLogin extends HttpServlet {
 	        String usuario = request.getParameter("usuario");
 	        String contrasenia = request.getParameter("contrasenia");
 	        if (usuario != null && contrasenia != null) {
-	            ClienteNegImpl clienteNegocio = new ClienteNegImpl();
-	            Cliente usuarioSesion = clienteNegocio.iniciarSesion(usuario, contrasenia);
-	            if (usuarioSesion != null) {
-	                HttpSession session = request.getSession();
+	            try {
+	            	ClienteNegImpl clienteNegocio = new ClienteNegImpl();
+	            	Cliente usuarioSesion = clienteNegocio.iniciarSesion(usuario, contrasenia);
+	            	HttpSession session = request.getSession();
 	                session.setAttribute("usuario", usuarioSesion);
 	                RequestDispatcher rd = request.getRequestDispatcher("Home.jsp");
 	                rd.forward(request, response);
-	            } else {
-	                response.sendRedirect("Login.jsp?error=true");
+	            }catch(ClienteNoLogueadoException e) {
+	            	System.out.println(e.getMessage());
+	            	e.printStackTrace();
+	            	response.sendRedirect("Login.jsp?error=true");
+	            }catch(Exception e) {
+	            	e.printStackTrace();
+	            	response.sendRedirect("Login.jsp?error=true");
 	            }
 	        } else {
 	            response.sendRedirect("Login.jsp?error=true");
 	        }
-	    
 	    }
-	        }
-	    
-	}
+	}  
+}
 
 
 		

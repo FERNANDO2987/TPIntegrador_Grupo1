@@ -4,6 +4,7 @@
 <%@ page import="entidad.Cliente" %>
 <%@ page import="negocio.PaisNeg" %>
 <%@ page import="nogocioImpl.PaisNegImpl" %>
+<%@ page import="excepciones.ClienteNoLogueadoException" %>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -22,6 +23,7 @@
 	<%
       Cliente usuario = (Cliente)session.getAttribute("usuario");
       if (usuario == null) {
+    	  ClienteNoLogueadoException noLogueadoException = new ClienteNoLogueadoException();
         response.sendRedirect("Login.jsp");
         return;
       }
