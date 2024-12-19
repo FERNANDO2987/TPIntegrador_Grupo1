@@ -183,7 +183,7 @@
                   <ul>
                     <li>
                       <a
-                        href="<%= request.getContextPath() %>/VerCuentasAsociadas.jsp"
+                        href="servletListarCuentasXCliente"
                         class="text-decoration-none"
                         >Ver Cuentas Asociadas</a
                       >
