@@ -59,8 +59,8 @@ public class servletListarCliente extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("btnFiltro") != null)
 		{
-			int criterio = request.getAttribute("selectCriterio") != null? Integer.parseInt((String) request.getAttribute("selectCriterio")): new Integer(0);
-			String filtro = request.getParameter("txtFiltro") != null? (String) request.getParameter("txtFiltro") : new String("");
+			int criterio = Integer.parseInt(request.getParameter("selectCriterio"));
+			String filtro = request.getParameter("txtFiltro");
 			
 			ClienteNeg clienteNeg = new ClienteNegImpl();
 			List<Cliente> listado = clienteNeg.obtenerClientesConFiltro(criterio, filtro);
