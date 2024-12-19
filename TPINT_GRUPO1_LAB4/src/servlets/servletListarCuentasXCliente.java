@@ -9,7 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import entidad.Cliente;
 import entidad.Cuenta;
 import negocio.CuentaNeg;
 import nogocioImpl.CuentaNegImpl;
@@ -33,6 +35,26 @@ public class servletListarCuentasXCliente extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Cliente usuario = (Cliente)session.getAttribute("usuario");
+		if(usuario != null)
+		{			
+			int idCliente = usuario.getId();
+			CuentaNeg cuentaNeg = new CuentaNegImpl();
+			List<Cuenta> listado = new ArrayList<Cuenta>();
+			listado = cuentaNeg.obtenerCuentasXIdCliente_2(idCliente);
+			
+			request.setAttribute("listado", listado);
+			request.getRequestDispatcher("VerCuentasAsociadas.jsp").forward(request, response);
+		}
+		System.out.println("Hola");
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("btnListarCuentasXCliente") != null)
 		{			
 			int idCliente = Integer.parseInt(request.getParameter("idusuario"));
@@ -43,15 +65,6 @@ public class servletListarCuentasXCliente extends HttpServlet {
 			request.setAttribute("listado", listado);
 			request.getRequestDispatcher("VerCuentasAsociadas.jsp").forward(request, response);
 		}
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

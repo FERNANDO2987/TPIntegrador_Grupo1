@@ -23,6 +23,7 @@
     	  exito = (String)request.getAttribute("exitoAlAgregar");
       }
     %>
+
 	<%
 		List<Cliente> listaClientes;
 		List<TipoCuenta> listaTipoCuenta;

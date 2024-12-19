@@ -25,8 +25,8 @@
                 }
                 setTimeout(function() {
                     window.location.href = "ListarClientes.jsp";
-                }, 7000); // Redirige después de 7 segundos
-            }, 3000); // Oculta después de 3 segundos
+                }, 7000); // Redirige despuï¿½s de 7 segundos
+            }, 3000); // Oculta despuï¿½s de 3 segundos
         }
     </script>
     
@@ -44,7 +44,7 @@
         
      
 		    <div class="container mt-5">
-		                         <!-- Mostrar mensajes de éxito o error -->
+		                         <!-- Mostrar mensajes de ï¿½xito o error -->
         <%
             String mensajeExito = (String) session.getAttribute("mensajeExito");
             String mensajeError = (String) session.getAttribute("mensajeError");
@@ -117,11 +117,11 @@
 		                </div>
 		                
 		                 <div class="form-group">
-                            <label for="txtPais">País:</label>
+                            <label for="txtPais">Paï¿½s:</label>
                              <select class="form-control" id="pais" name="pais" required>
                             <option value="">Seleccionar</option>
                              <%
-                                 // Obtener la lista de países desde la base de datos
+                                 // Obtener la lista de paï¿½ses desde la base de datos
                            PaisNegImpl paisNeg = new PaisNegImpl();
                            List<Pais> paises = paisNeg.listarPaises();
                            if (paises != null && !paises.isEmpty()) {
@@ -132,7 +132,7 @@
                            }
                            } else {
                            %>
-                                 <option value="">No hay países disponibles</option>
+                                 <option value="">No hay paï¿½ses disponibles</option>
                             <%
                               }
                            %>
@@ -146,15 +146,15 @@
                         </div>
                            
                            <div class="form-group">
-                                <label for="correo">Correo Electrónico:</label>
+                                <label for="correo">Correo Electrï¿½nico:</label>
                                 <input type="email" class="form-control" id="correo" name="correo" value="<%= cliente.getCorreo() %>"
                                  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
-                                 title="Ingrese un correo válido (ejemplo: usuario@dominio.com)" required>
+                                 title="Ingrese un correo vï¿½lido (ejemplo: usuario@dominio.com)" required>
                                 </div>
                            
                	                
 		                <div class="form-group">
-		                    <label for="txtTelefono">Teléfono:</label>
+		                    <label for="txtTelefono">Telï¿½fono:</label>
 		                    <input type="text" class="form-control" id="telefono" name="telefono" value="<%= cliente.getTelefono() %>" required>
 		                </div>
 		                
@@ -215,24 +215,24 @@
 
 <script>
     document.addEventListener('keydown', function (event) {
-        // Detecta si se presionó la tecla "Backspace"
+        // Detecta si se presionï¿½ la tecla "Backspace"
         if (event.key === 'Backspace') {
             // Verifica si no hay un campo de texto editable activo
             const activeElement = document.activeElement;
             if (!activeElement || activeElement.tagName !== 'INPUT' && activeElement.tagName !== 'TEXTAREA') {
-                event.preventDefault(); // Cancela la acción predeterminada
+                event.preventDefault(); // Cancela la acciï¿½n predeterminada
             }
         }
     });
 </script>
 
    <script>  
-   // Función para mostrar el mensaje y luego ocultarlo  
+   // Funciï¿½n para mostrar el mensaje y luego ocultarlo  
    function mostrarMensaje(tipo) {  
        var mensaje = document.getElementById(tipo);  
        if (mensaje) {  
            mensaje.style.display = "block"; // Mostrar el mensaje  
-           // Ocultar el mensaje después de 3 segundos (3000 milisegundos)  
+           // Ocultar el mensaje despuï¿½s de 3 segundos (3000 milisegundos)  
            setTimeout(function() {  
                mensaje.style.display = "none";  
            }, 3000);  
@@ -250,7 +250,7 @@
        const regex = /^\d{4}-\d{2}-\d{2}$/;
 
        if (!regex.test(fecha)) {
-           alert('Selecciona una fecha válida desde el calendario.');
+           alert('Selecciona una fecha vï¿½lida desde el calendario.');
            event.target.value = '';
        }
    });

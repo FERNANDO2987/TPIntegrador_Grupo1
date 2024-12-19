@@ -54,8 +54,8 @@ BEGIN
         p.id AS id,  
         cl.nombre AS Nombre,  
         cl.apellido AS Apellido,  
-        ct.correo AS Correo,  
-        ct.telefono AS Telefono,  
+        cl.correo AS Correo,  
+        cl.telefono AS Telefono,  
         cu.cbu AS CBU,  
         c.monto AS Monto,  
         p.cuotas AS Cuotas,  
@@ -73,8 +73,6 @@ END AS Estado
         bdbanco.prestamos p  
     JOIN   
         bdbanco.clientes cl ON p.id_cliente = cl.id  
-    JOIN   
-        bdbanco.contactos ct ON cl.id = ct.id_cliente AND ct.deleted = 0  
     JOIN   
         bdbanco.cuentas cu ON p.nro_cuenta = cu.nro_cuenta AND cu.deleted = 0  
     LEFT JOIN   
