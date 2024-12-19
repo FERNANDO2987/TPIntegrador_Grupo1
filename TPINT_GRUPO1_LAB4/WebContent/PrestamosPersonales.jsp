@@ -21,7 +21,12 @@
         return;
       }
     %>
-    
+    <nav class="navbar bg-body-tertiary">
+	  <div class="container-fluid">
+	    <a class="navbar-brand" href="Home.jsp">Gestion Bancaria</a>
+	    <h5 class="d-flex"> Bienvenido, <%= usuario.getNombre() %></h5>
+	  </div>
+	</nav> 
 	<div class="container mt-5">
 		<h1>Prestamos solicitados</h1>
     	<a class="btn btn-secondary w-10 mb-1" href="Home.jsp" > 	Volver al Home </a> 

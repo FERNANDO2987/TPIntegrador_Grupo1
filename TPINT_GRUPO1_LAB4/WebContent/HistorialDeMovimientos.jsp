@@ -37,6 +37,14 @@
         return;
       }
     %>
+    <nav class="navbar bg-body-tertiary" style="background-color: #343a40">
+	  <div class="container-fluid d-flex justify-content-between align-items-center">
+	    <a class="navbar-brand fs-3" href="Home.jsp">Gestion Bancaria</a>
+	    <h4 style="fs-2" >Bienvenido, <%= usuario.getUsuario() %></h4>
+	  </div>
+	</nav>
+    
+    
 	<h3>Usuario logueado: <%=usuario.getUsuario() %></h3>
 
 	<div class="container mt-5">

@@ -28,6 +28,12 @@
         return;
       }
     %>
+        <nav class="navbar bg-body-tertiary">
+	  <div class="container-fluid">
+	    <a class="navbar-brand" href="Home.jsp">Gestion Bancaria</a>
+	    <h5 class="d-flex"> Bienvenido, <%= usuario.getNombre() %></h5>
+	  </div>
+	</nav> 
     <div class="container mt-5">
         <h2 class="text-center mb-4">Registro de Cliente</h2>
         

@@ -6,6 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Datos Personales</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 <body>
 	<%
@@ -15,6 +17,12 @@
         return;
       }
     %>
+    <nav class="navbar bg-body-tertiary">
+	  <div class="container-fluid">
+	    <a class="navbar-brand" href="Home.jsp">Gestion Bancaria</a>
+	    <h5 class="d-flex"> Bienvenido, <%= usuario.getNombre() %></h5>
+	  </div>
+	</nav> 
     <div class="container mt-5">
         <div class="card">
             <div class="card-header text-center">

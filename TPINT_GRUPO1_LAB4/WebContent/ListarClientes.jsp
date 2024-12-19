@@ -53,6 +53,12 @@
         return;
       }
     %>
+    <nav class="navbar bg-body-tertiary">
+	  <div class="container-fluid">
+	    <a class="navbar-brand" href="Home.jsp">Gestion Bancaria</a>
+	    <h5 class="d-flex"> Bienvenido, <%= usuario.getNombre() %></h5>
+	  </div>
+	</nav> 
     <div class="container mt-5 ml-0">
     	<div class="row pt-5 justify-content-end ">	
     		<a class="btn btn-secondary my-1" href="Home.jsp" > 	Volver al Home </a>    

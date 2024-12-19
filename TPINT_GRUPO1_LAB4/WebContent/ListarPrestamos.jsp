@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@page import="java.util.List"%>
 <%@page import="entidad.Prestamo" %>
+<%@ page import="entidad.Cliente" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -152,6 +153,20 @@
     </style>  
 </head>
 <body>
+	<%
+      Cliente usuario = (Cliente)session.getAttribute("usuario");
+      if (usuario == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+      }
+    %>
+	
+	<nav class="navbar bg-body-tertiary">
+	  <div class="container-fluid">
+	    <a class="navbar-brand" href="Home.jsp">Gestion Bancaria</a>
+	    <h5 class="d-flex"> Bienvenido, <%= usuario.getNombre() %></h5>
+	  </div>
+	</nav> 
 
    <!-- Mensaje de éxito -->
         <div class="alert alert-success" role="alert" id="successMessage" style="display:none;">

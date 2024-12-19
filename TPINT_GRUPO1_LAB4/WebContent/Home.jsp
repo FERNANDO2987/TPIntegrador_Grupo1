@@ -7,10 +7,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Menu de Gestion de Banco</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script>
       function showAlert(option) {
         alert("Seleccionaste: " + option);
@@ -25,9 +22,15 @@
         return;
       }
     %>
+	    <nav class="navbar bg-body-tertiary">
+	  <div class="container-fluid">
+	    <a class="navbar-brand" href="Home.jsp">Gestion Bancaria</a>
+	    <h5 class="d-flex"> Bienvenido, <%= usuario.getNombre() %></h5>
+	  </div>
+	</nav> 
+
+
     <div class="container mt-5">
-      <h1>Menu de Gestion de Banco</h1>
-      <h4>Bienvenido, <%= usuario.getUsuario() %>.</h4>
 
       <div class="accordion" id="menuAccordion">
 	
@@ -69,24 +72,6 @@
                         href="servletListarCliente"
                         class="text-decoration-none"
                         >Listar Clientes</a
-                      >
-                    </li>
-                  </ul>
-                </li>
-                <li class="list-group-item">
-                  Gestion de Usuarios
-                  <ul>
-                    <li>
-                      <a
-                        href="#"
-                        onclick="showAlert('Asignar Usuario a Cliente')"
-                        class="text-decoration-none"
-                        >Agregar Usuario</a
-                      >
-                    </li>
-                    <li>
-                      <a href="ListarUsuarios.jsp" class="text-decoration-none"
-                        >Listar Usuarios</a
                       >
                     </li>
                   </ul>
@@ -244,6 +229,5 @@
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  </body>
 </html>

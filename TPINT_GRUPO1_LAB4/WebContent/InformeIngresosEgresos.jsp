@@ -1,5 +1,5 @@
 <%@ page import="java.net.URLEncoder" %>
-
+<%@ page import="entidad.Cliente" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +10,20 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+	<%
+      Cliente usuario = (Cliente)session.getAttribute("usuario");
+      if (usuario == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+      }
+    %>
+	
+	<nav class="navbar bg-body-tertiary">
+	  <div class="container-fluid">
+	    <a class="navbar-brand" href="Home.jsp">Gestion Bancaria</a>
+	    <h5 class="d-flex"> Bienvenido, <%= usuario.getNombre() %></h5>
+	  </div>
+	</nav> 
     <div class="container mt-5">
         <h2 class="text-center">Informe de Ingresos y Egresos</h2>
 
