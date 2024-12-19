@@ -1,6 +1,158 @@
 DELIMITER $$
 
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GenerarReporteMovimientosMesPorMes`(  
+    IN fecha_inicio DATE,  
+    IN fecha_fin DATE  
+)
+BEGIN  
+    -- Crear una tabla temporal 
+    CREATE TEMPORARY TABLE IF NOT EXISTS TempReporteMovimientos (
+        Anio INT,
+        Mes INT,
+        Total_Ingresos DECIMAL(10,2),
+        Total_Egresos DECIMAL(10,2)
+    );
+    
+    -- Limpiar la tabla temporal antes de insertar datos
+    TRUNCATE TABLE TempReporteMovimientos;
+    
+    -- Insertar los resultados de los movimientos en la tabla temporal
+    INSERT INTO TempReporteMovimientos (Anio, Mes, Total_Ingresos, Total_Egresos)
+    SELECT 
+        YEAR(mov.fecha) AS Anio,
+        MONTH(mov.fecha) AS Mes,
+        COALESCE(SUM(CASE 
+                     WHEN tm.descripcion LIKE '%%' AND mov.deleted = 0
+                     THEN mov.importe ELSE 0 END), 0) AS Total_Ingresos,
+        COALESCE(SUM(CASE 
+                     WHEN tm.descripcion LIKE '%%' AND mov.deleted = 0
+                     THEN mov.importe ELSE 0 END), 0) AS Total_Egresos
+    FROM 
+        Movimientos mov
+    INNER JOIN TiposMovimiento tm ON mov.tipo_movimiento = tm.id
+    WHERE 
+        mov.fecha BETWEEN fecha_inicio AND fecha_fin
+    GROUP BY 
+        YEAR(mov.fecha), MONTH(mov.fecha)
+    ORDER BY 
+        YEAR(mov.fecha), MONTH(mov.fecha);
+    
+    -- Consultar los resultados desde la tabla temporal
+    SELECT * FROM TempReporteMovimientos;
+    
+    -- Eliminar la tabla temporal 
+    DROP TEMPORARY TABLE IF EXISTS TempReporteMovimientos;
+END$$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ActualizarCuota`(  
+    IN p_cuotas_a_actualizar INT,  
+    IN p_monto_a_actualizar DECIMAL(10, 2),  
+    IN p_id_prestamo INT,
+	IN nro_cuenta INT,
+	IN detalle NVARCHAR(255)
+)
+BEGIN  
+    DECLARE monto_existente DECIMAL(10, 2);  
+    DECLARE cuotas_existentes INT;  
+    DECLARE cuota_id INT; 
+   DECLARE estado_pago INT DEFAULT 1;  -- 1 = Pago realizado
+    DECLARE tipo_movimiento INT DEFAULT 3;  -- 3 = Tipo de movimiento (pago)
+    DECLARE fecha_actual DATETIME;
+    DECLARE saldo_actual DECIMAL(10, 2);
+    DECLARE detalle VARCHAR(255) DEFAULT 'Pago de cuota';  -- Asegúrate de que el detalle esté definido
+
+    -- Verificar si existe alguna cuota activa para el préstamo  
+    SELECT id, monto, nro_cuota INTO cuota_id, monto_existente, cuotas_existentes  
+    FROM Cuotas   
+    WHERE id_prestamo = p_id_prestamo AND deleted = 0  
+    ORDER BY nro_cuota  
+    LIMIT 1;  -- Selecciona solo la primera cuota activa  
+
+    -- Comprobar si se encontró la cuota  
+    IF cuota_id IS NULL THEN  
+        SIGNAL SQLSTATE '45000'  
+        SET MESSAGE_TEXT = 'No hay cuotas activas para este préstamo.';  
+    END IF;  
+
+    -- Verificar que el monto a descontar no exceda el monto actual  
+    IF p_monto_a_actualizar > monto_existente THEN  
+        SIGNAL SQLSTATE '45000'  
+        SET MESSAGE_TEXT = 'El monto a descontar excede el monto existente de la cuota.';  
+    END IF;  
+
+    -- Actualizar el monto de la cuota  
+    SET monto_existente = monto_existente - p_monto_a_actualizar;  
+    
+    -- Actualizar el número de cuotas restantes  
+    SET cuotas_existentes = cuotas_existentes - p_cuotas_a_actualizar;  
+ 
+    -- Asegurarse de que el número de cuotas no sea negativo  
+    IF cuotas_existentes < 0 THEN  
+        SIGNAL SQLSTATE '45000'  
+        SET MESSAGE_TEXT = 'El número de cuotas no puede ser negativo.';  
+    END IF;  
+
+    -- Realizar la actualización solo en la primera cuota encontrada  
+    UPDATE Cuotas  
+    SET monto = monto_existente,  
+        nro_cuota = cuotas_existentes,  
+        fecha_pago = NOW()  
+    WHERE id = cuota_id;  -- Actualiza solo la primera cuota encontrada 
+    
+    
+        -- Obtener el saldo actual de la cuenta
+    SELECT cu.saldo
+    FROM cuentas cu
+    WHERE nro_cuenta = nro_cuenta and deleted = 0
+    LIMIT 1;
+
+
+
+    -- Actualizar el saldo de la cuenta después del pago
+    UPDATE Cuentas
+    SET saldo = saldo - p_monto_a_actualizar
+    WHERE nro_cuenta = nro_cuenta AND deleted = 0;
+
+    -- Insertar el movimiento en la tabla Movimientos
+    SET fecha_actual = CURRENT_TIMESTAMP;
+
+    INSERT INTO Movimientos (fecha, detalle, importe, tipo_movimiento, nro_cuenta, estado, createDate, deleted)
+    VALUES (fecha_actual, detalle, p_monto_a_actualizar, tipo_movimiento, nro_cuenta, estado_pago, fecha_actual, 0);
+
+    -- Confirmar transacción
+    COMMIT;
+    
+
+END$$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerDatosClientePrestamo`(IN ClienteId INT)
+BEGIN
+    SELECT   
+        c.id AS cliente_id,  
+        p.id AS prestamo_id,  
+        p.fecha_solicitud,  
+        p.nro_cuenta AS numero_cuenta,
+        p.cuotas AS cuotas_prestamo, -- cantidad de cuotas en que se solicitó el préstamo
+        pr.nro_cuota,  -- que se está pagando
+        pr.monto AS monto_cuota,
+        pr.fecha_pago, 
+        co.saldo AS cuenta_saldo -- saldo a pagar del préstamo solicitado 
+    FROM   
+        Clientes c  
+    LEFT JOIN   
+        Prestamos p ON c.id = p.id_cliente  
+    LEFT JOIN   
+        Cuotas pr ON p.id = pr.id_prestamo  
+    LEFT JOIN   
+        Cuentas co ON c.id = co.id_cliente  
+    WHERE   
+        c.id = ClienteId;
+END$$
+
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ObtenerCuotasPagadasYPendientesPorMes`(
     IN fechaDesde DATE,
     IN fechaHasta DATE
