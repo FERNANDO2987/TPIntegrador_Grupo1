@@ -513,3 +513,26 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+-- Listar movimientos X cuenta
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ListarMovimientosXCuenta`(
+	IN p_nroCuenta BIGINT
+)
+BEGIN
+	SELECT 
+		M.ID,
+		NRO_CUENTA,
+        IMPORTE,
+        TIPO_MOVIMIENTO,
+        T.DESCRIPCION AS DESCRIPCION,
+        DETALLE,
+        FECHA,
+        ESTADO
+	FROM MOVIMIENTOS M 
+	LEFT JOIN TIPOSMOVIMIENTO T ON T.id = M.TIPO_MOVIMIENTO 
+	WHERE NRO_CUENTA = p_nroCuenta;
+END
+
+DELIMITER ;

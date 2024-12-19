@@ -37,18 +37,25 @@
         return;
       }
     %>
-	
+	<h3>Usuario logueado: <%=usuario.getUsuario() %></h3>
 
 	<div class="container mt-5">
-        <h2 class="text-center mb-4">Historial de movimientos</h2>
+        
 
         <!-- Tabla de movimientos -->
-        <div class="row pt-5 ml-1">	
+        <div class="row pt-5 justify-content-end ">	
+       		 <a class="btn btn-secondary my-1 mx-3 " href="Home.jsp" > 	Volver al Home </a> 
+        <!-- 
     		<form method="get" action="servletListarMovimientosXCuenta">
-            	<input type="submit" name="btnListarMovimientosXCuenta" value="Traer Cuentas" class="btn btn-secondary">
-            	<input type="hidden" name="idusuario" value="<%=request.getParameter("id") %>">
+            	<input type="submit" name="btnListarMovimientosXCuenta" value="Traer Movimientos" class="btn btn-secondary">
+            	<input type="hidden" name="idusuario" value="request.getParameter("id")">
        		</form>
+         -->
+       		
 		</div>
+        
+        <h2 class="text-center mb-4">Historial de movimientos</h2>
+        
         
         <%
             //
