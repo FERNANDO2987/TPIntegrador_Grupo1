@@ -73,17 +73,27 @@ public class servletModificarCliente extends HttpServlet {
 	        PaisNegImpl paisNeg = new PaisNegImpl();  
 	     
 	        // Obtener el país de nacimiento por ID
-            List<Pais> paises = paisNeg.listarPaises();
-            Pais paisNacimiento = paises.stream()
-                    .filter(p -> p.getId() == paisId)
-                    .findFirst()
-                    .orElse(null);
-
-            if (paisNacimiento == null) {
+	        Pais paisNacimiento = new Pais();
+	        
+	        try {
+	        	List<Pais> paises = paisNeg.listarPaises();
+	            paisNacimiento = paises.stream()
+	                    .filter(p -> p.getId() == paisId)
+	                    .findFirst()
+	                    .orElse(null);
+	            
+	        }
+	        catch(Exception e) {
+	        	System.out.println(e.getMessage());
+	        }
+	        
+	        if (paisNacimiento == null) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write("Error: País de nacimiento no encontrado.");
                 return;
             }
+
+
 	        
 	        Date fechaNacimiento;
             try {
