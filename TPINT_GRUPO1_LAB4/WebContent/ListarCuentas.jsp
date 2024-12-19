@@ -57,6 +57,30 @@
 					
 					
 		%>
+		<div class="form-group m-1 mb-2">
+		  <form action="servletListarCuentas" method="post" class="d-flex align-items-center">
+		    
+		    <label class="form-control mb-0 mr-2" id="lblNombApe">Nombre y Apellido</label>
+		    
+		    <select class="form-control mb-0 mr-2" id="selectCriterio" name="selectCriterio">
+		      <option value=1>Comienza por</option>
+		      <option value=-1>Termina con</option>
+		      <option value=0>Contiene</option>
+		    </select>
+		    
+		    <input class="form-control mb-0 mr-2" id="txtFiltro" name="txtFiltro" type="text">
+		    
+		    <input class="form-control btn btn-primary mb-0 mr-2" id="btnFiltro" name="btnFiltro" value="Filtrar" type="submit">
+		    
+		    <input class="form-control btn btn-secondary mb-0" id="btnLimpiar" name="btnLimpiar" value="Limpiar filtro" type="submit">
+		
+		  </form>
+		</div>
+		<%if(listaCuenta == null){ %>
+			<div class="alert alert-danger" id="errorMessage">
+            No se encontraron Registros
+        	</div>
+		<%} %>
         <table border="1" id="table_id" class="table table-striped table-bordered" >
             <thead class="thead-dark">
                 <tr>

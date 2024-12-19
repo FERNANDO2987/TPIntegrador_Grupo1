@@ -71,6 +71,22 @@ public class servletListarCuentas extends HttpServlet {
 			cuentaNeg.darDeBajaCuenta(nroCuenta);
 			doGet(request, response);
 		}
+		if(request.getParameter("btnLimpiar") != null)
+		{
+			doGet(request, response);
+		}
+		if(request.getParameter("btnFiltro") != null)
+		{
+			int criterio = Integer.parseInt(request.getParameter("selectCriterio"));
+			String filtro = request.getParameter("txtFiltro");
+			
+			CuentaNeg cuentaNeg = new CuentaNegImpl();
+			List<Cuenta> listado = new ArrayList<Cuenta>();
+			listado = cuentaNeg.obtenerCuentasConFiltro(criterio, filtro);
+			
+			request.setAttribute("listado", listado);
+			request.getRequestDispatcher("ListarCuentas.jsp").forward(request, response);
+		}
 	}
 
 }

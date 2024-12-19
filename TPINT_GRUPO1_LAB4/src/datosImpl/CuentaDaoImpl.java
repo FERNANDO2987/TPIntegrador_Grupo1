@@ -412,23 +412,65 @@ public class CuentaDaoImpl implements CuentaDao {
 	    int cantidadDeCuentas;
 	    boolean validado = false;
 
-	    // Obtener el estado actual de la cuenta en la base de datos
 	    Cuenta cuentaEnBd = obtenerCuentaXNroCuenta(cuenta.getNroCuenta());
 
-	    // Si la cuenta actual está inactiva (true) y se desea activar (false)
 	    if (cuentaEnBd.getEstado() == true && cuenta.getEstado() == false) {
-	        // Obtener la cantidad de cuentas activas del cliente
 	        cantidadDeCuentas = obtenerCountCuentasXCliente(cuenta.getCliente().getId());
-	        // Validar que no se exceda el límite de 3 cuentas activas
 	        if (cantidadDeCuentas < 3) {
 	            validado = true;
 	        }
 	    } else {
-	        // Si no se está intentando activar una cuenta, es válido
 	        validado = true;
 	    }
 
 	    return validado;
+	}
+
+	@Override
+	public List<Cuenta> obtenerCuentasConFiltro(int criterio, String filtro) {
+		List<Cuenta> lista = new ArrayList<Cuenta>();
+		cn = new Conexion();
+		cn.Open();
+		
+		String query = "{CALL  BuscarPorCriterio(?,?)}";
+		try 
+		{
+			CallableStatement cst = cn.connection.prepareCall(query);
+			cst.setInt(1, criterio);
+			cst.setString(2, filtro);
+			boolean hayResultados = cst.execute();
+			
+			if(hayResultados)
+			{
+				ResultSet rs = cst.getResultSet();
+				while (rs.next())
+				{
+					ClienteDao clienteDao = new ClienteDaoImpl();
+					Cuenta aux = new Cuenta();
+					aux.setNroCuenta(rs.getLong("nro_cuenta"));
+					aux.setFechaCreacion(rs.getDate("fecha_creacion").toLocalDate());
+					aux.setCbu(rs.getString("cbu")); //CBU UNIQUE
+					aux.setSaldo(rs.getBigDecimal("saldo"));
+					aux.setEstado(rs.getBoolean("borrado"));
+					
+					aux.getTipoCuenta().setId(rs.getInt("id_tipo_cuenta"));
+					aux.getTipoCuenta().setDescripcion(rs.getString("descripcion"));
+					aux.setCliente(clienteDao.obtenerClientePorId(rs.getInt("id_cliente")));
+					
+					
+					lista.add(aux);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally 
+		{
+			cn.close();
+		}
+		return lista;
 	}
 	
 	

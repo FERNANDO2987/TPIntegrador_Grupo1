@@ -71,4 +71,10 @@ public class CuentaNegImpl implements CuentaNeg{
 		CuentaDao cuentaDao = new CuentaDaoImpl();
 		return cuentaDao.listarMovimientosXCuenta(idCuenta);
 	}
+
+	@Override
+	public List<Cuenta> obtenerCuentasConFiltro(int criterio, String filtro) {
+		CuentaDao cuentaDao = new CuentaDaoImpl();
+		return cuentaDao.obtenerCuentasConFiltro(criterio, filtro);
+	}
 }

@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import datos.CuentaDao;
@@ -30,22 +31,12 @@ public class principal {
 
     public static void main(String[] args) {
     	
-    	PrestamoNeg neg = new PrestamoNegImpl();
-    	Prestamo p = new Prestamo();
+    	CuentaNeg cuentaNeg = new CuentaNegImpl();
+    	List<Cuenta> lista = cuentaNeg.obtenerCuentasConFiltro(1, "j");
     	
-    	p.setCuenta(new Cuenta(222222222));
-    	p.setCliente(new Cliente(2));
-    	p.setImporte(BigDecimal.valueOf(200770));
-    	p.setCuotas(12);
-    	
-    	boolean a = neg.agregarPrestamo(p);
-    	
-    	if(a)
+    	for(Cuenta cuenta : lista)
     	{
-    		System.out.println("todo ok");
-    	}else {
-    		
-    		System.out.println("todo mal");
+    		System.out.println(cuenta.toString());
     	}
     	
         
