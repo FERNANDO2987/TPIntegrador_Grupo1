@@ -564,3 +564,45 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE ObtenerClientesConFiltro(
+    IN criterio INT,
+    IN valorBusqueda VARCHAR(255)
+)
+BEGIN
+    DECLARE filtro VARCHAR(255);
+
+    -- Definir el filtro según el criterio
+    IF criterio = 1 THEN
+        SET filtro = CONCAT(valorBusqueda, '%');  -- Busca al principio (LIKE 'valorBusqueda%')
+    ELSEIF criterio = -1 THEN
+        SET filtro = CONCAT('%', valorBusqueda);  -- Busca al final (LIKE '%valorBusqueda')
+    ELSEIF criterio = 0 THEN
+        SET filtro = CONCAT('%', valorBusqueda, '%');  -- Busca en cualquier parte (LIKE '%valorBusqueda%')
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Criterio no válido. Debe ser 0, 1 o -1';
+    END IF;
+
+    -- Realizamos la consulta con el filtro aplicado
+    SELECT 
+        id AS id_cliente,
+        dni,
+        cuil,
+        nombre,
+        apellido,
+        sexo,
+        usuario,
+        password,
+        pais AS pais_nacimiento,
+        fecha_nacimiento,
+        correo,
+        telefono,
+        celular,
+        admin
+    FROM clientes
+    WHERE dni LIKE filtro;
+END$$
+
+DELIMITER ;

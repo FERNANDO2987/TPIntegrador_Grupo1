@@ -1,6 +1,7 @@
 package negocio;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import entidad.Cliente;
 
@@ -12,6 +13,7 @@ public interface ClienteNeg {
 	 public boolean eliminarCliente(int idCliente);
 	 public Cliente iniciarSesion(String nombreUsuario, String contrasena);
 	 public Cliente obtenerClientePorUsuario(String usuario);
+	 public List<Cliente> obtenerClientesConFiltro(int criterio, String filtro);
 	
 
 }

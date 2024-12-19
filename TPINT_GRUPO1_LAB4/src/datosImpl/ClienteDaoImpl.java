@@ -417,5 +417,58 @@ public class ClienteDaoImpl implements ClienteDao{
 
 	    return cliente; 
 	}
+
+
+	@Override
+	public List<Cliente> obtenerClientesConFiltro(int criterio, String filtro) {
+		List<Cliente> clientes = new ArrayList<>(); // Lista para almacenar los clientes
+	    cn.Open(); // Abrimos la conexión
+
+	    // Llamada al procedimiento almacenado
+	    String query = "CALL ObtenerClientesConFiltro(?,?)"; // Llamada al procedimiento almacenado
+	    
+	    try {
+			CallableStatement cst = cn.connection.prepareCall(query);
+			cst.setInt(1, criterio);
+			cst.setString(2, filtro);
+			ResultSet rs = cst.executeQuery();
+			while(rs.next())
+			{
+				Cliente cliente = new Cliente();
+	            cliente.setId(rs.getInt("id_cliente"));
+	            cliente.setDni(rs.getString("dni"));
+	            cliente.setCuil(rs.getString("cuil"));
+	            cliente.setNombre(rs.getString("nombre"));
+	            cliente.setApellido(rs.getString("apellido"));
+	            cliente.setSexo(rs.getString("sexo"));
+	            cliente.setUsuario(rs.getString("usuario"));
+	            cliente.setPassword(rs.getString("password"));
+
+	            // Llenar el objeto Pais si existe
+	            // Ahora solo se debe manejar el campo 'pais', ya no 'PaisNacimientoId'
+	            Pais paisNacimiento = new Pais();
+	            paisNacimiento.setNombre(rs.getString("pais_nacimiento"));
+	            cliente.setPaisNacimiento(paisNacimiento);
+
+	            cliente.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+	            cliente.setCorreo(rs.getString("correo"));
+	            cliente.setTelefono(rs.getString("telefono"));
+	            cliente.setCelular(rs.getString("celular"));
+	            cliente.setAdmin(rs.getBoolean("admin"));
+
+	            // Agregar el cliente a la lista
+	            clientes.add(cliente);
+			}
+		} 
+	    catch (Exception e) {
+			e.printStackTrace();
+		}
+	    finally {
+	    	cn.close();
+	    }
+	    
+		return clientes;
+
+	}  
 }
 

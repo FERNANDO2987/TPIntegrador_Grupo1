@@ -12,6 +12,7 @@ public interface ClienteDao {
 	public boolean agregarCliente(Cliente cliente);
 	public Cliente obtenerClientePorId(int id);
 	public Cliente obtenerClientePorUsuario(String usuario);
+	public List<Cliente> obtenerClientesConFiltro(int criterio, String filtro);
 	
 
 }

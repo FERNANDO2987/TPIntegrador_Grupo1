@@ -19,8 +19,10 @@ import entidad.ReporteMovimientos;
 import entidad.TipoMovimiento;
 import entidad.Transferencia;
 import negocio.PrestamoNeg;
+import negocio.ClienteNeg;
 import negocio.CuentaNeg;
 import negocio.TransferenciaNeg;
+import nogocioImpl.ClienteNegImpl;
 import nogocioImpl.CuentaNegImpl;
 import nogocioImpl.PrestamoNegImpl;
 import nogocioImpl.TransferenciaNegImpl;
@@ -31,12 +33,12 @@ public class principal {
 
     public static void main(String[] args) {
     	
-    	CuentaNeg cuentaNeg = new CuentaNegImpl();
-    	List<Cuenta> lista = cuentaNeg.obtenerCuentasConFiltro(1, "j");
+    	ClienteNeg clienteNeg = new ClienteNegImpl();
+    	List<Cliente> lista = clienteNeg.obtenerClientesConFiltro(1, "1");
     	
-    	for(Cuenta cuenta : lista)
+    	for(Cliente cliente : lista)
     	{
-    		System.out.println(cuenta.toString());
+    		System.out.println(cliente.toString());
     	}
     	
         

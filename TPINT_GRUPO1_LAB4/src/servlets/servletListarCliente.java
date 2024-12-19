@@ -57,8 +57,21 @@ public class servletListarCliente extends HttpServlet {
     
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		if(request.getParameter("btnFiltro") != null)
+		{
+			int criterio = request.getAttribute("selectCriterio") != null? Integer.parseInt((String) request.getAttribute("selectCriterio")): new Integer(0);
+			String filtro = request.getParameter("txtFiltro") != null? (String) request.getParameter("txtFiltro") : new String("");
+			
+			ClienteNeg clienteNeg = new ClienteNegImpl();
+			List<Cliente> listado = clienteNeg.obtenerClientesConFiltro(criterio, filtro);
+			request.setAttribute("clientes", listado);
+			request.getRequestDispatcher("ListarClientes.jsp").forward(request, response);
+			
+		}
+		if(request.getParameter("btnLimpiar") != null)
+		{
+			doGet(request, response);
+		}		
 	}
 
 }

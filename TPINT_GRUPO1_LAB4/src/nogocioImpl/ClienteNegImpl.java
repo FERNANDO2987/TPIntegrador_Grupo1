@@ -1,6 +1,7 @@
 package nogocioImpl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import datos.ClienteDao;
 import datosImpl.ClienteDaoImpl;
@@ -74,6 +75,12 @@ private ClienteDao  clienteDao = new ClienteDaoImpl();
 	@Override
 	public Cliente obtenerClientePorUsuario(String usuario) {
 		return clienteDao.obtenerClientePorUsuario(usuario);
+	}
+
+
+	@Override
+	public List<Cliente> obtenerClientesConFiltro(int criterio, String filtro) {
+		return clienteDao.obtenerClientesConFiltro(criterio, filtro);
 	}
 	
 }
