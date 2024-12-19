@@ -422,3 +422,94 @@ BEGIN
      );
  END$$
  DELIMITER ;
+
+-- AprobarPrestamo_2 
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AprobarPrestamo`(
+    IN p_id INT,
+    IN p_observaciones VARCHAR(255)
+)
+BEGIN
+    DECLARE v_importe DECIMAL(10,2);  -- almacenar importe préstamo
+    DECLARE v_nro_cuenta INT;
+    DECLARE v_estado INT;
+    
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        ROLLBACK; 
+    -- Iniciar la transacción
+    START TRANSACTION;
+    
+	-- Obtener nro de cuenta
+	SELECT nro_cuenta 
+    INTO v_nro_cuenta
+    FROM prestamos
+    WHERE id = p_id;
+    
+			-- Verificar la cuenta existe y obtener el numero
+    IF v_nro_cuenta IS NULL THEN
+        -- Si la cuenta no existe, salir
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ERROR';
+    END IF;
+    
+    -- Obtener estado del prestamo
+	SELECT estado 
+    INTO v_estado
+    FROM prestamos
+    WHERE id = p_id;
+    
+			-- Verificar si el prestamo ya fue aprobado/rechazado
+    IF v_estado IN (0, 1) THEN
+        -- Si el prestamo ya fue gestionado, salir
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ERROR';
+    END IF;
+    
+    
+    -- Obtener el importe desde la tabla prestamos
+    SELECT importe 
+    INTO v_importe
+    FROM prestamos
+    WHERE id = p_id;
+    
+			-- Verificar si el préstamo existe y obtener el importe
+    IF v_importe IS NULL THEN
+        -- Si el préstamo no existe, salir
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ERROR';
+    END IF;
+        
+    
+
+    -- Llamar a AgregarMovimiento 
+    INSERT INTO movimientos (
+        fecha, 
+        detalle, 
+        importe, 
+        nro_cuenta,
+        tipo_movimiento, 
+        estado
+    )
+    VALUES (
+        current_date(), 
+        'Prestamo Aprobado', 
+        v_importe, 
+        v_nro_cuenta,
+        2, 
+        b'1'
+    );
+
+
+-- Actualizar el estado del préstamo a "aprobado" y asociar el movimiento
+    UPDATE prestamos
+    SET estado = 1 , observaciones = p_observaciones -- Cambiar el estado a aprobado
+    WHERE id = p_id;
+
+	-- Sumar dinero a la cuenta
+    UPDATE cuentas
+    SET saldo = saldo + v_importe
+    WHERE nro_cuenta = v_nro_cuenta;
+    
+    
+    COMMIT;
+
+END$$
+
+DELIMITER ;
