@@ -170,6 +170,7 @@ public class CuentaDaoImpl implements CuentaDao {
 				cuentaSeleccionada.setNroCuenta(rs.getLong("nro_cuenta"));
 				cuentaSeleccionada.setCbu(rs.getString("cbu")); //CBU UNIQUE
 				cuentaSeleccionada.setEstado(rs.getBoolean("deleted"));
+				cuentaSeleccionada.setSaldo(rs.getBigDecimal("saldo"));
 				
 				cuentaSeleccionada.getTipoCuenta().setId(rs.getInt("id_tipo_cuenta"));
 				cuentaSeleccionada.getTipoCuenta().setDescripcion(rs.getString("descripcion"));

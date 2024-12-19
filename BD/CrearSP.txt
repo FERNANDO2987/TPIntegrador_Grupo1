@@ -127,7 +127,7 @@ END$$
 -- Procedimiento para listar cuenta por número de cuenta
 CREATE PROCEDURE ListarCuentaXNroCuenta (IN nroCuenta INT)
 BEGIN
-	SELECT cuentas.nro_cuenta, cuentas.cbu, cuentas.id_cliente, clientes.nombre, clientes.apellido, cuentas.id_tipo_cuenta, tiposcuenta.descripcion, cuentas.deleted 
+	SELECT cuentas.nro_cuenta, cuentas.cbu, cuentas.id_cliente, clientes.nombre, clientes.apellido, cuentas.id_tipo_cuenta, tiposcuenta.descripcion,  cuentas.saldo, cuentas.deleted 
 	FROM cuentas 
 	LEFT JOIN clientes ON clientes.id = cuentas.id_cliente 
 	LEFT JOIN tiposcuenta ON tiposcuenta.id = cuentas.id_tipo_cuenta 
