@@ -124,6 +124,7 @@
           
             <br><br>
             <button type="submit" class="btn btn-primary btn-block">Registrar Cliente</button>
+            <a class="btn btn-secondary w-100 mt-1" href="Home.jsp" > 	Volver al Home </a> 
         </form>
          </div>
          

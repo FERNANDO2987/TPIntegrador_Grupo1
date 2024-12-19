@@ -45,6 +45,7 @@
     
 </head>
 <body>
+	
 	<%
       Cliente usuario = (Cliente)session.getAttribute("usuario");
       if (usuario == null) {
@@ -53,6 +54,9 @@
       }
     %>
     <div class="container mt-5 ml-0">
+    	<div class="row pt-5 justify-content-end ">	
+    		<a class="btn btn-secondary my-1" href="Home.jsp" > 	Volver al Home </a>    
+		</div>
         <h2 class="text-center mb-4">Listado de Clientes</h2>
         
      <!-- Mostrar mensajes de éxito o error -->  

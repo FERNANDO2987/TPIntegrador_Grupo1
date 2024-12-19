@@ -20,6 +20,7 @@
         return;
       }
     %>
+
 	<div class="container mt-5">
 		<div class="row" style="padding: 10px">
 			<div class="col-4">
@@ -44,7 +45,7 @@
             		<div class="form-group">
             			<div class="row">
             				<div class="col">
-	            				<input type="text" class="form-control" id="anio" name="anio" required placeholder="Año">
+	            				<input type="text" class="form-control" id="anio" name="anio" required placeholder="Aï¿½o">
             				</div>
             				<div class="col">
             					<button type="submit" class="btn btn-dark">Aplicar cambios</button>
@@ -54,7 +55,7 @@
             	</form>
 			</div>
 			<div class="col-3">
-				<label id="anio" style="font-size: 24px;">Año:</label>
+				<label id="anio" style="font-size: 24px;">Aï¿½o:</label>
 			</div>	
 			<div class="col-4">
 				<a class= "col btn btn-primary" href="#">Generar Informe</a>
