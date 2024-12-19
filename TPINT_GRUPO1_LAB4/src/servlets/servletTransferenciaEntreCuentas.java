@@ -49,7 +49,7 @@ public class servletTransferenciaEntreCuentas extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("btnTransferir") != null)
 		{
-			
+			CuentaNeg cuentaNeg = new CuentaNegImpl();
 			int cuentaOrigen;
 			int cuentaDestino;
 			BigDecimal monto;
@@ -62,12 +62,33 @@ public class servletTransferenciaEntreCuentas extends HttpServlet {
 			Transferencia transferencia = new Transferencia();
 			
 			transferencia.getCuentaOrigen().setNroCuenta(cuentaOrigen);
+			transferencia.setCuentaOrigen(cuentaNeg.obtenerCuentaXNroCuenta((long) cuentaOrigen));
 			transferencia.getCuentaDestino().setNroCuenta(cuentaDestino);
+			transferencia.setCuentaDestino(cuentaNeg.obtenerCuentaXNroCuenta((long) cuentaDestino));
 			transferencia.setMonto(monto);
 			transferencia.setDetalle(detalle);
 			
 			TransferenciaNeg transferenciaNeg = new TransferenciaNegImpl();
-			transferenciaNeg.agregarTransferencia(transferencia);
+			String exito = new String();
+			if(transferenciaNeg.agregarTransferencia(transferencia))
+			{
+				exito = "Transferencia realizada con exito";
+			}
+			else
+			{
+				exito = "No se pudo realizar la transferencia";
+			}
+			
+			
+			ClienteNeg clienteNeg = new ClienteNegImpl();
+			List<Cuenta> lista = new ArrayList<Cuenta>();
+			
+			Cliente clienteLogeado =  (Cliente) request.getSession().getAttribute("usuario");
+			clienteLogeado = clienteNeg.obtenerClientePorUsuario(clienteLogeado.getUsuario());
+			
+			lista = cuentaNeg.obtenerCuentasXIdCliente_2(clienteLogeado.getId());
+			request.setAttribute("listaDeMisCuentas", lista);
+			request.setAttribute("exitoTransfer", exito);
 			request.getRequestDispatcher("TransferirCuentasPropias.jsp").forward(request, response);
 		}
 	}

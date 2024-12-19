@@ -22,25 +22,26 @@ public class TransferenciaDaoImpl implements TransferenciaDao {
 		try
 		{
 			CallableStatement cst = cn.connection.prepareCall(query);
-			
 			if(validarCBU(transferencia.getCuentaDestino().getCbu()))
 			{
 				System.out.println("el CBU es valido");
 				CuentaDao cuentaDao = new CuentaDaoImpl();
 				transferencia.setCuentaDestino(cuentaDao.obtenerCuentaXCBU(transferencia.getCuentaDestino().getCbu()));
 			
-			
-				if(validarMonto(transferencia))
+				if(transferencia.getCuentaOrigen().getNroCuenta() != transferencia.getCuentaDestino().getNroCuenta())
 				{
-					System.out.println("el monto no supera el saldo");
-					cst.setInt(1, (int) transferencia.getCuentaOrigen().getNroCuenta());
-					cst.setInt(2, (int) transferencia.getCuentaDestino().getNroCuenta());
-					cst.setBigDecimal(3, transferencia.getMonto());
-					cst.setString(4, transferencia.getDetalle());
-					cst.execute();
-					exito = true;
-				}
-				System.out.println("el monto supera el saldo");
+					if(validarMonto(transferencia))
+					{
+						System.out.println("el monto no supera el saldo");
+						cst.setInt(1, (int) transferencia.getCuentaOrigen().getNroCuenta());
+						cst.setInt(2, (int) transferencia.getCuentaDestino().getNroCuenta());
+						cst.setBigDecimal(3, transferencia.getMonto());
+						cst.setString(4, transferencia.getDetalle());
+						cst.execute();
+						exito = true;
+					}
+					System.out.println("el monto supera el saldo");
+				}		
 			}
 			
 		}
