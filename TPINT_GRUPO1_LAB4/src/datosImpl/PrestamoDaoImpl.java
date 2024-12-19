@@ -56,18 +56,19 @@ public class PrestamoDaoImpl  implements PrestamoDao{
 
 
 	@Override
-	public boolean aprobarPrestamo(Long id) {
+	public boolean aprobarPrestamo_2(Long id, String observacion) {
 		boolean estado = true;
 	    cn = new Conexion();
 	    cn.Open();
 	    
 	  
-	    String query = "{CALL AprobarPrestamo(?)}";
+	    String query = "{CALL AprobarPrestamo(?, ?)}";
 	    
 	    try (CallableStatement stmt = cn.connection.prepareCall(query)) {
 	       
 	        
 	        stmt.setLong(1, id); 
+	        stmt.setString(2, observacion); 
 	       
 	        stmt.executeUpdate();
 	        

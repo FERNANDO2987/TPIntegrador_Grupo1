@@ -109,11 +109,11 @@
 	                </div>
 		            <div class="form-group">
 		                <label for="monto">Monto Solicitado:</label>
-		                <input type="number" class="form-control" id="monto" name="monto" placeholder="Ingrese el monto a solicitar" required>
+		                <input type="number" min="1" class="form-control" id="monto" name="monto" placeholder="Ingrese el monto a solicitar" required>
 		            </div>
 		            <div class="form-group">
 						<label for="cuotas">Cuotas:</label>
-		                <input type="number" min="1" max="24"  class="form-control" id="cuotas" name="cuotas" placeholder="Ingrese la cantidad de cuotas" required>
+		                <input type="number"  min="1" max="24"  class="form-control" id="cuotas" name="cuotas" placeholder="Ingrese la cantidad de cuotas" required>
 		            </div>
 		            <input type="hidden" name="usuarioID" value="<%=usuario.getId() %>">
 					<input type="submit" class="btn btn-primary btn-block" name=btnSubmit value="Solicitar Préstamo">
